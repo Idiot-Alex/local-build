@@ -8,6 +8,10 @@ import (
 )
 
 func main() {
+	Run()
+}
+
+func Run() {
 	log.Println("app started...")
 	// 1.创建路由
 	r := gin.Default()
