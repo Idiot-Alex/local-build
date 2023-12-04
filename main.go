@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"runtime"
+	// "runtime"
 	_ "os"
 	"strings"
 	"os/exec"
@@ -11,7 +11,7 @@ import (
 
 func main() {
 	fmt.Println("app started...")
-	fmt.Println(GetOS())
+	// fmt.Println(GetOSType())
 
 	findJava()
 }
@@ -48,13 +48,4 @@ func findJava() {
 	}
 
 	fmt.Println("Java home path:", javaHomePath)
-}
-
-
-func GetOS() string {
-	os := runtime.GOOS
-	if os != "windows" && os !=  "darwin" && os != "linux" {
-		return ""
-	}
-	return os
 }
