@@ -1,5 +1,9 @@
 package env
 
+import (
+	"runtime"
+)
+
 type OSType string
 
 const (

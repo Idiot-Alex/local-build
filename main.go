@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	// "runtime"
-	_ "os"
+	env "local-build/internal/env"
 	"strings"
 	"os/exec"
 )
@@ -11,9 +11,9 @@ import (
 
 func main() {
 	fmt.Println("app started...")
-	// fmt.Println(GetOSType())
-
-	findJava()
+	fmt.Println(env.GetOSType())
+	env.GetJDKList()
+	// findJava()
 }
 
 func findJava() {
