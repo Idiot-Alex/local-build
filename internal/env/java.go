@@ -5,6 +5,7 @@ import (
 	"log"
 	"os/exec"
 	"strings"
+	"encoding/json"
 )
 
 func GetJDKList() {
@@ -24,32 +25,24 @@ func getWindowsJDKList() {
 	// Split output into rows
 	rows := strings.Split(string(output), "\n")
 
-	// Extract column names from the first row
-	columns := strings.Fields(rows[0])
+	keys := strings.Fields(rows[0])
 
-	// Find the index of the "Name" column
-	nameIndex := -1
-	for i, col := range columns {
-			if col == "Name" {
-					nameIndex = i
-					break
-			}
-	}
+	var data []map[string]string
 
-	// Extract the "Name" column from each row
-	var names []string
 	for _, row := range rows[1:] {
-			if row != "" {
-					cols := strings.Fields(row)
-					if nameIndex >= 0 && len(cols) > nameIndex {
-							names = append(names, cols[nameIndex])
-					}
+		if strings.TrimSpace(row) != "" {
+			fields := strings.Fields(row)
+			rowMap := make(map[string]string)
+			for i, field := range fields {
+				if (i < len(keys)) {
+					rowMap[keys[i]] = field
+				}
 			}
+			data = append(data, rowMap)
+		}
 	}
 
-	// Print the list of program names
-	fmt.Println("Program Names:")
-	for _, name := range names {
-			fmt.Println(name)
-	}
+	jsonData, err := json.MarshalIndent(data, "", "  ")
+	fmt.Println(string(jsonData))
+
 }
