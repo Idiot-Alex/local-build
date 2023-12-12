@@ -14,6 +14,7 @@ const (
 )
 
 // get OS type
+// return {OSType} struct such as MacOS, Windows, Linux, Other
 func GetOSType() OSType {
 	switch runtime.GOOS {
 		case "darwin":

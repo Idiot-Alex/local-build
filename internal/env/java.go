@@ -45,6 +45,8 @@ type JdkInfo struct {
 	Arch string
 }
 
+// find JDK list from local machine
+// return []JdkInfo
 func GetJDKList() {
 	osType := GetOSType()
 	if MacOS == osType {
@@ -98,9 +100,9 @@ func getMacJDKList() []JdkInfo {
 }
 
 // find JDK from windows
-// use Command: wmic product where "Name like 'Java %% Development Kit%%'" get Name, Version, InstallLocation, Vendor
+// use Command: wmic product where "Name like 'Java %% Development Kit%%'" get Name, Version, InstallLocation, Vendor /format:csv
 func getWindowsJDKList() {
-	exCmd := exec.Command("wmic", "product", "where", `Name like 'Java %% Development Kit%%' get Name, Version, InstallLocation, Vendor`)
+	exCmd := exec.Command("wmic", "product", "where", `Name like 'Java %% Development Kit%%'`, "get", "Name,Version,InstallLocation,Vendor", "/format:csv");
 	output, err := exCmd.Output()
 	if err != nil {
 		log.Println(err)
@@ -108,16 +110,16 @@ func getWindowsJDKList() {
 	}
 	log.Println(string(output))
 
-	// Split output into rows
-	rows := strings.Split(string(output), "\n")
-
-	keys := strings.Fields(rows[0])
+	// Split output into rows, windows line-separator is \r\n
+	rows := strings.Split(string(output), "\r\n")
+	fmt.Printf("====%v", rows)
+	keys := strings.Split(rows[0], ",")
 
 	var data []map[string]string
 
 	for _, row := range rows[1:] {
 		if strings.TrimSpace(row) != "" {
-			fields := strings.Fields(row)
+			fields := strings.Split(row, ",")
 			rowMap := make(map[string]string)
 			for i, field := range fields {
 				if i < len(keys) {
