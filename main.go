@@ -1,19 +1,30 @@
 package main
 
 import (
+	"encoding/xml"
 	"fmt"
-	// "runtime"
-	env "local-build/internal/env"
-	"strings"
+	"local-build/internal/env"
 	"os/exec"
+	"strings"
 )
 
+type Dict struct {
+	XMLName xml.Name `xml:"plist"`
+	Items   []Item   `xml:"array>dict"`
+}
+
+type Item struct {
+	Key   []string `xml:"key"`
+	Value []string `xml:",any"`
+}
+
+type DictString struct {
+	XMLName xml.Name `xml:"plist"`
+	Dict string `xml:"array>dict"`
+}
 
 func main() {
-	fmt.Println("app started...")
-	fmt.Println(env.GetOSType())
 	env.GetJDKList()
-	// findJava()
 }
 
 func findJava() {
