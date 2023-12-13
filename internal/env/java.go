@@ -7,6 +7,7 @@ import (
 	"log"
 	"os/exec"
 	"strings"
+	"bufio"
 )
 
 // type Dict struct {
@@ -101,20 +102,35 @@ func getMacJDKList() []JdkInfo {
 
 // find JDK from windows
 // use Command: wmic product where "Name like 'Java %% Development Kit%%'" get Name, Version, InstallLocation, Vendor /format:csv
-func getWindowsJDKList() {
+func getWindowsJDKList() []JdkInfo {
 	exCmd := exec.Command("wmic", "product", "where", `Name like 'Java %% Development Kit%%'`, "get", "Name,Version,InstallLocation,Vendor", "/format:csv");
 	output, err := exCmd.Output()
 	if err != nil {
 		log.Println(err)
-		return
+		return nil
 	}
 	log.Println(string(output))
 
-	// Split output into rows, windows line-separator is \r\n
-	rows := strings.Split(string(output), "\r\n")
-	fmt.Printf("====%v", rows)
+	// output := []byte(`Node,InstallLocation,Name,Vendor,Version
+	// DESKTOP-JR7EEIP,C:\Program Files\Java\jdk-1.8\,Java SE Development Kit 8 Update 381 (64-bit),Oracle Corporation,8.0.3810.9
+	// DESKTOP-JR7EEIP,C:\Program Files\Java\jdk1.8.0_51\,Java SE Development Kit 8 Update 51 (64-bit),Oracle Corporation,8.0.510.16`)
+
+	var rows []string
+
+	// 将结果按行分割成多行
+	scanner := bufio.NewScanner(strings.NewReader(string(output)))
+	scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		line := strings.TrimRight(scanner.Text(), "\r\n\t")
+		if strings.TrimSpace(line) != "" {
+			rows = append(rows, line)
+		}
+	}
+
+	fmt.Printf("====%#v", rows)
 	keys := strings.Split(rows[0], ",")
 
+	fmt.Printf("====%#v", keys)
 	var data []map[string]string
 
 	for _, row := range rows[1:] {
@@ -129,7 +145,28 @@ func getWindowsJDKList() {
 			data = append(data, rowMap)
 		}
 	}
+	fmt.Printf("====%#v", data)
 
-	jsonData, err := json.MarshalIndent(data, "", "  ")
+	var jdkList []JdkInfo
+	for _, v := range data {
+		jdk := JdkInfo{}
+		for key, value := range v {
+			fmt.Println(key)
+			switch key {
+				case "InstallLocation":
+					jdk.Path = value
+				case "Vendor":
+					jdk.Vendor = value
+				case "Version":
+					jdk.Version = value
+				case "Name":
+					jdk.Name = value
+			}
+		}
+		jdkList = append(jdkList, jdk)
+	}
+	jsonData, _ := json.MarshalIndent(jdkList, "", "  ")
 	fmt.Println(string(jsonData))
+	
+	return jdkList
 }
