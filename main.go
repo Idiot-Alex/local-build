@@ -6,4 +6,6 @@ import (
 
 func main() {
 	env.GetJDKList()
+
+	env.GetGitInfo()
 }
