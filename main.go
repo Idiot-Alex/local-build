@@ -10,4 +10,6 @@ func main() {
 	env.GetGitInfo()
 
 	env.GetMavenInfo()
+
+	env.GetNodeInfo()
 }
