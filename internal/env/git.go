@@ -40,17 +40,14 @@ func getMacGit() GitInfo {
 		log.Println(err)
 		return *gitInfo
 	}
-
 	gitPath := strings.TrimSpace(string(output))
 
-	gitVersionCmd := fmt.Sprintf("%s %s", gitPath, "--version")
-	exCmd = exec.Command("bash", "-c", gitVersionCmd)
+	exCmd = exec.Command("git", "--version")
 	output, err = exCmd.Output()
 	if err != nil {
 		log.Println(err)
 		return *gitInfo
 	}
-
 	gitVersion := strings.TrimSpace(string(output))
 
 	gitInfo.Name = "Git"
