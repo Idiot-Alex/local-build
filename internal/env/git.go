@@ -8,15 +8,9 @@ import (
 	"strings"
 )
 
-type GitInfo struct {
-	Name string
-	Path string
-	Version string
-}
-
 // find Git from local machine
-// return GitInfo
-func GetGitInfo () GitInfo {
+// return Tool
+func GetGitInfo () Tool {
 	osType := GetOSType()
 	if MacOS == osType {
 		return getMacGit()
@@ -25,20 +19,20 @@ func GetGitInfo () GitInfo {
 	} else if Linux == osType {
 
 	}
-	return GitInfo{}
+	return Tool{}
 }
 
 // find Git from mac
 // use command: which git && git --version
-// return {GitInfo} struct or nil when error
-func getMacGit() GitInfo {
-	gitInfo := new(GitInfo)
+// return {Tool} struct or nil when error
+func getMacGit() Tool {
+	git := new(Tool)
 
 	exCmd := exec.Command("which", "git")
 	output, err := exCmd.Output()
 	if err != nil {
 		log.Println(err)
-		return *gitInfo
+		return *git
 	}
 	gitPath := strings.TrimSpace(string(output))
 
@@ -46,16 +40,17 @@ func getMacGit() GitInfo {
 	output, err = exCmd.Output()
 	if err != nil {
 		log.Println(err)
-		return *gitInfo
+		return *git
 	}
 	gitVersion := strings.TrimSpace(string(output))
 
-	gitInfo.Name = "Git"
-	gitInfo.Path = string(gitPath)
-	gitInfo.Version = string(gitVersion)
+	git.Name = "Git"
+	git.Path = string(gitPath)
+	git.Version = string(gitVersion)
+	git.Arch = GetOSArch()
 
-	jsonData, _ := json.MarshalIndent(gitInfo, "", "  ")
-	fmt.Println(string(jsonData))
+	jsonData, _ := json.MarshalIndent(git, "", "  ")
+	fmt.Printf("git: %v\n", string(jsonData))
 
-	return *gitInfo
+	return *git
 }

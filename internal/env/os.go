@@ -1,16 +1,10 @@
 package env
 
 import (
+	"fmt"
+	"os/exec"
 	"runtime"
-)
-
-type OSType string
-
-const (
-	MacOS OSType = "macOS"
-	Windows OSType = "windows"
-	Linux OSType = "Linux"
-	Other OSType = "Other"
+	"strings"
 )
 
 // get OS type
@@ -27,3 +21,33 @@ func GetOSType() OSType {
 			return Other
 	}
 }
+
+// get OS arch
+// return string such as x86_64 arm ...
+func GetOSArch() string {
+	osType := GetOSType()
+	if MacOS == osType {
+		return getMacArch()
+	} else if Windows == osType {
+		getWindowsArch()
+	} else if Linux == osType {
+
+	}
+	return "Unknown"
+}
+
+func getWindowsArch() {
+	panic("unimplemented")
+}
+
+// get MacOS arch
+func getMacArch() string {
+	exCmd := exec.Command("uname", "-m")
+	output, err := exCmd.Output()
+	if err != nil {
+		fmt.Println(err)
+		return "Unknown"
+	}
+	return strings.TrimSpace(string(output))
+}
+

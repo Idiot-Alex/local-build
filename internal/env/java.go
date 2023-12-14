@@ -10,45 +10,26 @@ import (
 	"bufio"
 )
 
-// type Dict struct {
-// 	XMLName xml.Name `xml:"plist"`
-// 	Data    []Data   `xml:"array>dict"`
-// }
-
-type Data struct {
+type data struct {
 	Key   string `xml:"key"`
 	Value string `xml:"string"`
 }
 
-// type Dict struct {
-// 	Keys []string `xml:"key"`
-// 	Strings []string `xml:"string"`
-// 	Bools []bool `xml:"true"`
-// }
-
-type Plist struct {
+type plist struct {
 	XMLName xml.Name `xml:"plist"`
 	Array   struct {
-		Dicts []Dict `xml:"dict"`
+		Dicts []dict `xml:"dict"`
 	} `xml:"array"`
 }
 
-type Dict struct {
+type dict struct {
 	Keys   []string `xml:"key"`
 	Values []string `xml:",any"`
 }
 
-type JdkInfo struct {
-	Name string
-	Version string
-	Path string
-	Vendor string
-	Arch string
-}
-
 // find JDK list from local machine
-// return []JdkInfo
-func GetJDKList() {
+// return []Tool
+func GetJDKList() []Tool {
 	osType := GetOSType()
 	if MacOS == osType {
 		getMacJDKList()
@@ -57,26 +38,26 @@ func GetJDKList() {
 	} else if Linux == osType {
 
 	}
+	return []Tool{}
 }
 
 // find JDK from mac
 // use command: /usr/libexec/java_home -X
-// return {JdkInfo} struct or nil when error
-func getMacJDKList() []JdkInfo {
+// return Tool struct or nil when error
+func getMacJDKList() []Tool {
 	exCmd := exec.Command("/usr/libexec/java_home", "-X")
 	output, err := exCmd.Output()
 	if err != nil {
 		log.Println(err)
 		return nil
 	}
-	log.Println(string(output))
 
-	var plist Plist
+	var plist plist
 	err = xml.Unmarshal([]byte(output), &plist)
 
-	var jdkList []JdkInfo
+	var jdkList []Tool
 	for _, v := range plist.Array.Dicts {
-		jdk := JdkInfo{}
+		jdk := Tool{Arch: GetOSArch()}
 		for i, key := range v.Keys {
 			value := v.Values[i]
 			switch key {
@@ -95,14 +76,14 @@ func getMacJDKList() []JdkInfo {
 		jdkList = append(jdkList, jdk)
 	}
 	jsonData, _ := json.MarshalIndent(jdkList, "", "  ")
-	fmt.Println(string(jsonData))
+	fmt.Printf("jdk: %v\n", string(jsonData))
 	
 	return jdkList
 }
 
 // find JDK from windows
 // use Command: wmic product where "Name like 'Java %% Development Kit%%'" get Name, Version, InstallLocation, Vendor /format:csv
-func getWindowsJDKList() []JdkInfo {
+func getWindowsJDKList() []Tool {
 	exCmd := exec.Command("wmic", "product", "where", `Name like 'Java %% Development Kit%%'`, "get", "Name,Version,InstallLocation,Vendor", "/format:csv");
 	output, err := exCmd.Output()
 	if err != nil {
@@ -110,10 +91,6 @@ func getWindowsJDKList() []JdkInfo {
 		return nil
 	}
 	log.Println(string(output))
-
-	// output := []byte(`Node,InstallLocation,Name,Vendor,Version
-	// DESKTOP-JR7EEIP,C:\Program Files\Java\jdk-1.8\,Java SE Development Kit 8 Update 381 (64-bit),Oracle Corporation,8.0.3810.9
-	// DESKTOP-JR7EEIP,C:\Program Files\Java\jdk1.8.0_51\,Java SE Development Kit 8 Update 51 (64-bit),Oracle Corporation,8.0.510.16`)
 
 	var rows []string
 
@@ -127,10 +104,10 @@ func getWindowsJDKList() []JdkInfo {
 		}
 	}
 
-	fmt.Printf("====%#v", rows)
+	fmt.Printf("%#v", rows)
 	keys := strings.Split(rows[0], ",")
 
-	fmt.Printf("====%#v", keys)
+	fmt.Printf("%#v", keys)
 	var data []map[string]string
 
 	for _, row := range rows[1:] {
@@ -145,11 +122,11 @@ func getWindowsJDKList() []JdkInfo {
 			data = append(data, rowMap)
 		}
 	}
-	fmt.Printf("====%#v", data)
+	fmt.Printf("%#v", data)
 
-	var jdkList []JdkInfo
+	var jdkList []Tool
 	for _, v := range data {
-		jdk := JdkInfo{}
+		jdk := Tool{Arch: GetOSArch()}
 		for key, value := range v {
 			fmt.Println(key)
 			switch key {
