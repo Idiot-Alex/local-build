@@ -30,7 +30,7 @@ func GetGitInfo () GitInfo {
 
 // find Git from mac
 // use command: which git && git --version
-// return {JdkInfo} struct or nil when error
+// return {GitInfo} struct or nil when error
 func getMacGit() GitInfo {
 	gitInfo := new(GitInfo)
 

@@ -8,4 +8,6 @@ func main() {
 	env.GetJDKList()
 
 	env.GetGitInfo()
+
+	env.GetMavenInfo()
 }
