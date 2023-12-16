@@ -32,9 +32,9 @@ type dict struct {
 func GetJDKList() []Tool {
 	osType := GetOSType()
 	if MacOS == osType {
-		getMacJDKList()
+		return getMacJDKList()
 	} else if Windows == osType {
-		getWindowsJDKList()
+		return getWindowsJDKList()
 	} else if Linux == osType {
 
 	}

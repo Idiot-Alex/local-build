@@ -2,7 +2,6 @@ package main
 
 import (
 	"local-build/internal/env"
-	"local-build/internal/sqlite"
 )
 
 func main() {
@@ -13,6 +12,4 @@ func main() {
 	env.GetMavenInfo()
 
 	env.GetNodeInfo()
-
-	sqlite.SQLiteInMemoryDemo()
 }
