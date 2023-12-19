@@ -1,7 +1,9 @@
 {
   "cSpell.words": [
     "firstname",
+    "gorm",
     "lastname",
-    "mattn"
+    "mattn",
+    "primarykey"
   ]
 }
