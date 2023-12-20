@@ -11,9 +11,7 @@ import (
 func TestDb(t *testing.T) {
 	db := sqlite.GetDB()
 
-	if !db.Migrator().HasTable(&model.Project{}) {
-		db.AutoMigrate(&model.Project{})
-	}
+	sqlite.InitTable()
 
 	p := model.Project{ID: utils.GenerateId(), Name: "xx"}
 	res := db.Create(&p)

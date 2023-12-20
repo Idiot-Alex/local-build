@@ -2,6 +2,7 @@ package sqlite
 
 import (
 	"database/sql"
+	"local-build/internal/model"
 	"log"
 	"reflect"
 	"runtime"
@@ -35,6 +36,22 @@ func GetDB() gorm.DB {
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(time.Hour)
 	return *db
+}
+
+func InitTable() {
+	db := GetDB()
+
+	project := &model.Project{}
+	if !db.Migrator().HasTable(project) {
+		log.Println("create table for project")
+		db.AutoMigrate(project)
+	}
+
+	tool := &model.Tool{}
+	if !db.Migrator().HasTable(tool) {
+		log.Println("create table for tool")
+		db.AutoMigrate(tool)
+	}
 }
 
 type DBHelper struct {
