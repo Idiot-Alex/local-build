@@ -14,13 +14,11 @@ type Config struct {
 	} `toml:"db"`
 }
 
-func ParseToml() {
-	// Get the absolute path of the config file
-	cwd, err := os.Getwd()
-	if err != nil {
-			panic(err)
-	}
-	configPath := filepath.Join(cwd, "config.toml")
+// parse toml config file
+// dir is directory path
+// file is toml file name
+func ParseToml(dir string, file string) Config {
+	configPath := filepath.Join(dir, file)
 
 	// 读取 TOML 配置文件
 	data, err := os.ReadFile(configPath)
@@ -37,4 +35,5 @@ func ParseToml() {
 
 	// 输出读取到的配置信息
 	fmt.Printf("config: %+v\n", config)
+	return config
 }

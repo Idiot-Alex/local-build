@@ -6,5 +6,7 @@ import (
 )
 
 func TestParseToml(t *testing.T) {
-	utils.ParseToml()
+	dir := "/Users/zhangxin/Documents/work_space/local-build/"
+	file := "config.toml"
+	utils.ParseToml(dir, file)
 }

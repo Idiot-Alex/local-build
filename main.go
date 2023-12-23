@@ -1,15 +1,9 @@
 package main
 
 import (
-	"local-build/internal/env"
+	lb "local-build/cmd/local-build"
 )
 
 func main() {
-	env.GetJDKList()
-
-	env.GetGitInfo()
-
-	env.GetMavenInfo()
-
-	env.GetNodeInfo()
+	lb.RunServer()
 }

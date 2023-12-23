@@ -1,4 +1,4 @@
-package main
+package localbuild
 
 import (
 	"log"
@@ -7,11 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	Run()
-}
-
-func Run() {
+func RunServer() {
 	log.Println("app started...")
 	// 1.创建路由
 	r := gin.Default()

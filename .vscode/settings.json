@@ -3,7 +3,9 @@
     "firstname",
     "gorm",
     "lastname",
+    "localbuild",
     "mattn",
-    "primarykey"
+    "primarykey",
+    "zhangxin"
   ]
 }
