@@ -13,6 +13,11 @@ const router = createRouter({
           name: 'dashboard',
           component: () => import('@/views/Empty.vue')
         },
+        {
+          path: '/env/tool',
+          name: 'tool',
+          component: () => import('@/views/env/Tool.vue')
+      },
       ]
     }
   ]

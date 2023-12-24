@@ -29,8 +29,7 @@ const model = ref([
     {
         label: '环境',
         items: [
-            { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', to: '/utilities/icons' },
-            { label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: 'https://www.primefaces.org/primeflex/', target: '_blank' }
+            { label: '构建工具', icon: 'pi pi-fw pi-wrench', to: '/env/tool' },
         ]
     },
     {

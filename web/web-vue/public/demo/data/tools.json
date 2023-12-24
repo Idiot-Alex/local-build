@@ -1,0 +1,36 @@
+{
+  "data": [
+    {
+      "Name": "Java SE 17.0.7",
+      "Path": "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
+      "Version": "17.0.7",
+      "Vendor": "Oracle Corporation",
+      "Arch": "x86_64",
+      "Type": "JDK"
+    },
+    {
+      "Name": "Java",
+      "Path": "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home",
+      "Version": "1.8.333.02",
+      "Vendor": "Oracle Corporation",
+      "Arch": "x86_64",
+      "Type": "JDK"
+    },
+    {
+      "Name": "Java SE 8",
+      "Path": "/Library/Java/JavaVirtualMachines/jdk1.8.0_333.jdk/Contents/Home",
+      "Version": "1.8.0_333",
+      "Vendor": "Oracle Corporation",
+      "Arch": "x86_64",
+      "Type": "JDK"
+    },
+    {
+      "Name": "Java SE 8",
+      "Path": "/Library/Java/JavaVirtualMachines/jdk1.8.0_192.jdk/Contents/Home",
+      "Version": "1.8.0_192",
+      "Vendor": "Oracle Corporation",
+      "Arch": "x86_64",
+      "Type": "JDK"
+    }
+  ]
+}
