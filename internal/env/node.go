@@ -48,6 +48,7 @@ func getMacNode() Tool {
 	node.Path = string(nodePath)
 	node.Version = string(nodeVersion)
 	node.Arch = GetOSArch()
+	node.Type = NODE
 
 	jsonData, _ := json.MarshalIndent(node, "", "  ")
 	fmt.Printf("node: %v\n", string(jsonData))

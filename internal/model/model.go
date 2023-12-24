@@ -18,6 +18,7 @@ type Tool struct {
   Version string
   Vendor string
   Arch string
+  Type string
   Config string `gorm:"type:json"`
   CreatedAt time.Time
   UpdatedAt time.Time

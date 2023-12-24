@@ -48,6 +48,7 @@ func getMacGit() Tool {
 	git.Path = string(gitPath)
 	git.Version = string(gitVersion)
 	git.Arch = GetOSArch()
+	git.Type = GIT
 
 	jsonData, _ := json.MarshalIndent(git, "", "  ")
 	fmt.Printf("git: %v\n", string(jsonData))

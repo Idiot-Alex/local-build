@@ -54,10 +54,14 @@ func getMacJDKList() []Tool {
 
 	var plist plist
 	err = xml.Unmarshal([]byte(output), &plist)
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
 
 	var jdkList []Tool
 	for _, v := range plist.Array.Dicts {
-		jdk := Tool{Arch: GetOSArch()}
+		jdk := Tool{ Arch: GetOSArch(), Type: JDK }
 		for i, key := range v.Keys {
 			value := v.Values[i]
 			switch key {

@@ -49,6 +49,7 @@ func getMacMaven() Tool {
 	maven.Path = string(mavenPath)
 	maven.Version = string(mavenVersion)
 	maven.Arch = GetOSArch()
+	maven.Type = MAVEN
 
 	jsonData, _ := json.MarshalIndent(maven, "", "  ")
 	fmt.Printf("maven: %v\n", string(jsonData))
