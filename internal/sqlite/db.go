@@ -2,7 +2,6 @@ package sqlite
 
 import (
 	"database/sql"
-	"fmt"
 	"local-build/internal/model"
 	"log"
 	"reflect"
@@ -41,18 +40,7 @@ func GetDB() gorm.DB {
 
 func InitTable() {
 	db := GetDB()
-
-	project := &model.Project{}
-	if !db.Migrator().HasTable(project) {
-		fmt.Println("create table for project")
-		db.AutoMigrate(project)
-	}
-
-	tool := &model.Tool{}
-	if !db.Migrator().HasTable(tool) {
-		fmt.Println("create table for tool")
-		db.AutoMigrate(tool)
-	}
+	db.AutoMigrate(&model.Project{}, &model.Tool{})
 }
 
 type DBHelper struct {
