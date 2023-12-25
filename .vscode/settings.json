@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "accordiontab",
+    "Attributify",
     "avatargroup",
     "badgedirective",
     "blockui",
@@ -53,6 +54,7 @@
     "tabmenu",
     "tabpanel",
     "tabview",
+    "tailwindcss",
     "tieredmenu",
     "toastservice",
     "togglebutton",
@@ -60,6 +62,7 @@
     "treeselect",
     "treetable",
     "tristatecheckbox",
+    "unocss",
     "usetoast",
     "virtualscroller",
     "zhangxin"

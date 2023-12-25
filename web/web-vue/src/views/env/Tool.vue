@@ -167,38 +167,17 @@ const initFilters = () => {
                         </div>
                     </template>
 
-                    <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                    <Column field="Type" header="Type" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Code</span>
-                            {{ slotProps.data.Type }}
-                        </template>
-                    </Column>
-                    <Column field="Name" header="Name" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Name</span>
-                            {{ slotProps.data.Name }}
-                        </template>
-                    </Column>
-                    <Column field="Version" header="Version" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Version</span>
-                            {{ slotProps.data.Version }}
-                        </template>
-                    </Column>
-                    <Column field="Vendor" header="Vendor" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Vendor</span>
-                            {{ slotProps.data.Vendor }}
-                        </template>
-                    </Column>
+                    <Column selectionMode="multiple" frozen headerStyle="width: 3rem"></Column>
+                    <Column field="Name" header="Name" :sortable="true" frozen headerStyle="width:14%; min-width:10rem;"></Column>
+                    <Column field="Type" header="Type" :sortable="true" headerStyle="width:14%; min-width:10rem;"></Column>
+                    <Column field="Version" header="Version" :sortable="true" headerStyle="width:14%; min-width:10rem;"></Column>
+                    <Column field="Vendor" header="Vendor" :sortable="true" headerStyle="width:14%; min-width:10rem;"></Column>
                     <Column field="Path" header="Path" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
-                            <span class="p-column-title">Path</span>
-                            {{ slotProps.data.Path }}
+                            <Chip :label="slotProps.data.Path" icon="pi pi-copy" cursor-pointer />
                         </template>
                     </Column>
-                    <Column header="Operation" headerStyle="min-width:10rem;">
+                    <Column header="Operation" alignFrozen="right" frozen headerStyle="min-width:10rem;">
                         <template #body="slotProps">
                             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editProduct(slotProps.data)" />
                             <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteProduct(slotProps.data)" />
