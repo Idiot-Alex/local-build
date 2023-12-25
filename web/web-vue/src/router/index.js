@@ -17,7 +17,16 @@ const router = createRouter({
           path: '/env/tool',
           name: 'tool',
           component: () => import('@/views/env/Tool.vue')
-      },
+        },
+        {
+          path: '/env/tool',
+          name: 'tool',
+          component: () => import('@/views/env/Tool.vue')
+        },{
+          path: '/env/crud',
+          name: 'crud',
+          component: () => import('@/views/env/Crud.vue')
+        },
       ]
     }
   ]

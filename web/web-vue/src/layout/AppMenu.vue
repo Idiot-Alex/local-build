@@ -30,6 +30,7 @@ const model = ref([
         label: '环境',
         items: [
             { label: '构建工具', icon: 'pi pi-fw pi-wrench', to: '/env/tool' },
+            { label: '测试', icon: 'pi pi-fw pi-wrench', to: '/env/crud' },
         ]
     },
     {

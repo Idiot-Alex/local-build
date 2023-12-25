@@ -1,12 +1,12 @@
 <script setup>
 import { FilterMatchMode } from 'primevue/api';
 import { ref, onMounted, onBeforeMount } from 'vue';
-import ProductService from '@/service/ProductService';
+import ToolService from '@/service/ToolService';
 import { useToast } from 'primevue/usetoast';
 
 const toast = useToast();
 
-const products = ref(null);
+const dataList = ref(null);
 const productDialog = ref(false);
 const deleteProductDialog = ref(false);
 const deleteProductsDialog = ref(false);
@@ -21,13 +21,14 @@ const statuses = ref([
     { label: 'OUTOFSTOCK', value: 'outofstock' }
 ]);
 
-const productService = new ProductService();
+const toolService = new ToolService();
 
 onBeforeMount(() => {
     initFilters();
 });
 onMounted(() => {
-    productService.getProducts().then((data) => (products.value = data));
+    toolService.getTools().then((data) => (dataList.value = data));
+    console.log(dataList)
 });
 const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
@@ -46,13 +47,13 @@ const hideDialog = () => {
 
 const saveProduct = () => {
     submitted.value = true;
-    if (product.value.name && product.value.name.trim() && product.value.price) {
+    if (product.value.Name && product.value.Name.trim() && product.value.price) {
         if (product.value.id) {
             product.value.inventoryStatus = product.value.inventoryStatus.value ? product.value.inventoryStatus.value : product.value.inventoryStatus;
-            products.value[findIndexById(product.value.id)] = product.value;
+            products.value[findIndexById(product.value.ID)] = product.value;
             toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
         } else {
-            product.value.id = createId();
+            product.value.ID = createId();
             product.value.code = createId();
             product.value.image = 'product-placeholder.svg';
             product.value.inventoryStatus = product.value.inventoryStatus ? product.value.inventoryStatus.value : 'INSTOCK';
@@ -85,7 +86,7 @@ const deleteProduct = () => {
 const findIndexById = (id) => {
     let index = -1;
     for (let i = 0; i < products.value.length; i++) {
-        if (products.value[i].id === id) {
+        if (products.value[i].ID === id) {
             index = i;
             break;
         }
@@ -144,9 +145,10 @@ const initFilters = () => {
 
                 <DataTable
                     ref="dt"
-                    :value="products"
+                    :value="dataList"
                     v-model:selection="selectedProducts"
-                    dataKey="id"
+                    dataKey="ID"
+                    scrollable
                     :paginator="true"
                     :rows="10"
                     :filters="filters"
@@ -157,7 +159,7 @@ const initFilters = () => {
                 >
                     <template #header>
                         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                            <h5 class="m-0">Manage Products</h5>
+                            <h5 class="m-0">Tools Manage</h5>
                             <span class="block mt-2 md:mt-0 p-input-icon-left">
                                 <i class="pi pi-search" />
                                 <InputText v-model="filters['global'].value" placeholder="Search..." />
@@ -166,49 +168,37 @@ const initFilters = () => {
                     </template>
 
                     <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
-                    <Column field="code" header="Code" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <Column field="Type" header="Type" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">Code</span>
-                            {{ slotProps.data.code }}
+                            {{ slotProps.data.Type }}
                         </template>
                     </Column>
-                    <Column field="name" header="Name" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <Column field="Name" header="Name" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
                             <span class="p-column-title">Name</span>
-                            {{ slotProps.data.name }}
+                            {{ slotProps.data.Name }}
                         </template>
                     </Column>
-                    <Column header="Image" headerStyle="width:14%; min-width:10rem;">
+                    <Column field="Version" header="Version" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
-                            <span class="p-column-title">Image</span>
-                            <img :src="'demo/images/product/' + slotProps.data.image" :alt="slotProps.data.image" class="shadow-2" width="100" />
+                            <span class="p-column-title">Version</span>
+                            {{ slotProps.data.Version }}
                         </template>
                     </Column>
-                    <Column field="price" header="Price" :sortable="true" headerStyle="width:14%; min-width:8rem;">
+                    <Column field="Vendor" header="Vendor" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
-                            <span class="p-column-title">Price</span>
-                            {{ formatCurrency(slotProps.data.price) }}
+                            <span class="p-column-title">Vendor</span>
+                            {{ slotProps.data.Vendor }}
                         </template>
                     </Column>
-                    <Column field="category" header="Category" :sortable="true" headerStyle="width:14%; min-width:10rem;">
+                    <Column field="Path" header="Path" :sortable="true" headerStyle="width:14%; min-width:10rem;">
                         <template #body="slotProps">
-                            <span class="p-column-title">Category</span>
-                            {{ slotProps.data.category }}
+                            <span class="p-column-title">Path</span>
+                            {{ slotProps.data.Path }}
                         </template>
                     </Column>
-                    <Column field="rating" header="Reviews" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Rating</span>
-                            <Rating :modelValue="slotProps.data.rating" :readonly="true" :cancel="false" />
-                        </template>
-                    </Column>
-                    <Column field="inventoryStatus" header="Status" :sortable="true" headerStyle="width:14%; min-width:10rem;">
-                        <template #body="slotProps">
-                            <span class="p-column-title">Status</span>
-                            <span :class="'product-badge status-' + (slotProps.data.inventoryStatus ? slotProps.data.inventoryStatus.toLowerCase() : '')">{{ slotProps.data.inventoryStatus }}</span>
-                        </template>
-                    </Column>
-                    <Column headerStyle="min-width:10rem;">
+                    <Column header="Operation" headerStyle="min-width:10rem;">
                         <template #body="slotProps">
                             <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editProduct(slotProps.data)" />
                             <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteProduct(slotProps.data)" />
