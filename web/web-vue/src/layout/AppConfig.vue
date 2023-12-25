@@ -58,7 +58,7 @@ const applyScale = () => {
         <div class="flex align-items-center">
             <Button icon="pi pi-minus" type="button" @click="decrementScale()" class="p-button-text p-button-rounded w-2rem h-2rem mr-2" :disabled="layoutConfig.scale.value === scales[0]"></Button>
             <div class="flex gap-2 align-items-center">
-                <i class="pi pi-circle-fill text-300" v-for="s in scales" :key="s" :class="{ 'text-primary-500': s === layoutConfig.scale.value }"></i>
+                <i class="pi pi-circle-fill color-s-300" v-for="s in scales" :key="s" :class="{ 'text-primary-500': s === layoutConfig.scale.value }"></i>
             </div>
             <Button icon="pi pi-plus" type="button" pButton @click="incrementScale()" class="p-button-text p-button-rounded w-2rem h-2rem ml-2" :disabled="layoutConfig.scale.value === scales[scales.length - 1]"></Button>
         </div>
@@ -295,4 +295,8 @@ const applyScale = () => {
     </Sidebar>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.color-s-300 {
+    color: var(--surface-300);
+}
+</style>
