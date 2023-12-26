@@ -9,11 +9,16 @@ import (
 
 func InitApis(r *gin.Engine) {
 	r.GET("/", helloWorld)
-	
+
 	env := r.Group("/api/env")
+	{
+		env.GET("/init", controller.EnvInit)
+	}
+	
+	tool := r.Group("/api/tool")
   // {} 是书写规范
   {
-		env.POST("/list", controller.EnvList)
+		tool.GET("/list", controller.ToolList)
   }
 }
 

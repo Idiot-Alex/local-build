@@ -3,6 +3,7 @@ package env
 import (
 	"encoding/json"
 	"fmt"
+	"local-build/internal/model"
 	"log"
 	"os/exec"
 	"strings"
@@ -10,7 +11,7 @@ import (
 
 // find Git from local machine
 // return Tool
-func GetNodeInfo () Tool {
+func GetNodeInfo () model.Tool {
 	osType := GetOSType()
 	if MacOS == osType {
 		return getMacNode()
@@ -19,14 +20,14 @@ func GetNodeInfo () Tool {
 	} else if Linux == osType {
 
 	}
-	return Tool{}
+	return model.Tool{}
 }
 
 // find Node from mac
 // use command: which node && node -v
 // return {Tool} struct or nil when error
-func getMacNode() Tool {
-	node := new(Tool)
+func getMacNode() model.Tool {
+	node := new(model.Tool)
 
 	exCmd := exec.Command("which", "node")
 	output, err := exCmd.Output()
