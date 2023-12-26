@@ -3,6 +3,7 @@ package env
 import (
 	"encoding/json"
 	"fmt"
+	"local-build/internal/model"
 	"log"
 	"os/exec"
 	"strings"
@@ -10,7 +11,7 @@ import (
 
 // find Git from local machine
 // return Tool
-func GetGitInfo () Tool {
+func GetGitInfo () model.Tool {
 	osType := GetOSType()
 	if MacOS == osType {
 		return getMacGit()
@@ -19,14 +20,14 @@ func GetGitInfo () Tool {
 	} else if Linux == osType {
 
 	}
-	return Tool{}
+	return model.Tool{}
 }
 
 // find Git from mac
 // use command: which git && git --version
 // return {Tool} struct or nil when error
-func getMacGit() Tool {
-	git := new(Tool)
+func getMacGit() model.Tool {
+	git := new(model.Tool)
 
 	exCmd := exec.Command("which", "git")
 	output, err := exCmd.Output()

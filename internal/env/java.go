@@ -1,19 +1,15 @@
 package env
 
 import (
+	"bufio"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"local-build/internal/model"
 	"log"
 	"os/exec"
 	"strings"
-	"bufio"
 )
-
-type data struct {
-	Key   string `xml:"key"`
-	Value string `xml:"string"`
-}
 
 type plist struct {
 	XMLName xml.Name `xml:"plist"`
@@ -29,7 +25,7 @@ type dict struct {
 
 // find JDK list from local machine
 // return []Tool
-func GetJDKList() []Tool {
+func GetJDKList() []model.Tool {
 	osType := GetOSType()
 	if MacOS == osType {
 		return getMacJDKList()
@@ -38,13 +34,13 @@ func GetJDKList() []Tool {
 	} else if Linux == osType {
 
 	}
-	return []Tool{}
+	return []model.Tool{}
 }
 
 // find JDK from mac
 // use command: /usr/libexec/java_home -X
 // return Tool struct or nil when error
-func getMacJDKList() []Tool {
+func getMacJDKList() []model.Tool {
 	exCmd := exec.Command("/usr/libexec/java_home", "-X")
 	output, err := exCmd.Output()
 	if err != nil {
@@ -59,9 +55,9 @@ func getMacJDKList() []Tool {
 		return nil
 	}
 
-	var jdkList []Tool
+	var jdkList []model.Tool
 	for _, v := range plist.Array.Dicts {
-		jdk := Tool{ Arch: GetOSArch(), Type: JDK }
+		jdk := model.Tool{ Arch: GetOSArch(), Type: JDK }
 		for i, key := range v.Keys {
 			value := v.Values[i]
 			switch key {
@@ -87,7 +83,7 @@ func getMacJDKList() []Tool {
 
 // find JDK from windows
 // use Command: wmic product where "Name like 'Java %% Development Kit%%'" get Name, Version, InstallLocation, Vendor /format:csv
-func getWindowsJDKList() []Tool {
+func getWindowsJDKList() []model.Tool {
 	exCmd := exec.Command("wmic", "product", "where", `Name like 'Java %% Development Kit%%'`, "get", "Name,Version,InstallLocation,Vendor", "/format:csv");
 	output, err := exCmd.Output()
 	if err != nil {
@@ -128,9 +124,9 @@ func getWindowsJDKList() []Tool {
 	}
 	fmt.Printf("%#v", data)
 
-	var jdkList []Tool
+	var jdkList []model.Tool
 	for _, v := range data {
-		jdk := Tool{Arch: GetOSArch()}
+		jdk := model.Tool{ Arch: GetOSArch(), Type: JDK }
 		for key, value := range v {
 			fmt.Println(key)
 			switch key {

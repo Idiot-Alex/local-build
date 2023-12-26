@@ -13,16 +13,3 @@ const (
 	MAVEN string = "MAVEN"
 	NODE string = "NODE"
 )
-
-type Tool struct {
-	Name string
-	Path string
-	Version string
-	Vendor string
-	Arch string
-	Type string
-}
-
-type ToolType struct {
-
-}

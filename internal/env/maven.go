@@ -3,6 +3,7 @@ package env
 import (
 	"encoding/json"
 	"fmt"
+	"local-build/internal/model"
 	"log"
 	"os/exec"
 	"strings"
@@ -10,7 +11,7 @@ import (
 
 // find Maven from local machine
 // return Tool
-func GetMavenInfo () Tool {
+func GetMavenInfo () model.Tool {
 	osType := GetOSType()
 	if MacOS == osType {
 		return getMacMaven()
@@ -19,14 +20,14 @@ func GetMavenInfo () Tool {
 	} else if Linux == osType {
 
 	}
-	return Tool{}
+	return model.Tool{}
 }
 
 // find Maven from mac
 // use command: which mvn && mvn -v
 // return Tool struct or nil when error
-func getMacMaven() Tool {
-	maven := new(Tool)
+func getMacMaven() model.Tool {
+	maven := new(model.Tool)
 
 	exCmd := exec.Command("which", "mvn")
 	output, err := exCmd.Output()
