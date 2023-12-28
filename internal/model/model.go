@@ -10,8 +10,8 @@ type Project struct {
 	ID        int64     `gorm:"primarykey" json:"id"`
 	Name      string    `gorm:"unique;not null" json:"name"`
 	Desc      string    `json:"desc"`
-	CreatedAt FmtTime `json:"createAt"`
-	UpdatedAt FmtTime `json:"updateAt"`
+	CreatedAt FmtTime `json:"createdAt"`
+	UpdatedAt FmtTime `json:"updatedAt"`
 }
 
 type Tool struct {
@@ -24,8 +24,8 @@ type Tool struct {
 	Arch      string `json:"arch"`
 	Type      string `json:"type"`
 	Config    string `gorm:"type:json" json:"config"`
-	CreatedAt FmtTime `json:"createAt"`
-	UpdatedAt FmtTime `json:"updateAt"`
+	CreatedAt FmtTime `json:"createdAt"`
+	UpdatedAt FmtTime `json:"updatedAt"`
 }
 
 type FmtTime time.Time
@@ -37,13 +37,18 @@ func (mt FmtTime) MarshalJSON() ([]byte, error) {
 }
 
 func (ft FmtTime) Value() (driver.Value, error) {
-  tTime := time.Time(ft)
-  return tTime.Format("2006/01/02 15:04:05"), nil
+  if time.Time(ft).IsZero() {
+    return nil, nil
+  }
+  return time.Time(ft).Format("2006/01/02 15:04:05"), nil
 }
 
 func (ft *FmtTime) Scan(value interface{}) error {
   t, ok := value.(time.Time)
   if ok {
+    if t.IsZero() {
+      t = time.Now()
+    }
     *ft = FmtTime(t)
   }
   return nil
