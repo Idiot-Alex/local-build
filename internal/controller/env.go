@@ -39,7 +39,7 @@ func initTools(db *gorm.DB) {
 		tools = append(tools, maven)
 	}
 
-	node := env.GetMavenInfo()
+	node := env.GetNodeInfo()
 	if node != (model.Tool{}) {
 		tools = append(tools, node)
 	}

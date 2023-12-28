@@ -1,6 +1,7 @@
 package model
 
 import (
+	"database/sql/driver"
 	"fmt"
 	"time"
 )
@@ -33,4 +34,17 @@ type FmtTime time.Time
 func (mt FmtTime) MarshalJSON() ([]byte, error) {
   t := time.Time(mt)
   return []byte(fmt.Sprintf(`"%s"`, t.Format("2006-01-02 15:04:05"))), nil
+}
+
+func (ft FmtTime) Value() (driver.Value, error) {
+  tTime := time.Time(ft)
+  return tTime.Format("2006/01/02 15:04:05"), nil
+}
+
+func (ft *FmtTime) Scan(value interface{}) error {
+  t, ok := value.(time.Time)
+  if ok {
+    *ft = FmtTime(t)
+  }
+  return nil
 }
