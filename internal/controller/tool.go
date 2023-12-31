@@ -14,6 +14,7 @@ func ToolList(c *gin.Context) {
 	var tools []model.Tool
 	db := sqlite.GetDB()
 	db.Find(&tools).Offset(0).Limit(10).Order("name")
+	
 	jsonData, _ := json.MarshalIndent(tools, "", "  ")
 	log.Printf("tool list: %+v", string(jsonData))
 	c.String(200, string(jsonData))
