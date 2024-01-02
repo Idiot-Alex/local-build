@@ -6,6 +6,6 @@ import (
 )
 
 func TestPackage(t *testing.T) {
-	data := utils.ParsePackage("test_package.json")
+	data := utils.ParsePackage("resources/test_package.json")
 	t.Logf("data: %#v\n", data)
 }
