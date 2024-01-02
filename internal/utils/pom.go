@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"encoding/json"
 	"encoding/xml"
+	"log"
 	"os"
 )
 
@@ -12,12 +14,12 @@ type PomXml struct {
 	Version    string   `xml:"version"`
 	Packaging  string		`xml:"packaging"`
 	Profiles	 string		`xml:"profiles"`
-	Modules		 string 	`xml:"modules"`
+	Modules		 []string `xml:"modules>module"`
 }
 
 // parse pom.xml
 // return PomXml info
-func ParsePom(file string) PomXml {
+func ParsePom(file string) string {
 	// 读取pom.xml文件的内容
 	xmlData, err := os.ReadFile(file)
 	if err != nil {
@@ -30,5 +32,8 @@ func ParsePom(file string) PomXml {
 		panic(err)
 	}
 
-	return project
+	jsonData, _ := json.MarshalIndent(project, "", "  ")
+	log.Printf("pom: %v\n", string(jsonData))
+
+	return string(jsonData)
 }
