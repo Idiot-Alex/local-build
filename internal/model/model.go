@@ -10,6 +10,9 @@ type Project struct {
 	ID        int64     `gorm:"primarykey" json:"id"`
 	Name      string    `gorm:"unique;not null" json:"name"`
 	Desc      string    `json:"desc"`
+	Type			string		`json:"type"`
+	Config		string		`gorm:"type:json" json:"config"`
+	ParsedInfo	string		`gorm:"type:json" json:"parsedInfo"`
 	CreatedAt FmtTime `json:"createdAt"`
 	UpdatedAt FmtTime `json:"updatedAt"`
 }

@@ -144,6 +144,6 @@ func getWindowsJDKList() []model.Tool {
 	}
 	jsonData, _ := json.MarshalIndent(jdkList, "", "  ")
 	fmt.Println(string(jsonData))
-	
+
 	return jdkList
 }
