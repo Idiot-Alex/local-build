@@ -19,3 +19,13 @@ func ToolList(c *gin.Context) {
 	log.Printf("tool list: %+v", string(jsonData))
 	c.String(200, string(jsonData))
 }
+
+// save tool
+func SaveTool(c *gin.Context) {
+	
+}
+
+// del tool
+func DelTool(c *gin.Context) {
+
+}

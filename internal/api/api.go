@@ -19,7 +19,16 @@ func InitApis(r *gin.Engine) {
   // {} 是书写规范
   {
 		tool.GET("/list", controller.ToolList)
+		tool.POST("/save", controller.SaveTool)
+		tool.GET("/del", controller.DelTool)
   }
+
+	project := r.Group("/api/project")
+	{
+		tool.GET("/list", controller.ProjectList)
+		project.POST("/save", controller.SaveProject)
+		project.GET("/del", controller.DelProject)
+	}
 }
 
 
