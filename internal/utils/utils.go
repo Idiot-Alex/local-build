@@ -2,7 +2,10 @@ package utils
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
+	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 )
@@ -24,4 +27,20 @@ func GenerateId() int64 {
 	number, _ := strconv.ParseInt(result, 10, 64)
 	
 	return number
+}
+
+// get home path
+func GetHomePath() string {
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exPath := filepath.Dir(ex)
+	log.Printf("exPath: %v\n", exPath)
+	realPath, err := filepath.EvalSymlinks(exPath)
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("home path: %v\n", realPath)
+	return realPath
 }

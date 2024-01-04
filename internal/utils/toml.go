@@ -2,24 +2,15 @@ package utils
 
 import (
 	"fmt"
+	"local-build/internal/model"
 	"os"
-	"path/filepath"
 
 	"github.com/BurntSushi/toml"
 )
 
-type Config struct {
-	Db struct {
-		FilePath string `toml:"filePath"`
-	} `toml:"db"`
-}
-
 // parse toml config file
-// dir is directory path
-// file is toml file name
-func ParseToml(dir string, file string) Config {
-	configPath := filepath.Join(dir, file)
-
+// configPath is file path
+func ParseToml(configPath string) model.Config {
 	// 读取 TOML 配置文件
 	data, err := os.ReadFile(configPath)
 	if err != nil {
@@ -27,7 +18,7 @@ func ParseToml(dir string, file string) Config {
 	}
 
 	// 将 TOML 解析为 Config 结构体
-	var config Config
+	config := model.Config{Path: configPath}
 	err = toml.Unmarshal(data, &config)
 	if err != nil {
 			panic(err)

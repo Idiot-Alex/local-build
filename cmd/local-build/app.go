@@ -2,6 +2,7 @@ package localbuild
 
 import (
 	"local-build/internal/api"
+	"local-build/internal/config"
 	"local-build/internal/sqlite"
 	"log"
 
@@ -11,6 +12,9 @@ import (
 // run server
 func RunServer() {
 	log.Println("app starting...")
+
+	config.Load()
+
 	startSqlite()
 
 	startService()

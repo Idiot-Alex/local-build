@@ -6,6 +6,13 @@ import (
 	"time"
 )
 
+type Config struct {
+	Path string
+	Db struct {
+		FilePath string `toml:"filePath"`
+	} `toml:"db"`
+}
+
 type Project struct {
 	ID        int64     `gorm:"primarykey" json:"id"`
 	Name      string    `gorm:"unique;not null" json:"name"`
