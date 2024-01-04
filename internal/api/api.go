@@ -1,7 +1,7 @@
 package api
 
 import (
-	"local-build/internal/controller"
+	"local-build/internal/handler"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,22 +12,22 @@ func InitApis(r *gin.Engine) {
 
 	env := r.Group("/api/env")
 	{
-		env.GET("/init", controller.EnvInit)
+		env.GET("/init", handler.EnvInit)
 	}
 	
 	tool := r.Group("/api/tool")
   // {} 是书写规范
   {
-		tool.GET("/list", controller.ToolList)
-		tool.POST("/save", controller.SaveTool)
-		tool.GET("/del", controller.DelTool)
+		tool.GET("/list", handler.ToolList)
+		tool.POST("/save", handler.SaveTool)
+		tool.GET("/del", handler.DelTool)
   }
 
 	project := r.Group("/api/project")
 	{
-		tool.GET("/list", controller.ProjectList)
-		project.POST("/save", controller.SaveProject)
-		project.GET("/del", controller.DelProject)
+		tool.GET("/list", handler.ProjectList)
+		project.POST("/save", handler.SaveProject)
+		project.GET("/del", handler.DelProject)
 	}
 }
 
