@@ -2,8 +2,8 @@ package test
 
 import (
 	"fmt"
-	"local-build/internal/model"
-	"local-build/internal/sqlite"
+	"local-build/internal/store/model"
+	"local-build/internal/store/sqlite"
 	"local-build/internal/utils"
 	"testing"
 )

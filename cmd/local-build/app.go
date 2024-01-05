@@ -3,7 +3,7 @@ package localbuild
 import (
 	"local-build/internal/api"
 	"local-build/internal/config"
-	"local-build/internal/sqlite"
+	"local-build/internal/store/sqlite"
 	"log"
 
 	"github.com/gin-gonic/gin"

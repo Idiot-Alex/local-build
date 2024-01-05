@@ -2,7 +2,7 @@ package sqlite
 
 import (
 	"local-build/internal/config"
-	"local-build/internal/model"
+	"local-build/internal/store/model"
 	"log"
 	"net/url"
 	"time"

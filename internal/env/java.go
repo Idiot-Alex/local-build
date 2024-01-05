@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"local-build/internal/model"
+	"local-build/internal/store/model"
 	"log"
 	"os/exec"
 	"strings"

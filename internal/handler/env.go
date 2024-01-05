@@ -3,8 +3,8 @@ package handler
 import (
 	"fmt"
 	"local-build/internal/env"
-	"local-build/internal/model"
-	"local-build/internal/sqlite"
+	"local-build/internal/store/model"
+	"local-build/internal/store/sqlite"
 	"log"
 
 	"github.com/gin-gonic/gin"
