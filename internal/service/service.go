@@ -11,3 +11,13 @@ func InitTools() {
 func ToolList() []model.Tool {
 	return toolList()
 }
+
+// export save tool
+func SaveTool() bool {
+	return true
+}
+
+// export del tool
+func DelTool(ids []string) bool {
+	return delTool(ids)
+}

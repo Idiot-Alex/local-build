@@ -48,3 +48,15 @@ func toolList() []model.Tool {
 	db.Find(&tools).Offset(0).Limit(10).Order("name")
 	return tools
 }
+
+// save tool
+func saveTool() {
+
+}
+
+// del tool
+func delTool(ids []string) bool {
+	db := sqlite.GetDB()
+	db.Delete(&model.Tool{}, ids)
+	return db.RowsAffected > 0
+}

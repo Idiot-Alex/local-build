@@ -20,7 +20,7 @@ func InitApis(r *gin.Engine) {
   {
 		tool.GET("/list", handler.ListTool)
 		tool.POST("/save", handler.SaveTool)
-		tool.GET("/del", handler.DelTool)
+		tool.POST("/del", handler.DelTool)
   }
 
 	project := r.Group("/api/project")

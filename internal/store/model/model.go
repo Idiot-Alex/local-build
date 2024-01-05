@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+type Req struct {
+	Ids []string `json:"ids"`
+}
+
 type Res struct {
 	Msg string `json:"msg"`
 	Data interface{} `json:"data"`

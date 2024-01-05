@@ -23,5 +23,18 @@ func saveTool(c *gin.Context) {
 
 // del tool
 func delTool(c *gin.Context) {
-
+	var req model.Req
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+	
+	var res model.Res
+	if service.DelTool(req.Ids) {
+		res = model.Res{Msg: "del tool success"}
+	} else {
+		res = model.Res{Msg: "del tool failed"}
+	}
+	log.Printf("del tool: %+v\n", res)
+	c.JSON(200, res)
 }
