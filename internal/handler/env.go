@@ -10,7 +10,7 @@ import (
 )
 
 // init env
-func EnvInit(c *gin.Context) {
+func initEnv(c *gin.Context) {
 	service.InitTools()
 	res := model.Res{Msg: "init success"}
 	log.Printf("env init...res: %+v\n", res)

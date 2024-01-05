@@ -8,6 +8,7 @@ import (
 
 type Res struct {
 	Msg string `json:"msg"`
+	Data interface{} `json:"data"`
 }
 
 type Project struct {

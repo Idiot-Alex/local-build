@@ -1,31 +1,27 @@
 package handler
 
 import (
-	"encoding/json"
+	"local-build/internal/service"
 	"local-build/internal/store/model"
-	"local-build/internal/store/sqlite"
 	"log"
 
 	"github.com/gin-gonic/gin"
 )
 
-// tool list
-func ToolList(c *gin.Context) {
-	var tools []model.Tool
-	db := sqlite.GetDB()
-	db.Find(&tools).Offset(0).Limit(10).Order("name")
-	
-	jsonData, _ := json.MarshalIndent(tools, "", "  ")
-	log.Printf("tool list: %+v", string(jsonData))
-	c.String(200, string(jsonData))
+// list tool
+func listTool(c *gin.Context) {
+	tools := service.ToolList()
+	res := model.Res{Msg: "success", Data: tools}
+	log.Printf("tool list: %+v\n", res)
+	c.JSON(200, res)
 }
 
 // save tool
-func SaveTool(c *gin.Context) {
+func saveTool(c *gin.Context) {
 	
 }
 
 // del tool
-func DelTool(c *gin.Context) {
+func delTool(c *gin.Context) {
 
 }

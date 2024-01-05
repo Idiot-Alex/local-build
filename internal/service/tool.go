@@ -8,7 +8,7 @@ import (
 )
 
 // init tools
-func InitTools() {
+func initTools() {
 	var count int64
 	tools := env.GetJDKList()
 
@@ -41,3 +41,10 @@ func InitTools() {
 	}
 }
 
+// tool list
+func toolList() []model.Tool {
+	var tools []model.Tool
+	db := sqlite.GetDB()
+	db.Find(&tools).Offset(0).Limit(10).Order("name")
+	return tools
+}

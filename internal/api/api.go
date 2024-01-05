@@ -12,13 +12,13 @@ func InitApis(r *gin.Engine) {
 
 	env := r.Group("/api/env")
 	{
-		env.GET("/init", handler.EnvInit)
+		env.GET("/init", handler.InitEnv)
 	}
 	
 	tool := r.Group("/api/tool")
   // {} 是书写规范
   {
-		tool.GET("/list", handler.ToolList)
+		tool.GET("/list", handler.ListTool)
 		tool.POST("/save", handler.SaveTool)
 		tool.GET("/del", handler.DelTool)
   }
