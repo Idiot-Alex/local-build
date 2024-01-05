@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+type Res struct {
+	Msg string `json:"msg"`
+}
+
 type Project struct {
 	ID        int64     `gorm:"primarykey" json:"id"`
 	Name      string    `gorm:"unique;not null" json:"name"`
