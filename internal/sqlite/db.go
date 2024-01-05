@@ -1,7 +1,10 @@
 package sqlite
 
 import (
+	"local-build/internal/config"
 	"local-build/internal/model"
+	"log"
+	"net/url"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -10,8 +13,21 @@ import (
 	"gorm.io/gorm/schema"
 )
 
+// get DB
 func GetDB() gorm.DB {
-	db, err := gorm.Open(sqlite.Open("local-build.sqlite?_json=1"), &gorm.Config{
+	cfg := config.Load("config.toml")
+	dbFilePath := cfg.Db.FilePath
+	parsedUrl, err := url.Parse(dbFilePath)
+	if err != nil {
+		panic(err)
+	}
+	query := parsedUrl.Query()
+	query.Set("_json", "1")
+	parsedUrl.RawQuery = query.Encode()
+	dbFilePath = parsedUrl.String()
+	log.Printf("dbFilePath: %+v\n", dbFilePath)
+
+	db, err := gorm.Open(sqlite.Open(dbFilePath), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},

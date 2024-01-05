@@ -9,6 +9,7 @@ import (
 )
 
 func TestDb(t *testing.T) {
+	// cfg := config.Load("resources/test_config.toml")
 	db := sqlite.GetDB()
 
 	sqlite.InitTable()

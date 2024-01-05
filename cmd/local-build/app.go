@@ -13,7 +13,7 @@ import (
 func RunServer() {
 	log.Println("app starting...")
 
-	config.Load()
+	config.Load("config.toml")
 
 	startSqlite()
 
