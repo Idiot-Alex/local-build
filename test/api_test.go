@@ -13,8 +13,8 @@ import (
 func Test1(t *testing.T) {
 	// 创建一个 router
 	router := gin.Default()
-	router.GET("/api/env/init", EnvInit)
-	router.GET("/api/tool/list", ToolList)
+	router.GET("/api/env/init", InitEnv)
+	router.GET("/api/tool/list", ListTool)
 
 	// 创建一个 GET 请求并设置参数
 	req1, _ := http.NewRequest(http.MethodGet, "/api/tool/list", nil)
