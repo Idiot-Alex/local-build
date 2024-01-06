@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"local-build/internal/store/model"
-	"log"
 	"os/exec"
 	"strings"
 )
@@ -29,22 +28,9 @@ func GetMavenInfo () model.Tool {
 func getMacMaven() model.Tool {
 	maven := new(model.Tool)
 
-	exCmd := exec.Command("which", "mvn")
-	output, err := exCmd.Output()
-	if err != nil {
-		log.Println(err)
-		return *maven
-	}
-	mavenPath := strings.TrimSpace(string(output))
+	mavenPath := UseWhich("mvn")
 
-	exCmd = exec.Command("mvn", "-v")
-	output, err = exCmd.Output()
-	if err != nil {
-		log.Println(err)
-		return *maven
-	}
-	row := strings.Split(string(output), "\n")[0]
-	mavenVersion := strings.TrimSpace(strings.Split(row, "(")[0])
+	mavenVersion := MavenVersion(mavenPath)
 
 	maven.Name = "Maven"
 	maven.Path = string(mavenPath)
@@ -56,4 +42,15 @@ func getMacMaven() model.Tool {
 	fmt.Printf("maven: %v\n", string(jsonData))
 
 	return *maven
+}
+
+// get maven version
+func MavenVersion(mavenPath string) string {
+	exCmd := exec.Command(mavenPath, "-v")
+	output, err := exCmd.Output()
+	if err != nil {
+		panic(err)
+	}
+	row := strings.Split(string(output), "\n")[0]
+	return strings.TrimSpace(strings.Split(row, "(")[0])
 }

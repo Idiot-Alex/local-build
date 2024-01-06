@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"local-build/internal/store/model"
-	"log"
 	"os/exec"
 	"strings"
 )
@@ -29,21 +28,9 @@ func GetGitInfo () model.Tool {
 func getMacGit() model.Tool {
 	git := new(model.Tool)
 
-	exCmd := exec.Command("which", "git")
-	output, err := exCmd.Output()
-	if err != nil {
-		log.Println(err)
-		return *git
-	}
-	gitPath := strings.TrimSpace(string(output))
+	gitPath := UseWhich("git")
 
-	exCmd = exec.Command("git", "--version")
-	output, err = exCmd.Output()
-	if err != nil {
-		log.Println(err)
-		return *git
-	}
-	gitVersion := strings.TrimSpace(string(output))
+	gitVersion := GitVersion(gitPath)
 
 	git.Name = "Git"
 	git.Path = string(gitPath)
@@ -55,4 +42,14 @@ func getMacGit() model.Tool {
 	fmt.Printf("git: %v\n", string(jsonData))
 
 	return *git
+}
+
+// get git version
+func GitVersion(gitPath string) string {
+	exCmd := exec.Command(gitPath, "--version")
+	output, err := exCmd.Output()
+	if err != nil {
+		panic(err)
+	}
+	return strings.TrimSpace(string(output))
 }

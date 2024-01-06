@@ -51,3 +51,12 @@ func getMacArch() string {
 	return strings.TrimSpace(string(output))
 }
 
+// exec command use witch
+func UseWhich(cmd string) string {
+	exCmd := exec.Command("which", cmd)
+	output, err := exCmd.Output()
+	if err != nil {
+		panic(err)
+	}
+	return strings.TrimSpace(string(output))
+}

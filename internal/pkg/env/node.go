@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"local-build/internal/store/model"
-	"log"
 	"os/exec"
 	"strings"
 )
@@ -29,21 +28,9 @@ func GetNodeInfo () model.Tool {
 func getMacNode() model.Tool {
 	node := new(model.Tool)
 
-	exCmd := exec.Command("which", "node")
-	output, err := exCmd.Output()
-	if err != nil {
-		log.Println(err)
-		return *node
-	}
-	nodePath := strings.TrimSpace(string(output))
+	nodePath := UseWhich("node")
 
-	exCmd = exec.Command("node", "-v")
-	output, err = exCmd.Output()
-	if err != nil {
-		log.Println(err)
-		return *node
-	}
-	nodeVersion := strings.TrimSpace(string(output))
+	nodeVersion := NodeVersion(nodePath)
 
 	node.Name = "Node"
 	node.Path = string(nodePath)
@@ -55,4 +42,14 @@ func getMacNode() model.Tool {
 	fmt.Printf("node: %v\n", string(jsonData))
 
 	return *node
+}
+
+// get node version
+func NodeVersion(nodePath string) string {
+	exCmd := exec.Command(nodePath, "-v")
+	output, err := exCmd.Output()
+	if err != nil {
+		panic(err)
+	}
+	return strings.TrimSpace(string(output))
 }
