@@ -32,8 +32,14 @@ func SaveTool(c *gin.Context) {
 		return
 	}
 
-	
-
+	var res model.Res
+	if service.SaveTool(tool) {
+		res = model.Res{Msg: "save tool success"}
+	} else {
+		res = model.Res{Msg: "save tool failed"}
+	}
+	log.Printf("save tool: %+v\n", res)
+	c.JSON(200, res)
 }
 
 // export del tool

@@ -29,3 +29,9 @@ func TestNodeVersion(t *testing.T) {
 	ver := env.NodeVersion(node.Path)
 	log.Printf("node version: %+v\n", ver)
 }
+
+func TestJDKVersion(t *testing.T) {
+	jdkList := env.GetJDKList()
+	ver := env.JDKVersion(jdkList[0].Path)
+	log.Printf("jdk version: %+v\n", ver)
+}

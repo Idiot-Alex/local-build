@@ -28,13 +28,13 @@ func InitTools() {
 
 	db := sqlite.GetDB()
 	for _, v := range tools {
-		err := db.Model(&v).Where("name = ? and version = ?", v.Name, v.Version).Count(&count).Error
+		err := db.Model(&v).Where("path = ?", v.Path).Count(&count).Error
 		if err != nil {
 			panic(err)
 		}
 
 		if count != 0 {
-			log.Printf("%s records found...name: %s, version: %s", v.Type, v.Name, v.Version)
+			log.Printf("%s records found...name: %s, path: %s", v.Type, v.Name, v.Path)
 		} else {
 			db.Create(&v)
 		}
@@ -50,8 +50,36 @@ func ToolList() []model.Tool {
 }
 
 // export save tool
-func SaveTool() bool {
-	return true
+func SaveTool(tool model.Tool) bool {
+	var ver string
+	switch tool.Type {
+	case env.NODE:
+		ver = env.NodeVersion(tool.Path)
+	case env.MAVEN:
+		ver = env.MavenVersion(tool.Path)
+	case env.GIT:
+		ver = env.GitVersion(tool.Path)
+	case env.JDK:
+		ver = env.JDKVersion(tool.Path)
+	}
+
+	tool.Version = ver
+	tool.Arch = env.GetOSArch()
+
+	var count int64
+	db := sqlite.GetDB()
+	err := db.Model(&tool).Where("path = ?", tool.Path).Count(&count).Error
+	if err != nil {
+		panic(err)
+	}
+
+	if count != 0 {
+		log.Printf("%s records found...name: %s, path: %s", tool.Type, tool.Name, tool.Path)
+		return false
+	}
+
+	tx := db.Create(&tool)
+	return tx.RowsAffected > 0
 }
 
 // export del tool

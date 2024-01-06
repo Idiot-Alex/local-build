@@ -8,6 +8,7 @@ import (
 	"local-build/internal/store/model"
 	"log"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -146,4 +147,16 @@ func getWindowsJDKList() []model.Tool {
 	fmt.Println(string(jsonData))
 
 	return jdkList
+}
+
+// get jdk version
+func JDKVersion(jdkPath string) string {
+	javaPath := filepath.Join(jdkPath, "bin/java")
+	exCmd := exec.Command(javaPath, "--version")
+	output, err := exCmd.Output()
+	if err != nil {
+		panic(err)
+	}
+	row := strings.Split(string(output), "\n")[0]
+	return strings.TrimSpace(strings.Split(row, "(")[0])
 }
