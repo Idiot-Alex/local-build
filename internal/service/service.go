@@ -1,7 +1,7 @@
 package service
 
 import (
-	"local-build/internal/env"
+	"local-build/internal/pkg/env"
 	"local-build/internal/store/model"
 	"local-build/internal/store/sqlite"
 	"log"

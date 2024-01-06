@@ -1,7 +1,7 @@
 package test
 
 import (
-	"local-build/internal/env"
+	"local-build/internal/pkg/env"
 	"testing"
 )
 

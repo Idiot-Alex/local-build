@@ -26,17 +26,24 @@ func ListTool(c *gin.Context) {
 
 // export save tool
 func SaveTool(c *gin.Context) {
+	var tool model.Tool
+	if err := c.ShouldBindJSON(&tool); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
 	
+
 }
 
 // export del tool
 func DelTool(c *gin.Context) {
-	var req model.Req
+	var req model.ReqIds
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	
+
 	var res model.Res
 	if service.DelTool(req.Ids) {
 		res = model.Res{Msg: "del tool success"}
@@ -45,4 +52,19 @@ func DelTool(c *gin.Context) {
 	}
 	log.Printf("del tool: %+v\n", res)
 	c.JSON(200, res)
+}
+
+// project list
+func ProjectList(c *gin.Context) {
+
+}
+
+// save project
+func SaveProject(c *gin.Context) {
+
+}
+
+// del project
+func DelProject(c *gin.Context) {
+
 }
