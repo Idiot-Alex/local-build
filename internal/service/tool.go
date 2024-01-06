@@ -56,7 +56,8 @@ func saveTool() {
 
 // del tool
 func delTool(ids []string) bool {
+	log.Printf("ids: %v\n", ids)
 	db := sqlite.GetDB()
-	db.Delete(&model.Tool{}, ids)
+	db.Where("id in ?", ids).Delete(&model.Tool{})
 	return db.RowsAffected > 0
 }
