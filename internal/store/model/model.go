@@ -8,7 +8,7 @@ import (
 )
 
 type ReqIds struct {
-	Ids []string `json:"ids"`
+	Ids []string `json:"ids" binding:"required"`
 }
 
 type Res struct {
