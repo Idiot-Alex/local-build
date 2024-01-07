@@ -2,6 +2,7 @@ package model
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -46,6 +47,22 @@ type FmtTime time.Time
 func (mt FmtTime) MarshalJSON() ([]byte, error) {
 	t := time.Time(mt)
 	return []byte(fmt.Sprintf(`"%s"`, t.Format("2006-01-02 15:04:05"))), nil
+}
+
+// overwrite UnMarshalJSON
+func (mt *FmtTime) UnmarshalJSON(data []byte) error {
+	var str string
+	if err := json.Unmarshal(data, &str); err != nil {
+		return err
+	}
+
+	// 将字符串解析为 Time 类型
+	t, err := time.Parse("2006-01-02 15:04:05", str)
+	if err != nil {
+		return err
+	}
+	*mt = FmtTime(t)
+	return nil
 }
 
 func (ft FmtTime) Value() (driver.Value, error) {
