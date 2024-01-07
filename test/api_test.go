@@ -14,27 +14,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Test1(t *testing.T) {
+func TestToolList(t *testing.T) {
 	// 创建一个 router
 	router := initRouter()
 
 	// 创建一个 GET 请求并设置参数
 	req1, _ := http.NewRequest(http.MethodGet, "/api/tool/list", nil)
-	// req2, _ := http.NewRequest(http.MethodGet, "/api/env/init", nil)
 
 	// 为每个测试用例创建一个新的 ResultRecorder
 	res1 := httptest.NewRecorder()
-	// res2 := httptest.NewRecorder()
 
 	// 向 router 发送 GET 请求
 	router.ServeHTTP(res1, req1)
-	// router.ServeHTTP(res2, req2)
 
 	log.Printf("res: %v\n", res1.Body.String())
 	// 检查响应是否符合预期
 	if res1.Body.String() == "" {
 		t.Errorf("handler returned unexpected body: got %v", res1.Body.String())
-	}	
+	}
 }
 
 func TestSaveTool(t *testing.T) {
@@ -58,15 +55,52 @@ func TestSaveTool(t *testing.T) {
 	// 检查响应是否符合预期
 	if res.Body.String() == "" {
 		t.Errorf("handler returned unexpected body: got %v", res.Body.String())
-	}	
+	}
 }
 
+func TestProjectList(t *testing.T) {
+	router := initRouter()
+
+	req, _ := http.NewRequest(http.MethodGet, "/api/project/list", nil)
+
+	res := httptest.NewRecorder()
+
+	router.ServeHTTP(res, req)
+
+	log.Printf("code: %v, res: %v\n", res.Code, res.Body.String())
+	// 检查响应是否符合预期
+	if res.Body.String() == "" {
+		t.Errorf("handler returned unexpected body: got %v", res.Body.String())
+	}
+}
+
+func TestDelProject(t *testing.T) {
+	router := initRouter()
+
+	data := model.ReqIds{ Ids: []string{"1"} }
+	body, _ := json.Marshal(data)
+	req, _ := http.NewRequest(http.MethodPost, "/api/project/del", bytes.NewBuffer(body))
+
+	res := httptest.NewRecorder()
+
+	router.ServeHTTP(res, req)
+
+	log.Printf("code: %v, res: %v\n", res.Code, res.Body.String())
+	// 检查响应是否符合预期
+	if res.Body.String() == "" {
+		t.Errorf("handler returned unexpected body: got %v", res.Body.String())
+	}
+}
 
 func initRouter() *gin.Engine {
 	// 创建一个 router
 	router := gin.Default()
 	router.GET("/api/env/init", InitEnv)
-	router.GET("/api/tool/list", ListTool)
+	router.GET("/api/tool/list", ToolList)
 	router.POST("/api/tool/save", SaveTool)
+
+	router.POST("/api/project/save", SaveProject)
+	router.GET("/api/project/list", ProjectList)
+	router.POST("/api/project/del", DelProject)
 	return router
 }

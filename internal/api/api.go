@@ -14,14 +14,14 @@ func InitApis(r *gin.Engine) {
 	{
 		env.GET("/init", handler.InitEnv)
 	}
-	
+
 	tool := r.Group("/api/tool")
-  // {} 是书写规范
-  {
-		tool.GET("/list", handler.ListTool)
+	// {} 是书写规范
+	{
+		tool.GET("/list", handler.ToolList)
 		tool.POST("/save", handler.SaveTool)
 		tool.POST("/del", handler.DelTool)
-  }
+	}
 
 	project := r.Group("/api/project")
 	{
@@ -31,9 +31,7 @@ func InitApis(r *gin.Engine) {
 	}
 }
 
-
 // gin.Context，封装了request和response
 func helloWorld(c *gin.Context) {
 	c.String(http.StatusOK, "hello World!")
 }
-

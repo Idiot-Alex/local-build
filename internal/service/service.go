@@ -84,8 +84,22 @@ func SaveTool(tool model.Tool) bool {
 
 // export del tool
 func DelTool(ids []string) bool {
-	log.Printf("ids: %v\n", ids)
 	db := sqlite.GetDB()
 	tx := db.Where("id in ?", ids).Delete(&model.Tool{})
+	return tx.RowsAffected > 0
+}
+
+// export project list
+func ProjectList() []model.Project {
+	var list []model.Project
+	db := sqlite.GetDB()
+	db.Find(&list).Offset(0).Limit(10).Order("name")
+	return list
+}
+
+// export del tool
+func DelProject(ids []string) bool {
+	db := sqlite.GetDB()
+	tx := db.Where("id in ?", ids).Delete(&model.Project{})
 	return tx.RowsAffected > 0
 }

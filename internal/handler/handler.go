@@ -17,7 +17,7 @@ func InitEnv(c *gin.Context) {
 }
 
 // export list tool
-func ListTool(c *gin.Context) {
+func ToolList(c *gin.Context) {
 	tools := service.ToolList()
 	res := model.Res{Msg: "success", Data: tools}
 	log.Printf("tool list: %+v\n", res)
@@ -62,7 +62,10 @@ func DelTool(c *gin.Context) {
 
 // project list
 func ProjectList(c *gin.Context) {
-
+	projects := service.ProjectList()
+	res := model.Res{Msg: "success", Data: projects}
+	log.Printf("project list: %+v\n", res)
+	c.JSON(200, res)
 }
 
 // save project
@@ -72,5 +75,18 @@ func SaveProject(c *gin.Context) {
 
 // del project
 func DelProject(c *gin.Context) {
+	var req model.ReqIds
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
 
+	var res model.Res
+	if service.DelProject(req.Ids) {
+		res = model.Res{Msg: "del project success"}
+	} else {
+		res = model.Res{Msg: "del project failed"}
+	}
+	log.Printf("del project: %+v\n", res)
+	c.JSON(200, res)
 }
