@@ -1,8 +1,9 @@
 <script setup>
-import { FilterMatchMode } from 'primevue/api';
-import { ref, onMounted, onBeforeMount } from 'vue';
-import ToolService from '@/service/ToolService';
-import { useToast } from 'primevue/usetoast';
+import { FilterMatchMode } from 'primevue/api'
+import { ref, onMounted, onBeforeMount } from 'vue'
+import ToolService from '@/service/ToolService'
+import { useToast } from 'primevue/usetoast'
+import { toolList } from '@/api/tool.js'
 
 const toast = useToast();
 
@@ -29,6 +30,9 @@ onBeforeMount(() => {
 onMounted(() => {
     toolService.getTools().then((data) => (dataList.value = data));
     console.log(dataList)
+    toolList({}).then(res => {
+        console.log(res)
+    })
 });
 const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
