@@ -30,9 +30,11 @@ onBeforeMount(() => {
 onMounted(() => {
     toolService.getTools().then((data) => (dataList.value = data));
     console.log(dataList)
-    toolList({}).then(res => {
-        console.log(res)
-    })
+    setInterval(() => {
+        toolList({}).then(res => {
+            console.log(res)
+        })
+    }, 1000*10);
 });
 const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
