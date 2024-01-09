@@ -24,22 +24,17 @@ instance.interceptors.response.use((response) => {
   if (response.status === 200) {
     return response.data
   }
-  app.config.globalProperties.$toast.add({
-    severity: 'success',
-    summary: '...........',
-    life: 5 * 1000,
-    group: 'network'
-  })
   return response
 }, (error) => {
   // 超出 2xx 范围的状态码都会触发该函数。
   // 对响应错误做点什么
-  console.log(app)
   app.config.globalProperties.$toast.add({
     severity: 'error',
-    summary: '...........',
-    detail: '.....',
-    life: 3000
+    summary: error.message,
+    detail: `${error.config.url}`,
+    method: error.config.method,
+    life: 3000,
+    group: 'network'
   })
   return Promise.reject(error)
 });
