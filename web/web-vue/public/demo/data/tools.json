@@ -1,40 +1,40 @@
 {
   "data": [
     {
-      "ID": "1",
-      "Name": "Java SE 17.0.7",
-      "Path": "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
-      "Version": "17.0.7",
-      "Vendor": "Oracle Corporation",
-      "Arch": "x86_64",
-      "Type": "JDK"
+      "id": "1",
+      "name": "Java SE 17.0.7",
+      "path": "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
+      "version": "17.0.7",
+      "vendor": "Oracle Corporation",
+      "arch": "x86_64",
+      "type": "JDK"
     },
     {
-      "ID": "2",
-      "Name": "Java",
-      "Path": "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home",
-      "Version": "1.8.333.02",
-      "Vendor": "Oracle Corporation",
-      "Arch": "x86_64",
-      "Type": "JDK"
+      "id": "2",
+      "name": "Java",
+      "path": "/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home",
+      "version": "1.8.333.02",
+      "vendor": "Oracle Corporation",
+      "arch": "x86_64",
+      "type": "JDK"
     },
     {
-      "ID": "3",
-      "Name": "Java SE 8",
-      "Path": "/Library/Java/JavaVirtualMachines/jdk1.8.0_333.jdk/Contents/Home",
-      "Version": "1.8.0_333",
-      "Vendor": "Oracle Corporation",
-      "Arch": "x86_64",
-      "Type": "JDK"
+      "id": "3",
+      "name": "Java SE 8",
+      "path": "/Library/Java/JavaVirtualMachines/jdk1.8.0_333.jdk/Contents/Home",
+      "version": "1.8.0_333",
+      "vendor": "Oracle Corporation",
+      "arch": "x86_64",
+      "type": "JDK"
     },
     {
-      "ID": "4",
-      "Name": "Java SE 8",
-      "Path": "/Library/Java/JavaVirtualMachines/jdk1.8.0_192.jdk/Contents/Home",
-      "Version": "1.8.0_192",
-      "Vendor": "Oracle Corporation",
-      "Arch": "x86_64",
-      "Type": "JDK"
+      "id": "4",
+      "name": "Java SE 8",
+      "path": "/Library/Java/JavaVirtualMachines/jdk1.8.0_192.jdk/Contents/Home",
+      "version": "1.8.0_192",
+      "vendor": "Oracle Corporation",
+      "arch": "x86_64",
+      "type": "JDK"
     }
   ]
 }
