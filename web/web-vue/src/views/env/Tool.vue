@@ -2,7 +2,7 @@
 import { FilterMatchMode } from 'primevue/api'
 import { ref, onMounted, onBeforeMount } from 'vue'
 import { useToast } from 'primevue/usetoast'
-import { toolList } from '@/api/tool.js'
+import { toolList, saveTool } from '@/api/tool.js'
 
 const toast = useToast()
 
@@ -15,11 +15,12 @@ const selectedProducts = ref(null)
 const dt = ref(null)
 const filters = ref({})
 const submitted = ref(false)
-const statuses = ref([
-    { label: 'INSTOCK', value: 'instock' },
-    { label: 'LOWSTOCK', value: 'lowstock' },
-    { label: 'OUTOFSTOCK', value: 'outofstock' }
-]);
+const types = ref([
+    { label: 'GIT', value: 'GIT' },
+    { label: 'JDK', value: 'JDK' },
+    { label: 'MAVEN', value: 'MAVEN' },
+    { label: 'NODE', value: 'NODE' },
+])
 
 onBeforeMount(() => {
     initFilters()
@@ -43,22 +44,25 @@ const openNew = () => {
 }
 
 const hideDialog = () => {
-    editDialog.value = false;
-    submitted.value = false;
-};
+    editDialog.value = false
+    submitted.value = false
+}
 
-const saveProduct = () => {
-    submitted.value = true;
+const saveData = () => {
+    submitted.value = true
+    saveTool(tempData.value).then(res => {
+        console.log(res)
+    })
     if (tempData.value.Name && tempData.value.Name.trim() && tempData.value.price) {
         if (tempData.value.id) {
-            tempData.value.inventoryStatus = tempData.value.inventoryStatus.value ? tempData.value.inventoryStatus.value : tempData.value.inventoryStatus;
+            tempData.value.type = tempData.value.type.value ? tempData.value.type.value : tempData.value.type;
             products.value[findIndexById(tempData.value.ID)] = tempData.value;
             toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
         } else {
             tempData.value.ID = createId();
             tempData.value.code = createId();
             tempData.value.image = 'product-placeholder.svg';
-            tempData.value.inventoryStatus = tempData.value.inventoryStatus ? tempData.value.inventoryStatus.value : 'INSTOCK';
+            tempData.value.type = tempData.value.type ? tempData.value.type.value : 'INSTOCK';
             products.value.push(tempData.value);
             toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
         }
@@ -68,9 +72,9 @@ const saveProduct = () => {
 };
 
 const editProduct = (editProduct) => {
-    tempData.value = { ...editProduct };
-    console.log(tempData);
-    editDialog.value = true;
+    tempData.value = { ...editProduct }
+    console.log(tempData)
+    editDialog.value = true
 };
 
 const confirmDeleteProduct = (editProduct) => {
@@ -187,21 +191,19 @@ const initFilters = () => {
                     </Column>
                 </DataTable>
 
-                <Dialog v-model:visible="editDialog" :style="{ width: '450px' }" header="Tool Details" :modal="true" class="p-fluid">
-                    <img :src="'demo/images/product/' + tempData.image" :alt="tempData.image" v-if="tempData.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" />
+                <Dialog v-model:visible="editDialog" w-450px header="Tool Details" :modal="true" class="p-fluid">
                     <div class="field">
                         <label for="name">Name</label>
                         <InputText id="name" v-model.trim="tempData.name" required="true" autofocus :class="{ 'p-invalid': submitted && !tempData.name }" />
-                        <small class="p-invalid" v-if="submitted && !tempData.name">Name is required.</small>
+                        <small color-red class="p-invalid" v-if="submitted && !tempData.name">Name is required.</small>
                     </div>
                     <div class="field">
-                        <label for="description">Description</label>
-                        <Textarea id="description" v-model="tempData.description" required="true" rows="3" cols="20" />
+                        <label for="path">Path</label>
+                        <Textarea id="path" v-model="tempData.path" rows="2" cols="20" />
                     </div>
-
                     <div class="field">
-                        <label for="inventoryStatus" class="mb-3">Inventory Status</label>
-                        <Dropdown id="inventoryStatus" v-model="tempData.inventoryStatus" :options="statuses" optionLabel="label" placeholder="Select a Status">
+                        <label for="type" class="mb-3">Type</label>
+                        <Dropdown id="type" v-model="tempData.type" :options="types" optionLabel="label" placeholder="Select a Type" required="true" :class="{ 'p-invalid': submitted && !tempData.type }">
                             <template #value="slotProps">
                                 <div v-if="slotProps.value && slotProps.value.value">
                                     <span :class="'product-badge status-' + slotProps.value.value">{{ slotProps.value.label }}</span>
@@ -214,54 +216,26 @@ const initFilters = () => {
                                 </span>
                             </template>
                         </Dropdown>
+                        <small color-red class="p-invalid" v-if="submitted && !tempData.type">Type is required.</small>
                     </div>
-
                     <div class="field">
-                        <label class="mb-3">Category</label>
-                        <div class="formgrid grid">
-                            <div class="field-radiobutton col-6">
-                                <RadioButton id="category1" name="category" value="Accessories" v-model="tempData.category" />
-                                <label for="category1">Accessories</label>
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <RadioButton id="category2" name="category" value="Clothing" v-model="tempData.category" />
-                                <label for="category2">Clothing</label>
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <RadioButton id="category3" name="category" value="Electronics" v-model="tempData.category" />
-                                <label for="category3">Electronics</label>
-                            </div>
-                            <div class="field-radiobutton col-6">
-                                <RadioButton id="category4" name="category" value="Fitness" v-model="tempData.category" />
-                                <label for="category4">Fitness</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="formgrid grid">
-                        <div class="field col">
-                            <label for="price">Price</label>
-                            <InputNumber id="price" v-model="tempData.price" mode="currency" currency="USD" locale="en-US" :class="{ 'p-invalid': submitted && !tempData.price }" :required="true" />
-                            <small class="p-invalid" v-if="submitted && !tempData.price">Price is required.</small>
-                        </div>
-                        <div class="field col">
-                            <label for="quantity">Quantity</label>
-                            <InputNumber id="quantity" v-model="tempData.quantity" integeronly />
-                        </div>
+                        <label for="desc">Description</label>
+                        <Textarea id="desc" v-model="tempData.desc" required="true" rows="3" cols="20" />
                     </div>
                     <template #footer>
                         <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-                        <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveProduct" />
+                        <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveData" />
                     </template>
                 </Dialog>
 
-                <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
+                <Dialog v-model:visible="deleteDialog" w-450px header="Confirm" :modal="true">
                     <div class="flex align-items-center justify-content-center">
                         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                        <span v-if="tempData"
-                            >Are you sure you want to delete <b>{{ tempData.name }}</b
-                            >?</span
-                        >
+                        <span v-if="tempData">
+                            Are you sure you want to delete 
+                            <b>{{ tempData.name }}</b>
+                            ?
+                        </span>
                     </div>
                     <template #footer>
                         <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteDialog = false" />
