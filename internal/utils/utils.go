@@ -10,9 +10,9 @@ import (
 	"time"
 )
 
-// generate ID
+// generate ID string
 // format: yyyyMMddHHmmss + 三位数字
-func GenerateId() int64 {
+func GenerateIdStr() string {
 	// 生成时间戳，格式为 yyyyMMddHHmmss
 	t := time.Now()
 	timeStamp := t.Format("20060102150405")
@@ -24,6 +24,13 @@ func GenerateId() int64 {
 	// 拼接时间戳和随机数
 	result := fmt.Sprintf("%s%03d", timeStamp, randomNum)
 
+	return result
+}
+
+// generate ID
+// format: yyyyMMddHHmmss + 三位数字
+func GenerateId() int64 {
+	result := GenerateIdStr()
 	number, _ := strconv.ParseInt(result, 10, 64)
 	
 	return number

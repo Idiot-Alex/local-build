@@ -4,6 +4,7 @@ import (
 	"local-build/internal/pkg/env"
 	"local-build/internal/store/model"
 	"local-build/internal/store/sqlite"
+	"local-build/internal/utils"
 	"log"
 )
 
@@ -36,7 +37,8 @@ func InitTools() {
 		if count != 0 {
 			log.Printf("%s records found...name: %s, path: %s", v.Type, v.Name, v.Path)
 		} else {
-			db.Create(&v)
+			v.ID = utils.GenerateIdStr()
+			db.Save(&v)
 		}
 	}
 }
@@ -66,19 +68,24 @@ func SaveTool(tool model.Tool) bool {
 	tool.Version = ver
 	tool.Arch = env.GetOSArch()
 
-	var count int64
 	db := sqlite.GetDB()
-	err := db.Model(&tool).Where("path = ?", tool.Path).Count(&count).Error
-	if err != nil {
-		panic(err)
+
+	// check path before insert
+	if tool.ID == "" {
+		var count int64
+		err := db.Model(&tool).Where("path = ?", tool.Path).Count(&count).Error
+		if err != nil {
+			panic(err)
+		}
+
+		if count != 0 {
+			log.Printf("%s records found...name: %s, path: %s", tool.Type, tool.Name, tool.Path)
+			return false
+		}
 	}
 
-	if count != 0 {
-		log.Printf("%s records found...name: %s, path: %s", tool.Type, tool.Name, tool.Path)
-		return false
-	}
-
-	tx := db.Create(&tool)
+	log.Printf("tool: %+v", tool)
+	tx := db.Save(&tool)
 	return tx.RowsAffected > 0
 }
 

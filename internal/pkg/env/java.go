@@ -151,12 +151,12 @@ func getWindowsJDKList() []model.Tool {
 
 // get jdk version
 func JDKVersion(jdkPath string) string {
-	javaPath := filepath.Join(jdkPath, "bin/java")
+	javaPath := filepath.Join(jdkPath, "/bin/java")
 	exCmd := exec.Command(javaPath, "-version")
-	output, err := exCmd.Output()
+	output, err := exCmd.CombinedOutput()
 	if err != nil {
 		panic(err)
 	}
-	row := strings.Split(string(output), "\n")[0]
-	return strings.TrimSpace(strings.Split(row, "(")[0])
+	ver := strings.Split(string(output), "\n")[0]
+	return ver
 }

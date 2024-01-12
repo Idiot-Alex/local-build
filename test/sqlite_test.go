@@ -14,7 +14,7 @@ func TestDb(t *testing.T) {
 
 	sqlite.InitTable()
 
-	p := model.Project{ID: utils.GenerateId(), Name: "xx"}
+	p := model.Project{ID: utils.GenerateIdStr(), Name: "xx"}
 	res := db.Create(&p)
 
 	fmt.Printf("error: %v\n", res.Error)
