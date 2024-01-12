@@ -11,7 +11,7 @@ const editDialog = ref(false)
 const deleteDialog = ref(false)
 const deleteDialogs = ref(false)
 const tempData = ref({})
-const selectedProducts = ref(null)
+const selectedData = ref(null)
 const dt = ref(null)
 const filters = ref({})
 const submitted = ref(false)
@@ -50,6 +50,10 @@ const hideDialog = () => {
 
 const saveData = () => {
   submitted.value = true
+  if (!tempData.value.name || !tempData.value.path || !tempData.value.type) {
+    toast.add({ severity: 'warning', summary: 'Tips', detail: 'Please input data', life: 3000 })
+    return
+  }
   saveTool(tempData.value).then(res => {
     toast.add({ severity: 'success', summary: 'Successful', detail: res.msg, life: 3000 })
     editDialog.value = false
@@ -60,7 +64,6 @@ const saveData = () => {
 
 const editProduct = (editProduct) => {
   tempData.value = { ...editProduct }
-  console.log(tempData)
   editDialog.value = true
 }
 
@@ -82,44 +85,50 @@ const deleteAction = () => {
 }
 
 const findIndexById = (id) => {
-    let index = -1;
+    let index = -1
     for (let i = 0; i < products.value.length; i++) {
         if (products.value[i].ID === id) {
-            index = i;
+            index = i
             break;
         }
     }
-    return index;
-};
+    return index
+}
 
 const createId = () => {
-    let id = '';
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-};
+  let id = ''
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  for (let i = 0; i < 5; i++) {
+      id += chars.charAt(Math.floor(Math.random() * chars.length))
+  }
+  return id
+}
 
 const exportCSV = () => {
-    dt.value.exportCSV();
-};
+  dt.value.exportCSV()
+}
 
 const confirmDeleteSelected = () => {
-    deleteDialogs.value = true;
-};
-const deleteSelectedProducts = () => {
-    products.value = products.value.filter((val) => !selectedProducts.value.includes(val));
-    deleteDialogs.value = false;
-    selectedProducts.value = null;
-    toast.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-};
+  deleteDialogs.value = true
+}
+const deleteSelected = () => {
+  const data = {
+    ids: []
+  }
+  selectedData.value.filter(d => data.ids.push(d.id))
+  delTool(data).then(res => {
+    toast.add({ severity: 'success', summary: 'Successful', detail: res.msg, life: 3000 })
+    deleteDialogs.value = false
+    selectedData.value = null
+    loadList()
+  })
+}
 
 const initFilters = () => {
     filters.value = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-    };
-};
+    }
+}
 </script>
 
 <template>
@@ -131,7 +140,7 @@ const initFilters = () => {
                     <template v-slot:start>
                         <div class="my-2">
                             <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-                            <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedProducts || !selectedProducts.length" />
+                            <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
                         </div>
                     </template>
 
@@ -144,7 +153,7 @@ const initFilters = () => {
                 <DataTable
                     ref="dt"
                     :value="dataList"
-                    v-model:selection="selectedProducts"
+                    v-model:selection="selectedData"
                     dataKey="id"
                     scrollable
                     :paginator="true"
@@ -227,11 +236,11 @@ const initFilters = () => {
                 <Dialog v-model:visible="deleteDialogs" :style="{ width: '450px' }" header="Confirm" :modal="true">
                     <div class="flex align-items-center justify-content-center">
                         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-                        <span v-if="tempData">Are you sure you want to delete the selected products?</span>
+                        <span v-if="tempData">Are you sure you want to delete the selected tools?</span>
                     </div>
                     <template #footer>
                         <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteDialogs = false" />
-                        <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteSelectedProducts" />
+                        <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteSelected" />
                     </template>
                 </Dialog>
             </div>
