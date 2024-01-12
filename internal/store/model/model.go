@@ -17,7 +17,7 @@ type Res struct {
 }
 
 type Project struct {
-	ID         int64   `gorm:"primarykey" json:"id"`
+	ID         string   `gorm:"primarykey" json:"id"`
 	Name       string  `gorm:"unique;not null" json:"name"`
 	Desc       string  `json:"desc"`
 	Type       string  `json:"type"`
@@ -28,7 +28,7 @@ type Project struct {
 }
 
 type Tool struct {
-	ID        int64   `gorm:"primarykey" json:"id"`
+	ID        string   `gorm:"primarykey" json:"id"`
 	Name      string  `gorm:"uniqueIndex:idx_name_version,uniqueIndex;not null" json:"name" binding:"required"`
 	Desc      string  `json:"desc"`
 	Path      string  `json:"path" binding:"required"`

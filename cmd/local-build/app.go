@@ -40,6 +40,7 @@ func startService() {
 			if err := recover(); err != nil {
 				res := model.Res{ Msg: "server error" }
 				if e, ok := err.(error); ok {
+					log.Printf("panic error: %+v", e)
 					res.Msg = e.Error()
 				}
 				c.JSON(500, res)

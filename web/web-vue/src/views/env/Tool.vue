@@ -2,7 +2,7 @@
 import { FilterMatchMode } from 'primevue/api'
 import { ref, onMounted, onBeforeMount } from 'vue'
 import { useToast } from 'primevue/usetoast'
-import { toolList, saveTool } from '@/api/tool.js'
+import { toolList, saveTool, delTool } from '@/api/tool.js'
 
 const toast = useToast()
 
@@ -16,78 +16,70 @@ const dt = ref(null)
 const filters = ref({})
 const submitted = ref(false)
 const types = ref([
-    { label: 'GIT', value: 'GIT' },
-    { label: 'JDK', value: 'JDK' },
-    { label: 'MAVEN', value: 'MAVEN' },
-    { label: 'NODE', value: 'NODE' },
+  { label: 'GIT', value: 'GIT' },
+  { label: 'JDK', value: 'JDK' },
+  { label: 'MAVEN', value: 'MAVEN' },
+  { label: 'NODE', value: 'NODE' },
 ])
 
 onBeforeMount(() => {
-    initFilters()
+  initFilters()
 })
 onMounted(() => {
-    loadList()
+  loadList()
 })
 const loadList = () => {
-    toolList({}).then(res => {
-        dataList.value = res.data
-    })
+  toolList({}).then(res => {
+    dataList.value = res.data
+  })
 }
 const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 }
 
 const openNew = () => {
-    tempData.value = {}
-    submitted.value = false
-    editDialog.value = true
+  tempData.value = {}
+  submitted.value = false
+  editDialog.value = true
 }
 
 const hideDialog = () => {
-    editDialog.value = false
-    submitted.value = false
+  editDialog.value = false
+  submitted.value = false
 }
 
 const saveData = () => {
-    submitted.value = true
-    saveTool(tempData.value).then(res => {
-        console.log(res)
-    })
-    if (tempData.value.Name && tempData.value.Name.trim() && tempData.value.price) {
-        if (tempData.value.id) {
-            tempData.value.type = tempData.value.type.value ? tempData.value.type.value : tempData.value.type;
-            products.value[findIndexById(tempData.value.ID)] = tempData.value;
-            toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-        } else {
-            tempData.value.ID = createId();
-            tempData.value.code = createId();
-            tempData.value.image = 'product-placeholder.svg';
-            tempData.value.type = tempData.value.type ? tempData.value.type.value : 'INSTOCK';
-            products.value.push(tempData.value);
-            toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-        }
-        editDialog.value = false;
-        tempData.value = {};
-    }
-};
+  submitted.value = true
+  saveTool(tempData.value).then(res => {
+    toast.add({ severity: 'success', summary: 'Successful', detail: res.msg, life: 3000 })
+    editDialog.value = false
+    tempData.value = {}
+    loadList()
+  })
+}
 
 const editProduct = (editProduct) => {
-    tempData.value = { ...editProduct }
-    console.log(tempData)
-    editDialog.value = true
-};
+  tempData.value = { ...editProduct }
+  console.log(tempData)
+  editDialog.value = true
+}
 
 const confirmDeleteProduct = (editProduct) => {
-    tempData.value = editProduct;
-    deleteDialog.value = true;
-};
+  tempData.value = editProduct
+  deleteDialog.value = true
+}
 
-const deleteProduct = () => {
-    products.value = products.value.filter((val) => val.id !== tempData.value.id);
-    deleteDialog.value = false;
-    tempData.value = {};
-    toast.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-};
+const deleteAction = () => {
+  const data = {
+    ids: [ tempData.value.id ]
+  }
+  delTool(data).then(res => {
+    toast.add({ severity: 'success', summary: 'Successful', detail: res.msg, life: 3000 })
+    deleteDialog.value = false
+    tempData.value = {}
+    loadList()
+  })
+}
 
 const findIndexById = (id) => {
     let index = -1;
@@ -228,7 +220,7 @@ const initFilters = () => {
                     </div>
                     <template #footer>
                         <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteDialog = false" />
-                        <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteProduct" />
+                        <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteAction" />
                     </template>
                 </Dialog>
 
