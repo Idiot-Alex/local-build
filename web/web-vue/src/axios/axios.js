@@ -33,6 +33,7 @@ instance.interceptors.response.use((response) => {
     summary: error.message,
     detail: `${error.config.url}`,
     method: error.config.method,
+    msg: error.response?.data?.msg,
     life: 3000,
     group: 'network'
   })

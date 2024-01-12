@@ -3,6 +3,7 @@ package localbuild
 import (
 	"local-build/internal/api"
 	"local-build/internal/config"
+	"local-build/internal/store/model"
 	"local-build/internal/store/sqlite"
 	"log"
 
@@ -32,6 +33,20 @@ func startService() {
 	log.Println("server start success...")
 	// 1.创建路由
 	r := gin.Default()
+
+	// panic recover and return json
+	r.Use(func(c *gin.Context) {
+		defer func() {
+			if err := recover(); err != nil {
+				res := model.Res{ Msg: "server error" }
+				if e, ok := err.(error); ok {
+					res.Msg = e.Error()
+				}
+				c.JSON(500, res)
+			}
+		}()
+		c.Next()
+	})
 
 	// 进行跨域设置
 	config := cors.DefaultConfig()

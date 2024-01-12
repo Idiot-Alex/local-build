@@ -203,18 +203,7 @@ const initFilters = () => {
                     </div>
                     <div class="field">
                         <label for="type" class="mb-3">Type</label>
-                        <Dropdown id="type" v-model="tempData.type" :options="types" optionLabel="label" placeholder="Select a Type" required="true" :class="{ 'p-invalid': submitted && !tempData.type }">
-                            <template #value="slotProps">
-                                <div v-if="slotProps.value && slotProps.value.value">
-                                    <span :class="'product-badge status-' + slotProps.value.value">{{ slotProps.value.label }}</span>
-                                </div>
-                                <div v-else-if="slotProps.value && !slotProps.value.value">
-                                    <span :class="'product-badge status-' + slotProps.value.toLowerCase()">{{ slotProps.value }}</span>
-                                </div>
-                                <span v-else>
-                                    {{ slotProps.placeholder }}
-                                </span>
-                            </template>
+                        <Dropdown id="type" v-model="tempData.type" :options="types" optionLabel="label" optionValue="value" placeholder="Select a Type" required="true" :class="{ 'p-invalid': submitted && !tempData.type }">
                         </Dropdown>
                         <small color-red class="p-invalid" v-if="submitted && !tempData.type">Type is required.</small>
                     </div>

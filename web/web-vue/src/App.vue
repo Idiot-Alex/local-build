@@ -17,6 +17,7 @@ import Toast from 'primevue/toast'
             {{ slotProps.message.detail }}
           </div>
         </div>
+        <InlineMessage v-show="slotProps.message.msg" mt-5px severity="warn">{{ slotProps.message.msg }}</InlineMessage>
       </div>
     </template>
   </Toast>
