@@ -33,9 +33,6 @@ const loadList = () => {
     dataList.value = res.data
   })
 }
-const formatCurrency = (value) => {
-  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-}
 
 const openNew = () => {
   tempData.value = {}
@@ -62,13 +59,13 @@ const saveData = () => {
   })
 }
 
-const editProduct = (editProduct) => {
-  tempData.value = { ...editProduct }
+const toEdit = (data) => {
+  tempData.value = { ...data }
   editDialog.value = true
 }
 
-const confirmDeleteProduct = (editProduct) => {
-  tempData.value = editProduct
+const confirmDelete = (data) => {
+  tempData.value = data
   deleteDialog.value = true
 }
 
@@ -82,26 +79,6 @@ const deleteAction = () => {
     tempData.value = {}
     loadList()
   })
-}
-
-const findIndexById = (id) => {
-    let index = -1
-    for (let i = 0; i < products.value.length; i++) {
-        if (products.value[i].ID === id) {
-            index = i
-            break;
-        }
-    }
-    return index
-}
-
-const createId = () => {
-  let id = ''
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  for (let i = 0; i < 5; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-  return id
 }
 
 const exportCSV = () => {
@@ -125,9 +102,9 @@ const deleteSelected = () => {
 }
 
 const initFilters = () => {
-    filters.value = {
-        global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-    }
+  filters.value = {
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+  }
 }
 </script>
 
@@ -186,8 +163,8 @@ const initFilters = () => {
                     </Column>
                     <Column header="Operation" alignFrozen="right" frozen headerStyle="min-width:10rem;">
                         <template #body="slotProps">
-                            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editProduct(slotProps.data)" />
-                            <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDeleteProduct(slotProps.data)" />
+                            <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="toEdit(slotProps.data)" />
+                            <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />
                         </template>
                     </Column>
                 </DataTable>
