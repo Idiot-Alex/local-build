@@ -18,7 +18,13 @@ func InitEnv(c *gin.Context) {
 
 // export list tool
 func ToolList(c *gin.Context) {
-	tools := service.ToolList()
+	var toolQuery model.ToolQuery
+	if err := c.ShouldBindJSON(&toolQuery); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	tools := service.ToolList(&toolQuery)
 	res := model.Res{Msg: "success", Data: tools}
 	log.Printf("tool list: %+v\n", res)
 	c.JSON(200, res)

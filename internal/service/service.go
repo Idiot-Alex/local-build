@@ -1,11 +1,13 @@
 package service
 
 import (
+	"fmt"
 	"local-build/internal/pkg/env"
 	"local-build/internal/store/model"
 	"local-build/internal/store/sqlite"
 	"local-build/internal/utils"
 	"log"
+	"strings"
 )
 
 // export init tools
@@ -44,11 +46,24 @@ func InitTools() {
 }
 
 // export tool list
-func ToolList() []model.Tool {
+func ToolList(toolQuery *model.ToolQuery) *model.PaginationRes {
+	offset := (toolQuery.PageNo - 1) * toolQuery.PageSize
 	var tools []model.Tool
+	var count int64
+
+	var conditions []string
+	if toolQuery.Name != "" {
+		conditions = append(conditions, fmt.Sprintf("name LIKE '%%%s%%'", toolQuery.Name))
+	}
+	whereSql := strings.Join(conditions, " AND ")
+
 	db := sqlite.GetDB()
-	db.Find(&tools).Offset(0).Limit(10).Order("name")
-	return tools
+	listQuery := db.Model(&model.Tool{}).Offset(offset).Limit(toolQuery.PageSize).Order("name")
+	listQuery.Where(whereSql).Find(&tools)
+
+	db.Model(&model.Tool{}).Where(whereSql).Count(&count)
+
+	return &model.PaginationRes{DataList: &tools, Total: count}
 }
 
 // export save tool

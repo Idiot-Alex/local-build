@@ -18,7 +18,7 @@ func InitApis(r *gin.Engine) {
 	tool := r.Group("/api/tool")
 	// {} 是书写规范
 	{
-		tool.GET("/list", handler.ToolList)
+		tool.POST("/list", handler.ToolList)
 		tool.POST("/save", handler.SaveTool)
 		tool.POST("/del", handler.DelTool)
 	}

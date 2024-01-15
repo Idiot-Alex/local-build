@@ -7,6 +7,21 @@ import (
 	"time"
 )
 
+type PaginationReq struct {
+	PageNo   int `json:"pageNo" binding:"required,min=1"`
+	PageSize int `json:"pageSize" binding:"required,min=10"`
+}
+
+type PaginationRes struct {
+	DataList interface{} `json:"dataList"`
+	Total    int64       `json:"total"`
+}
+
+type ToolQuery struct {
+	PaginationReq
+	Name string `json:"name"`
+}
+
 type ReqIds struct {
 	Ids []string `json:"ids" binding:"required"`
 }
