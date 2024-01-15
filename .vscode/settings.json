@@ -28,6 +28,7 @@
     "inputswitch",
     "inputtext",
     "lastname",
+    "lazyload",
     "listbox",
     "localbuild",
     "mattn",

@@ -20,7 +20,7 @@ func InitEnv(c *gin.Context) {
 func ToolList(c *gin.Context) {
 	var toolQuery model.ToolQuery
 	if err := c.ShouldBindJSON(&toolQuery); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(400, &model.Res{Msg: err.Error()})
 		return
 	}
 

@@ -9,7 +9,7 @@ import (
 
 type PaginationReq struct {
 	PageNo   int `json:"pageNo" binding:"required,min=1"`
-	PageSize int `json:"pageSize" binding:"required,min=10"`
+	PageSize int `json:"pageSize" binding:"required,min=1"`
 }
 
 type PaginationRes struct {

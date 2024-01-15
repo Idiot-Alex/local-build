@@ -1,9 +1,7 @@
 import axios from '@/axios/axios.js'
 
 export const toolList = (data) => {
-  return axios.get('/api/tool/list', {
-    params: data
-  })
+  return axios.post('/api/tool/list', data)
 }
 
 export const saveTool = (data) => {

@@ -6,6 +6,11 @@ import { toolList, saveTool, delTool } from '@/api/tool.js'
 
 const toast = useToast()
 
+const query = ref({
+  pageNo: 1,
+  pageSize: 2
+})
+const total = ref(null)
 const dataList = ref(null)
 const editDialog = ref(false)
 const deleteDialog = ref(false)
@@ -29,8 +34,9 @@ onMounted(() => {
   loadList()
 })
 const loadList = () => {
-  toolList({}).then(res => {
-    dataList.value = res.data
+  toolList(query.value).then(res => {
+    dataList.value = res.data.dataList
+    total.value = res.data.total
   })
 }
 
@@ -132,13 +138,16 @@ const initFilters = () => {
           v-model:selection="selectedData"
           dataKey="id"
           scrollable
-          :paginator="true"
           :rows="10"
           :filters="filters"
+          paginator
+          :totalRecords="total"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+          currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
           responsiveLayout="scroll"
+          lazy
+          @lazyload="loadList"
         >
           <template #header>
               <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
