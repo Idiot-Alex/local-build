@@ -30,9 +30,11 @@ const types = ref([
 onBeforeMount(() => {
   initFilters()
 })
+
 onMounted(() => {
   loadList()
 })
+
 const loadList = () => {
   toolList(query.value).then(res => {
     dataList.value = res.data.dataList
@@ -127,16 +129,15 @@ const initFilters = () => {
       <div class="card">
         <Toast />
         <Toolbar class="mb-4">
-                <template v-slot:start>
-                    <div class="my-2">
-                        <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-                        <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
-                    </div>
-                </template>
-
-                <template v-slot:end>
-                    <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
-                </template>
+          <template v-slot:start>
+            <div class="my-2">
+              <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+              <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
+            </div>
+          </template>
+          <template v-slot:end>
+            <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
+          </template>
         </Toolbar>
 
         <DataTable

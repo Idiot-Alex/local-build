@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '@/axios/axios.js'
 
 export const projectList = (data) => {
   return axios.post('/api/project/list', data)
