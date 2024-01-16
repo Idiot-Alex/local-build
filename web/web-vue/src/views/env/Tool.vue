@@ -8,7 +8,7 @@ const toast = useToast()
 
 const query = ref({
   pageNo: 1,
-  pageSize: 2
+  pageSize: 10
 })
 const total = ref(null)
 const dataList = ref(null)
@@ -38,6 +38,13 @@ const loadList = () => {
     dataList.value = res.data.dataList
     total.value = res.data.total
   })
+}
+
+const handlePage = (event) => {
+  console.log(event.page, event.rows)
+  query.value.pageNo = event.page + 1
+  query.value.pageSize = event.rows
+  loadList()
 }
 
 const openNew = () => {
@@ -138,13 +145,15 @@ const initFilters = () => {
           v-model:selection="selectedData"
           dataKey="id"
           scrollable
-          :rows="10"
           :filters="filters"
           paginator
           :totalRecords="total"
+          :page="query.pageNo"
+          :rows="query.pageSize"
+          @page="handlePage"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-          :rowsPerPageOptions="[5, 10, 25]"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+          :rowsPerPageOptions="[10, 25, 50, 100]"
+          currentPageReportTemplate="Total {totalRecords}"
           responsiveLayout="scroll"
           lazy
           @lazyload="loadList"
