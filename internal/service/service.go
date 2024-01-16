@@ -46,19 +46,19 @@ func InitTools() {
 }
 
 // export tool list
-func ToolList(toolQuery *model.ToolQuery) *model.PaginationRes {
-	offset := (toolQuery.PageNo - 1) * toolQuery.PageSize
+func ToolList(query *model.ToolQuery) *model.PaginationRes {
+	offset := (query.PageNo - 1) * query.PageSize
 	var tools []model.Tool
 	var count int64
 
 	var conditions []string
-	if toolQuery.Name != "" {
-		conditions = append(conditions, fmt.Sprintf("name LIKE '%%%s%%'", toolQuery.Name))
+	if query.Name != "" {
+		conditions = append(conditions, fmt.Sprintf("name LIKE '%%%s%%'", query.Name))
 	}
 	whereSql := strings.Join(conditions, " AND ")
 
 	db := sqlite.GetDB()
-	listQuery := db.Model(&model.Tool{}).Offset(offset).Limit(toolQuery.PageSize).Order("name")
+	listQuery := db.Model(&model.Tool{}).Offset(offset).Limit(query.PageSize).Order("name")
 	listQuery.Where(whereSql).Find(&tools)
 
 	db.Model(&model.Tool{}).Where(whereSql).Count(&count)
@@ -112,11 +112,25 @@ func DelTool(ids []string) bool {
 }
 
 // export project list
-func ProjectList() []model.Project {
-	var list []model.Project
+func ProjectList(query *model.ProjectQuery) *model.PaginationRes {
+	offset := (query.PageNo - 1) * query.PageSize
+	var projects []model.Project
+	var count int64
+
+	var conditions []string
+	if query.Name != "" {
+		conditions = append(conditions, fmt.Sprintf("name LIKE '%%%s%%'", query.Name))
+	}
+	whereSql := strings.Join(conditions, " AND ")
+
 	db := sqlite.GetDB()
-	db.Find(&list).Offset(0).Limit(10).Order("name")
-	return list
+
+	listQuery := db.Model(&model.Project{}).Offset(offset).Limit(query.PageSize).Order("name")
+	listQuery.Where(whereSql).Find(&projects)
+
+	db.Model(&model.Project{}).Where(whereSql).Count(&count)
+
+	return &model.PaginationRes{DataList: &projects, Total: count}
 }
 
 // export del tool

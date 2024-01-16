@@ -25,9 +25,9 @@ func InitApis(r *gin.Engine) {
 
 	project := r.Group("/api/project")
 	{
-		project.GET("/list", handler.ProjectList)
+		project.POST("/list", handler.ProjectList)
 		project.POST("/save", handler.SaveProject)
-		project.GET("/del", handler.DelProject)
+		project.POST("/del", handler.DelProject)
 	}
 }
 

@@ -26,7 +26,7 @@ func ToolList(c *gin.Context) {
 
 	tools := service.ToolList(&toolQuery)
 	res := model.Res{Msg: "success", Data: tools}
-	log.Printf("tool list: %+v\n", res)
+	log.Printf("tool list: %#v\n", res)
 	c.JSON(200, res)
 }
 
@@ -68,7 +68,13 @@ func DelTool(c *gin.Context) {
 
 // project list
 func ProjectList(c *gin.Context) {
-	projects := service.ProjectList()
+	var projectQuery model.ProjectQuery
+	if err := c.ShouldBindJSON(&projectQuery); err != nil {
+		c.JSON(400, &model.Res{Msg: err.Error()})
+		return
+	}
+
+	projects := service.ProjectList(&projectQuery)
 	res := model.Res{Msg: "success", Data: projects}
 	log.Printf("project list: %+v\n", res)
 	c.JSON(200, res)
