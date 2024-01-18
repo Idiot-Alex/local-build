@@ -61,6 +61,24 @@ type Tool struct {
 	UpdatedAt FmtTime `json:"updatedAt"`
 }
 
+type BuildPlan struct {
+	ID         string  `gorm:"primarykey" json:"id"`
+	Name       string  `gorm:"unique;not null" json:"name" binding:"required"`
+	PId        string  `json:"pId"`
+	LastCostMs int64   `json:"lastCostMs"`
+	Config     string  `gorm:"type:json" json:"config"`
+	CreatedAt  FmtTime `json:"createdAt"`
+	UpdatedAt  FmtTime `json:"updatedAt"`
+}
+
+type BuildTask struct {
+	ID        string  `gorm:"primarykey" json:"id"`
+	Num       int64   `json:"num"`
+	State     int8    `json:"state"`
+	CreatedAt FmtTime `json:"createdAt"`
+	UpdatedAt FmtTime `json:"updatedAt"`
+}
+
 type FmtTime time.Time
 
 // overwrite MarshalJSON
