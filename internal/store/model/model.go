@@ -37,46 +37,46 @@ type Res struct {
 }
 
 type Project struct {
-	ID         string  `gorm:"primarykey" json:"id"`
-	Name       string  `gorm:"unique;not null" json:"name"`
-	Desc       string  `json:"desc"`
-	Type       string  `json:"type"`
-	Config     string  `gorm:"type:json" json:"config"`
-	ParsedInfo string  `gorm:"type:json" json:"parsedInfo"`
-	CreatedAt  FmtTime `json:"createdAt"`
-	UpdatedAt  FmtTime `json:"updatedAt"`
+	ID         string  `gorm:"primarykey;comment:'ID'" json:"id"`
+	Name       string  `gorm:"unique;not null;comment:'项目名称'" json:"name"`
+	Desc       string  `gorm:"comment:'项目描述'" json:"desc"`
+	Type       string  `gorm:"comment:'项目类型[GIT,Dir]'" json:"type"`
+	Config     string  `gorm:"type:json;comment:'项目配置'" json:"config"`
+	ParsedInfo string  `gorm:"type:json;comment:'项目解析后的信息'" json:"parsedInfo"`
+	CreatedAt  FmtTime `gorm:"comment:'创建时间'" json:"createdAt"`
+	UpdatedAt  FmtTime `gorm:"comment:'修改时间'" json:"updatedAt"`
 }
 
 type Tool struct {
-	ID        string  `gorm:"primarykey" json:"id"`
-	Name      string  `gorm:"unique;not null" json:"name" binding:"required"`
-	Desc      string  `json:"desc"`
-	Path      string  `json:"path" binding:"required"`
-	Version   string  `gorm:"version;not null" json:"version"`
-	Vendor    string  `json:"vendor"`
-	Arch      string  `json:"arch"`
-	Type      string  `json:"type" binding:"required"`
-	Config    string  `gorm:"type:json" json:"config"`
-	CreatedAt FmtTime `json:"createdAt"`
-	UpdatedAt FmtTime `json:"updatedAt"`
+	ID        string  `gorm:"primarykey;comment:'ID'" json:"id"`
+	Name      string  `gorm:"unique;not null;comment:'工具名称'" json:"name" binding:"required"`
+	Desc      string  `gorm:"comment:'工具描述'" json:"desc"`
+	Path      string  `gorm:"comment:'工具路径'" json:"path" binding:"required"`
+	Version   string  `gorm:"version;not null;comment:'版本号'" json:"version"`
+	Vendor    string  `gorm:"comment:'厂商'" json:"vendor"`
+	Arch      string  `gorm:"comment:'系统架构'" json:"arch"`
+	Type      string  `gorm:"comment:'类型[GIT,MAVEN,JDK,NODE]'" json:"type" binding:"required"`
+	Config    string  `gorm:"type:json;comment:'配置信息'" json:"config"`
+	CreatedAt FmtTime `gorm:"comment:'创建时间'" json:"createdAt"`
+	UpdatedAt FmtTime `gorm:"comment:'修改时间'" json:"updatedAt"`
 }
 
 type BuildPlan struct {
-	ID         string  `gorm:"primarykey" json:"id"`
-	Name       string  `gorm:"unique;not null" json:"name" binding:"required"`
-	PId        string  `json:"pId"`
-	LastCostMs int64   `json:"lastCostMs"`
-	Config     string  `gorm:"type:json" json:"config"`
-	CreatedAt  FmtTime `json:"createdAt"`
-	UpdatedAt  FmtTime `json:"updatedAt"`
+	ID         string  `gorm:"primarykey;comment:'ID'" json:"id"`
+	Name       string  `gorm:"unique;not null;comment:'构建计划名称'" json:"name" binding:"required"`
+	PId        string  `gorm:"comment:'父级ID'" json:"pId"`
+	LastCostMs int64   `gorm:"comment:'上次花费时间毫秒'" json:"lastCostMs"`
+	Config     string  `gorm:"type:json;comment:'配置信息'" json:"config"`
+	CreatedAt  FmtTime `gorm:"comment:'创建时间'" json:"createdAt"`
+	UpdatedAt  FmtTime `gorm:"comment:'修改时间'" json:"updatedAt"`
 }
 
 type BuildTask struct {
-	ID        string  `gorm:"primarykey" json:"id"`
-	Num       int64   `json:"num"`
-	State     int8    `json:"state"`
-	CreatedAt FmtTime `json:"createdAt"`
-	UpdatedAt FmtTime `json:"updatedAt"`
+	ID        string  `gorm:"primarykey;comment:'ID'" json:"id"`
+	Num       int64   `gorm:"comment:'构建任务序号'" json:"num"`
+	State     string  `gorm:"comment:'状态[SUCCESS,FAIL,ABORT]'" json:"state"`
+	CreatedAt FmtTime `gorm:"comment:'创建时间'" json:"createdAt"`
+	UpdatedAt FmtTime `gorm:"comment:'修改时间'" json:"updatedAt"`
 }
 
 type FmtTime time.Time
