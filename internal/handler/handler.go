@@ -34,7 +34,7 @@ func ToolList(c *gin.Context) {
 func SaveTool(c *gin.Context) {
 	var tool model.Tool
 	if err := c.ShouldBindJSON(&tool); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(400, &model.Res{Msg: err.Error()})
 		return
 	}
 
@@ -52,7 +52,7 @@ func SaveTool(c *gin.Context) {
 func DelTool(c *gin.Context) {
 	var req model.ReqIds
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(400, &model.Res{Msg: err.Error()})
 		return
 	}
 
@@ -82,7 +82,20 @@ func ProjectList(c *gin.Context) {
 
 // save project
 func SaveProject(c *gin.Context) {
+	var project model.Project
+	if err := c.ShouldBindJSON(&project); err != nil {
+		c.JSON(400, &model.Res{Msg: err.Error()})
+		return
+	}
 
+	var res model.Res
+	if service.SaveProject(project) {
+		res = model.Res{Msg: "save project success"}
+	} else {
+		res = model.Res{Msg: "save project failed"}
+	}
+	log.Printf("save project: %+v\n", res)
+	c.JSON(200, res)
 }
 
 // del project

@@ -139,3 +139,26 @@ func DelProject(ids []string) bool {
 	tx := db.Where("id in ?", ids).Delete(&model.Project{})
 	return tx.RowsAffected > 0
 }
+
+// export save project
+func SaveProject(project model.Project) bool {
+	db := sqlite.GetDB()
+
+	// check path before insert
+	if project.ID == "" {
+		var count int64
+		err := db.Model(&project).Where("name = ?", project.Name).Count(&count).Error
+		if err != nil {
+			panic(err)
+		}
+
+		if count != 0 {
+			log.Printf("project records found...name: %s, type: %s", project.Name, project.Type)
+			return false
+		}
+	}
+
+	log.Printf("project: %+v", project)
+	tx := db.Save(&project)
+	return tx.RowsAffected > 0
+}

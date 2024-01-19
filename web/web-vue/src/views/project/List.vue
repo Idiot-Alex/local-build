@@ -17,6 +17,11 @@ const selectedData = ref(null)
 const dt = ref(null)
 const filters = ref({})
 const submitted = ref(false)
+const types = ref([
+  { label: 'GIT', value: 'GIT' },
+  { label: 'DIR', value: 'DIR' },
+  { label: 'SVN', value: 'SVN' },
+])
 
 onBeforeMount(() => {
   initFilters()
@@ -106,7 +111,7 @@ const initFilters = () => {
         >
           <template #header>
               <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                  <h5 class="m-0">Tools Manage</h5>
+                  <h5 class="m-0">Projects Manage</h5>
                   <span class="block mt-2 md:mt-0 p-input-icon-left">
                       <i class="pi pi-search" />
                       <InputText v-model="filters['global'].value" placeholder="Search..." />
