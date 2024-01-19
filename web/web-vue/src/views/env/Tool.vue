@@ -67,7 +67,7 @@ const saveData = () => {
     return
   }
   saveTool(tempData.value).then(res => {
-    toast.add({ severity: 'success', summary: 'Successful', detail: res.msg, life: 3000 })
+    toast.add({ severity: 'success', summary: 'Info', detail: res.msg, life: 3000 })
     editDialog.value = false
     tempData.value = {}
     loadList()
@@ -89,7 +89,7 @@ const deleteAction = () => {
     ids: [ tempData.value.id ]
   }
   delTool(data).then(res => {
-    toast.add({ severity: 'success', summary: 'Successful', detail: res.msg, life: 3000 })
+    toast.add({ severity: 'success', summary: 'Info', detail: res.msg, life: 3000 })
     deleteDialog.value = false
     tempData.value = {}
     loadList()
@@ -109,7 +109,7 @@ const deleteSelected = () => {
   }
   selectedData.value.filter(d => data.ids.push(d.id))
   delTool(data).then(res => {
-    toast.add({ severity: 'success', summary: 'Successful', detail: res.msg, life: 3000 })
+    toast.add({ severity: 'success', summary: 'Info', detail: res.msg, life: 3000 })
     deleteDialogs.value = false
     selectedData.value = null
     loadList()
