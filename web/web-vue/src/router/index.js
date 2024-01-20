@@ -14,14 +14,19 @@ const router = createRouter({
           component: () => import('@/views/Empty.vue')
         },
         {
-          path: '/project/list',
+          path: '/project',
           name: 'project',
-          component: () => import('@/views/project/List.vue')
+          component: () => import('@/views/Project.vue')
         },
         {
-          path: '/env/tool',
+          path: '/build-plan',
+          name: 'build-plan',
+          component: () => import('@/views/BuildPlan.vue')
+        },
+        {
+          path: '/tool',
           name: 'tool',
-          component: () => import('@/views/env/Tool.vue')
+          component: () => import('@/views/Tool.vue')
         },{
           path: '/env/crud',
           name: 'crud',

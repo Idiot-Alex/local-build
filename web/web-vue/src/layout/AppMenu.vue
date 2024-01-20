@@ -9,24 +9,16 @@ const model = ref([
         items: [{ label: '仪表盘', icon: 'pi pi-fw pi-home', to: '/' }]
     },
     {
-        label: '项目',
+        label: '项目及构建',
         items: [
-            { label: 'Project', icon: 'pi pi-fw pi-id-card', to: '/project/list' },
-            { label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/uikit/button', class: 'rotated-icon' },
-            { label: 'Menu', icon: 'pi pi-fw pi-bars', to: '/uikit/menu', preventExact: true },
-        ]
-    },
-    {
-        label: '构建',
-        items: [
-            { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', to: '/blocks', badge: 'NEW' },
-            { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: 'https://www.primefaces.org/primeblocks-vue', target: '_blank' }
+            { label: '项目管理', icon: 'pi pi-fw pi-bars', to: '/project' },
+            { label: '构建计划', icon: 'pi pi-fw pi-eye', to: '/build-plan' },
         ]
     },
     {
         label: '环境',
         items: [
-            { label: '构建工具', icon: 'pi pi-fw pi-wrench', to: '/env/tool' },
+            { label: '构建工具', icon: 'pi pi-fw pi-wrench', to: '/tool' },
             { label: '测试', icon: 'pi pi-fw pi-wrench', to: '/env/crud' },
         ]
     },
