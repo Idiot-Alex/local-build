@@ -115,3 +115,27 @@ func DelProject(c *gin.Context) {
 	log.Printf("del project: %+v\n", res)
 	c.JSON(200, res)
 }
+
+// build plan list
+func BuildPlanList(c *gin.Context) {
+	var query model.BuildPlanQuery
+	if err := c.ShouldBindJSON(&query); err != nil {
+		c.JSON(400, &model.Res{Msg: err.Error()})
+		return
+	}
+
+	projects := service.BuildPlanList(&query)
+	res := model.Res{Msg: "success", Data: projects}
+	log.Printf("build plan list: %+v\n", res)
+	c.JSON(200, res)
+}
+
+// save build plan
+func SaveBuildPlan(c *gin.Context) {
+
+}
+
+// del build plan
+func DelBuildPlan(c *gin.Context) {
+
+}

@@ -85,7 +85,7 @@ func SaveTool(tool model.Tool) bool {
 
 	db := sqlite.GetDB()
 
-	// check path before insert
+	// check name before insert
 	if tool.ID == "" {
 		var count int64
 		err := db.Model(&tool).Where("path = ?", tool.Path).Count(&count).Error
@@ -144,7 +144,7 @@ func DelProject(ids []string) bool {
 func SaveProject(project model.Project) bool {
 	db := sqlite.GetDB()
 
-	// check path before insert
+	// check name before insert
 	if project.ID == "" {
 		var count int64
 		err := db.Model(&project).Where("name = ?", project.Name).Count(&count).Error
@@ -160,5 +160,57 @@ func SaveProject(project model.Project) bool {
 
 	log.Printf("project: %+v", project)
 	tx := db.Save(&project)
+	return tx.RowsAffected > 0
+}
+
+// build plan list
+func BuildPlanList(query *model.BuildPlanQuery) *model.PaginationRes {
+	offset := (query.PageNo - 1) * query.PageSize
+	var buildPlans []model.BuildPlan
+	var count int64
+
+	var conditions []string
+	if query.Name != "" {
+		conditions = append(conditions, fmt.Sprintf("name LIKE '%%%s%%'", query.Name))
+	}
+	whereSql := strings.Join(conditions, " AND ")
+
+	db := sqlite.GetDB()
+
+	listQuery := db.Model(&model.BuildPlan{}).Offset(offset).Limit(query.PageSize).Order("name")
+	listQuery.Where(whereSql).Find(&buildPlans)
+
+	db.Model(&model.BuildPlan{}).Where(whereSql).Count(&count)
+
+	return &model.PaginationRes{DataList: &buildPlans, Total: count}
+}
+
+// save build plan
+func SaveBuildPlan(buildPlan model.BuildPlan) bool {
+	db := sqlite.GetDB()
+
+	// check name before insert
+	if buildPlan.ID == "" {
+		var count int64
+		err := db.Model(&buildPlan).Where("name = ?", buildPlan.Name).Count(&count).Error
+		if err != nil {
+			panic(err)
+		}
+
+		if count != 0 {
+			log.Printf("build plan records found...name: %s", buildPlan.Name)
+			return false
+		}
+	}
+
+	log.Printf("build plan: %+v", buildPlan)
+	tx := db.Save(&buildPlan)
+	return tx.RowsAffected > 0
+}
+
+// del build plan
+func DelBuildPlan(ids []string) bool {
+	db := sqlite.GetDB()
+	tx := db.Where("id in ?", ids).Delete(&model.BuildPlan{})
 	return tx.RowsAffected > 0
 }

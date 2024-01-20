@@ -29,6 +29,13 @@ func InitApis(r *gin.Engine) {
 		project.POST("/save", handler.SaveProject)
 		project.POST("/del", handler.DelProject)
 	}
+
+	plan := r.Group("/api/build-plan")
+	{
+		plan.POST("/list", handler.BuildPlanList)
+		plan.POST("/save", handler.SaveBuildPlan)
+		plan.POST("/del", handler.DelBuildPlan)
+	}
 }
 
 // gin.Context，封装了request和response

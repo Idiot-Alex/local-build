@@ -27,6 +27,11 @@ type ProjectQuery struct {
 	Name string `json:"name"`
 }
 
+type BuildPlanQuery struct {
+	PaginationReq
+	Name string `json:"name"`
+}
+
 type ReqIds struct {
 	Ids []string `json:"ids" binding:"required"`
 }
