@@ -102,7 +102,7 @@ func SaveProject(c *gin.Context) {
 func DelProject(c *gin.Context) {
 	var req model.ReqIds
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
+		c.JSON(400, &model.Res{Msg: err.Error()})
 		return
 	}
 
@@ -132,10 +132,36 @@ func BuildPlanList(c *gin.Context) {
 
 // save build plan
 func SaveBuildPlan(c *gin.Context) {
+	var buildPlan model.BuildPlan
+	if err := c.ShouldBindJSON(&buildPlan); err != nil {
+		c.JSON(400, &model.Res{Msg: err.Error()})
+		return
+	}
 
+	var res model.Res
+	if service.SaveBuildPlan(buildPlan) {
+		res = model.Res{Msg: "save build plan success"}
+	} else {
+		res = model.Res{Msg: "save build plan failed"}
+	}
+	log.Printf("save build plan: %+v\n", res)
+	c.JSON(200, res)
 }
 
 // del build plan
 func DelBuildPlan(c *gin.Context) {
+	var req model.ReqIds
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, &model.Res{Msg: err.Error()})
+		return
+	}
 
+	var res model.Res
+	if service.DelBuildPlan(req.Ids) {
+		res = model.Res{Msg: "del build plan success"}
+	} else {
+		res = model.Res{Msg: "del build plan failed"}
+	}
+	log.Printf("del project: %+v\n", res)
+	c.JSON(200, res)
 }

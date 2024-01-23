@@ -34,6 +34,43 @@ func TestBuildPlanList(t *testing.T) {
 	}
 }
 
+func TestSaveBuildPlan(t *testing.T) {
+	router := initRouter()
+
+	buildPlan := model.BuildPlan{
+		Name: "test1",
+	}
+	jsonData, _ := json.Marshal(buildPlan)
+	req, _ := http.NewRequest(http.MethodPost, "/api/build-plan/save", bytes.NewBuffer(jsonData))
+	req.Header.Set("Content-Type", "application/json")
+
+	res := httptest.NewRecorder()
+	router.ServeHTTP(res, req)
+	log.Printf("res: %v\n", res.Body.String())
+	// 检查响应是否符合预期
+	if res.Body.String() == "" {
+		t.Errorf("handler returned unexpected body: got %v", res.Body.String())
+	}
+}
+
+func TestDelBuildPlan(t *testing.T) {
+	router := initRouter()
+
+	data := model.ReqIds{Ids: []string{"20240123160639060"}}
+	body, _ := json.Marshal(data)
+	req, _ := http.NewRequest(http.MethodPost, "/api/build-plan/del", bytes.NewBuffer(body))
+
+	res := httptest.NewRecorder()
+
+	router.ServeHTTP(res, req)
+
+	log.Printf("code: %v, res: %v\n", res.Code, res.Body.String())
+	// 检查响应是否符合预期
+	if res.Body.String() == "" {
+		t.Errorf("handler returned unexpected body: got %v", res.Body.String())
+	}
+}
+
 func TestToolList(t *testing.T) {
 	// 创建一个 router
 	router := initRouter()
@@ -138,6 +175,8 @@ func initRouter() *gin.Engine {
 	router.POST("/api/project/del", DelProject)
 
 	router.GET("/api/build-plan/list", BuildPlanList)
+	router.POST("/api/build-plan/save", SaveBuildPlan)
+	router.POST("/api/build-plan/del", DelBuildPlan)
 
 	return router
 }

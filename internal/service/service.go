@@ -97,6 +97,7 @@ func SaveTool(tool model.Tool) bool {
 			log.Printf("%s records found...name: %s, path: %s", tool.Type, tool.Name, tool.Path)
 			return false
 		}
+		tool.ID = utils.GenerateIdStr()
 	}
 
 	log.Printf("tool: %+v", tool)
@@ -156,6 +157,7 @@ func SaveProject(project model.Project) bool {
 			log.Printf("project records found...name: %s, type: %s", project.Name, project.Type)
 			return false
 		}
+		project.ID = utils.GenerateIdStr()
 	}
 
 	log.Printf("project: %+v", project)
@@ -201,6 +203,7 @@ func SaveBuildPlan(buildPlan model.BuildPlan) bool {
 			log.Printf("build plan records found...name: %s", buildPlan.Name)
 			return false
 		}
+		buildPlan.ID = utils.GenerateIdStr()
 	}
 
 	log.Printf("build plan: %+v", buildPlan)
