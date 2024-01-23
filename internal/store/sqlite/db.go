@@ -32,13 +32,13 @@ func GetDB() gorm.DB {
 			SingularTable: true,
 		},
 	})
-  if err != nil {
-    panic("failed to connect database")
-  }
+	if err != nil {
+		panic("failed to connect database")
+	}
 	sqlDB, err := db.DB()
 	if err != nil {
-    panic("failed to connect database")
-  }
+		panic("failed to connect database")
+	}
 	// SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。
 	sqlDB.SetMaxIdleConns(10)
 
@@ -52,5 +52,5 @@ func GetDB() gorm.DB {
 
 func InitTable() {
 	db := GetDB()
-	db.AutoMigrate(&model.Project{}, &model.Tool{})
+	db.AutoMigrate(&model.Project{}, &model.Tool{}, &model.BuildPlan{}, &model.BuildTask{})
 }

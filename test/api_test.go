@@ -14,12 +14,40 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func TestBuildPlanList(t *testing.T) {
+	router := initRouter()
+	jsonData := []byte(`
+		{
+			"pageNo": 1,
+			"pageSize": 30
+		}
+	`)
+	req, _ := http.NewRequest(http.MethodGet, "/api/build-plan/list", bytes.NewBuffer(jsonData))
+	req.Header.Set("Content-Type", "application/json")
+
+	res := httptest.NewRecorder()
+	router.ServeHTTP(res, req)
+	log.Printf("res: %v\n", res.Body.String())
+	// 检查响应是否符合预期
+	if res.Body.String() == "" {
+		t.Errorf("handler returned unexpected body: got %v", res.Body.String())
+	}
+}
+
 func TestToolList(t *testing.T) {
 	// 创建一个 router
 	router := initRouter()
 
+	jsonData := []byte(`
+		{
+			"pageNo": 1,
+			"pageSize": 30
+		}
+	`)
 	// 创建一个 GET 请求并设置参数
-	req1, _ := http.NewRequest(http.MethodGet, "/api/tool/list", nil)
+	req1, _ := http.NewRequest(http.MethodGet, "/api/tool/list", bytes.NewBuffer(jsonData))
+	// 设置 Content-Type 头部
+	req1.Header.Set("Content-Type", "application/json")
 
 	// 为每个测试用例创建一个新的 ResultRecorder
 	res1 := httptest.NewRecorder()
@@ -61,7 +89,13 @@ func TestSaveTool(t *testing.T) {
 func TestProjectList(t *testing.T) {
 	router := initRouter()
 
-	req, _ := http.NewRequest(http.MethodGet, "/api/project/list", nil)
+	jsonData := []byte(`
+		{
+			"pageNo": 1,
+			"pageSize": 30
+		}
+	`)
+	req, _ := http.NewRequest(http.MethodGet, "/api/project/list", bytes.NewBuffer(jsonData))
 
 	res := httptest.NewRecorder()
 
@@ -77,7 +111,7 @@ func TestProjectList(t *testing.T) {
 func TestDelProject(t *testing.T) {
 	router := initRouter()
 
-	data := model.ReqIds{ Ids: []string{"1"} }
+	data := model.ReqIds{Ids: []string{"1"}}
 	body, _ := json.Marshal(data)
 	req, _ := http.NewRequest(http.MethodPost, "/api/project/del", bytes.NewBuffer(body))
 
@@ -102,5 +136,8 @@ func initRouter() *gin.Engine {
 	router.POST("/api/project/save", SaveProject)
 	router.GET("/api/project/list", ProjectList)
 	router.POST("/api/project/del", DelProject)
+
+	router.GET("/api/build-plan/list", BuildPlanList)
+
 	return router
 }
