@@ -193,9 +193,9 @@ const initFilters = () => {
           </div>
           <div class="field">
             <label for="type" class="mb-3">Type</label>
-            <Dropdown id="type" v-model="tempData.type" :options="types" optionLabel="label" optionValue="value" placeholder="Select a Type" required="true" :class="{ 'p-invalid': submitted && !tempData.type }">
+            <Dropdown id="type" v-model="tempData.repoType" :options="types" optionLabel="label" optionValue="value" placeholder="Select a Repo Type" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
             </Dropdown>
-            <small color-red class="p-invalid" v-if="submitted && !tempData.type">Type is required.</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.repoType">Repo Type is required.</small>
           </div>
           <div class="field">
             <label for="desc">Description</label>

@@ -41,11 +41,20 @@ type Res struct {
 	Data interface{} `json:"data"`
 }
 
+type ProjectConfig struct {
+	Path string `json:"path"`
+	Repo struct {
+		Url      string `json:"url"`
+		UserName string `json:"userName"`
+		Password string `json:"password"`
+	} `json:"repo"`
+}
+
 type Project struct {
 	ID         string  `gorm:"primarykey;comment:'ID'" json:"id"`
 	Name       string  `gorm:"unique;not null;comment:'项目名称'" json:"name"`
 	Desc       string  `gorm:"comment:'项目描述'" json:"desc"`
-	Type       string  `gorm:"comment:'项目类型[GIT,Dir]'" json:"type"`
+	RepoType   string  `gorm:"comment:'仓库类型[GIT,DIR,SVN]'" json:"repoType"`
 	Config     string  `gorm:"type:json;comment:'项目配置'" json:"config"`
 	ParsedInfo string  `gorm:"type:json;comment:'项目解析后的信息'" json:"parsedInfo"`
 	CreatedAt  FmtTime `gorm:"comment:'创建时间'" json:"createdAt"`

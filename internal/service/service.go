@@ -154,7 +154,7 @@ func SaveProject(project model.Project) bool {
 		}
 
 		if count != 0 {
-			log.Printf("project records found...name: %s, type: %s", project.Name, project.Type)
+			log.Printf("project records found...name: %s, repoType: %s", project.Name, project.RepoType)
 			return false
 		}
 		project.ID = utils.GenerateIdStr()
@@ -163,6 +163,17 @@ func SaveProject(project model.Project) bool {
 	log.Printf("project: %+v", project)
 	tx := db.Save(&project)
 	return tx.RowsAffected > 0
+}
+
+// parse project
+func ParseProject(project model.Project) string {
+	// assert project repoType
+	switch project.RepoType {
+	case env.GIT:
+	case env.DIR:
+	case env.SVN:
+	}
+	return ""
 }
 
 // build plan list
