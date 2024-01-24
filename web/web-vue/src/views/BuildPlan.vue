@@ -2,7 +2,7 @@
 import { FilterMatchMode } from 'primevue/api'
 import { ref, onMounted, onBeforeMount } from 'vue'
 import { useToast } from 'primevue/usetoast'
-import { projectList, saveProject, delProject } from '@/api/project.js'
+import { buildPlanList, saveBuildPlan, delBuildPlan } from '@/api/build-plan.js'
 
 const toast = useToast()
 
@@ -35,7 +35,7 @@ onMounted(() => {
 })
 
 const loadList = () => {
-  projectList(query.value).then(res => {
+  buildPlanList(query.value).then(res => {
     dataList.value = res.data.dataList
     total.value = res.data.total
   })
@@ -65,7 +65,7 @@ const saveData = () => {
     toast.add({ severity: 'warning', summary: 'Tips', detail: 'Please input data', life: 3000 })
     return
   }
-  saveProject(tempData.value).then(res => {
+  saveBuildPlan(tempData.value).then(res => {
     toast.add({ severity: 'success', summary: 'Info', detail: res.msg, life: 3000 })
     editDialog.value = false
     tempData.value = {}
@@ -87,7 +87,7 @@ const deleteAction = () => {
   const data = {
     ids: [ tempData.value.id ]
   }
-  delProject(data).then(res => {
+  delBuildPlan(data).then(res => {
     toast.add({ severity: 'success', summary: 'Info', detail: res.msg, life: 3000 })
     deleteDialog.value = false
     tempData.value = {}
@@ -161,7 +161,7 @@ const initFilters = () => {
         >
           <template #header>
               <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                  <h5 class="m-0">Projects Manage</h5>
+                  <h5 class="m-0">Build Plan Manage</h5>
                   <span class="block mt-2 md:mt-0 p-input-icon-left">
                       <i class="pi pi-search" />
                       <InputText v-model="filters['global'].value" placeholder="Search..." />
