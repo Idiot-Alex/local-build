@@ -7,8 +7,8 @@ import (
 )
 
 type PackageJson struct {
-	Name string `json:"name"`
-	Version string `json:"version"`
+	Name        string `json:"name"`
+	Version     string `json:"version"`
 	Description string `json:"description"`
 }
 
@@ -20,7 +20,7 @@ func ParsePackage(file string) string {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	var packageJson PackageJson
 	err = json.Unmarshal(data, &packageJson)
 	if err != nil {

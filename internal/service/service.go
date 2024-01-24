@@ -170,6 +170,7 @@ func ParseProject(project model.Project) string {
 	// assert project repoType
 	switch project.RepoType {
 	case env.GIT:
+
 	case env.DIR:
 	case env.SVN:
 	}

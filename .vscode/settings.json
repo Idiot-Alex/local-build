@@ -69,5 +69,6 @@
     "usetoast",
     "virtualscroller",
     "zhangxin"
-  ]
+  ],
+  "go.testTimeout": "30s"
 }
