@@ -24,3 +24,29 @@ func TestGitClone(t *testing.T) {
 		panic(err)
 	}
 }
+
+func TestGitFetchAll(t *testing.T) {
+	c := utils.GitConfig{
+		Url:       "https://gitee.com/hotstrip/hello-world-java.git",
+		LocalPath: "/tmp/test/hello",
+	}
+	err := utils.GitFetchAll(c)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func TestGitRemoteBranchList(t *testing.T) {
+	c := utils.GitConfig{
+		Url:       "https://gitee.com/hotstrip/hello-world-java.git",
+		LocalPath: "/tmp/test/hello",
+	}
+	branches, err := utils.GitRemoteBranchList(c)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, b := range branches {
+		utils.Info("branch: %s", b)
+	}
+}
