@@ -15,5 +15,12 @@ func TestProjectParse(t *testing.T) {
 }
 
 func TestGitClone(t *testing.T) {
-	utils.GitClone()
+	c := utils.GitConfig{
+		Url:       "https://gitee.com/hotstrip/hello-world-java.git",
+		LocalPath: "/tmp/test/hello",
+	}
+	err := utils.GitClone(c)
+	if err != nil {
+		panic(err)
+	}
 }

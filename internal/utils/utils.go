@@ -43,12 +43,12 @@ func GetHomePath() string {
 		panic(err)
 	}
 	exPath := filepath.Dir(ex)
-	log.Printf("exPath: %v\n", exPath)
+	Info("exPath: %s", exPath)
 	realPath, err := filepath.EvalSymlinks(exPath)
 	if err != nil {
 		panic(err)
 	}
-	log.Printf("home path: %v\n", realPath)
+	Info("home path: %s", realPath)
 	return realPath
 }
 
@@ -58,15 +58,15 @@ func Error(err error) {
 		return
 	}
 
-	fmt.Printf("\x1b[31;1m%s\x1b[0m\n", fmt.Sprintf("error: %s", err))
+	log.Printf("\x1b[31;1m%s\x1b[0m\n", fmt.Sprintf("error: %s", err))
 }
 
 // Info should be used to describe the example commands that are about to run.
 func Info(format string, args ...interface{}) {
-	fmt.Printf("\x1b[34;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
+	log.Printf("\x1b[34;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
 }
 
 // Warning should be used to display a warning
 func Warning(format string, args ...interface{}) {
-	fmt.Printf("\x1b[36;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
+	log.Printf("\x1b[36;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
 }

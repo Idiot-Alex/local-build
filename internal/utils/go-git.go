@@ -1,31 +1,31 @@
 package utils
 
 import (
-	"fmt"
-
 	"github.com/go-git/go-git/v5"
 )
 
-// use go-git clone repo
-func GitClone() {
-	url := "git@github.com:Idiot-Alex/local-build.git"
-	directory := "/tmp/test/local-build"
-	// Clone the given repository to the given directory
-	Info("git clone %s %s --recursive", url, directory)
+type GitConfig struct {
+	Url       string
+	LocalPath string
+	Protocol  string
+	UserName  string
+	Password  string
+}
 
-	r, err := git.PlainClone(directory, false, &git.CloneOptions{
-		URL:               url,
+// use go-git clone repo
+func GitClone(c GitConfig) error {
+	// Clone the given repository to the given directory
+	Info("git clone %s %s --recursive", c.Url, c.LocalPath)
+
+	_, err := git.PlainClone(c.LocalPath, false, &git.CloneOptions{
+		URL:               c.Url,
 		RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
 	})
 
-	Error(err)
+	if err != nil {
+		Error(err)
+		return err
+	}
 
-	// ... retrieving the branch being pointed by HEAD
-	ref, err := r.Head()
-	Error(err)
-	// ... retrieving the commit object
-	commit, err := r.CommitObject(ref.Hash())
-	Error(err)
-
-	fmt.Println(commit)
+	return nil
 }

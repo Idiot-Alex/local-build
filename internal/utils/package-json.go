@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"log"
 	"os"
 )
 
@@ -28,7 +27,7 @@ func ParsePackage(file string) string {
 	}
 
 	jsonData, _ := json.MarshalIndent(packageJson, "", "  ")
-	log.Printf("pom: %v\n", string(jsonData))
+	Info("pom: %s", string(jsonData))
 
 	return string(jsonData)
 }

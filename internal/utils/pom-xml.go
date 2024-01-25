@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"encoding/xml"
-	"log"
 	"os"
 )
 
@@ -12,9 +11,9 @@ type PomXml struct {
 	GroupID    string   `xml:"groupId"`
 	ArtifactID string   `xml:"artifactId"`
 	Version    string   `xml:"version"`
-	Packaging  string		`xml:"packaging"`
-	Profiles	 string		`xml:"profiles"`
-	Modules		 []string `xml:"modules>module"`
+	Packaging  string   `xml:"packaging"`
+	Profiles   string   `xml:"profiles"`
+	Modules    []string `xml:"modules>module"`
 }
 
 // parse pom.xml
@@ -33,7 +32,7 @@ func ParsePom(file string) string {
 	}
 
 	jsonData, _ := json.MarshalIndent(project, "", "  ")
-	log.Printf("pom: %v\n", string(jsonData))
+	Info("pom: %s", string(jsonData))
 
 	return string(jsonData)
 }
