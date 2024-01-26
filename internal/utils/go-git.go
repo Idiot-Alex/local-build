@@ -1,17 +1,47 @@
 package utils
 
 import (
+	"local-build/internal/pkg/env"
+
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/go-git/go-git/v5/plumbing/transport"
+	"github.com/go-git/go-git/v5/plumbing/transport/http"
+	"github.com/go-git/go-git/v5/plumbing/transport/ssh"
 )
 
 type GitConfig struct {
-	Url       string
-	LocalPath string
-	Protocol  string
-	UserName  string
-	Password  string
+	Url           string
+	LocalPath     string
+	AccessType    string
+	UserName      string
+	Password      string
+	SshPrivateKey string
+	KeyPassphrase string
+	AccessToken   string
+}
+
+func getAuth(c GitConfig) (transport.AuthMethod, error) {
+	switch c.AccessType {
+	case env.CREDENTIALS:
+		return &http.BasicAuth{
+			Username: c.UserName,
+			Password: c.Password,
+		}, nil
+	case env.SSH_PRIVATE_KEY:
+		auth, err := ssh.NewPublicKeysFromFile(c.UserName, c.SshPrivateKey, c.KeyPassphrase)
+		if err != nil {
+			Error(err)
+			return nil, err
+		}
+		return auth, nil
+	case env.ACCESS_TOKEN:
+		return &http.TokenAuth{
+			Token: c.AccessToken,
+		}, nil
+	}
+	return nil, nil
 }
 
 // use go-git clone repo
@@ -19,8 +49,15 @@ func GitClone(c GitConfig) error {
 	// Clone the given repository to the given directory
 	Info("git clone %s %s --recursive", c.Url, c.LocalPath)
 
-	_, err := git.PlainClone(c.LocalPath, false, &git.CloneOptions{
+	auth, err := getAuth(c)
+	if err != nil {
+		Error(err)
+		return nil
+	}
+
+	_, err = git.PlainClone(c.LocalPath, false, &git.CloneOptions{
 		URL:               c.Url,
+		Auth:              auth,
 		RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
 	})
 
@@ -41,12 +78,19 @@ func GitFetchAll(c GitConfig) error {
 		return err
 	}
 
+	auth, err := getAuth(c)
+	if err != nil {
+		Error(err)
+		return nil
+	}
+
 	// 获取所有远程分支的最新代码
 	err = repo.Fetch(&git.FetchOptions{
 		RemoteName: "origin",
 		RefSpecs: []config.RefSpec{
 			"+refs/heads/*:refs/heads/*",
 		},
+		Auth: auth,
 	})
 	if err != nil {
 		if err == git.NoErrAlreadyUpToDate {

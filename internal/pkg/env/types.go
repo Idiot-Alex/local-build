@@ -15,4 +15,11 @@ const (
 
 	DIR string = "DIR"
 	SVN string = "SVN"
+
+	// 凭据：用户名密码
+	CREDENTIALS string = "credentials"
+	// ssh 私钥
+	SSH_PRIVATE_KEY string = "sshPrivateKey"
+	// access token
+	ACCESS_TOKEN string = "accessToken"
 )

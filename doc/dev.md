@@ -30,3 +30,5 @@
     - SVN 项目解析
     - [ ] 从 config 属性中解析仓库信息，支持用户名密码导入和 SSH 私钥导入，把 SVN 项目克隆到本地
     - [ ] 遍历整个目录树，解析指定文件（比如 package.json、pom.xml），汇总到 parsedInfo 属性，存储到数据库
+- GIT 仓库导入
+- [ ] 支持三种方式认证：用户名密码、SSH 私钥、AccessToken
