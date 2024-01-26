@@ -15,9 +15,14 @@ func TestProjectParse(t *testing.T) {
 }
 
 func TestGitClone(t *testing.T) {
+	// https://gitee.com/hotstrip/hello-world-java.git
+	// git@gitee.com:hotstrip/hello-world-java.git
 	c := utils.GitConfig{
-		Url:       "https://gitee.com/hotstrip/hello-world-java.git",
-		LocalPath: "/tmp/test/hello",
+		Url:           "git@gitee.com:hotstrip/hello-world-java.git",
+		LocalPath:     "/tmp/test/hello2",
+		AccessType:    env.SSH_PRIVATE_KEY,
+		SshPrivateKey: "/Users/zhangxin/.ssh/id_rsa",
+		KeyPassphrase: "",
 	}
 	err := utils.GitClone(c)
 	if err != nil {

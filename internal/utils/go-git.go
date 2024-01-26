@@ -23,6 +23,7 @@ type GitConfig struct {
 }
 
 func getAuth(c GitConfig) (transport.AuthMethod, error) {
+	Info("use [%s] to access repo [%s]", c.AccessType, c.Url)
 	switch c.AccessType {
 	case env.CREDENTIALS:
 		return &http.BasicAuth{
@@ -30,6 +31,10 @@ func getAuth(c GitConfig) (transport.AuthMethod, error) {
 			Password: c.Password,
 		}, nil
 	case env.SSH_PRIVATE_KEY:
+		if c.UserName == "" {
+			c.UserName = "git"
+			Info("use default user: [git] to SSH private key access repo")
+		}
 		auth, err := ssh.NewPublicKeysFromFile(c.UserName, c.SshPrivateKey, c.KeyPassphrase)
 		if err != nil {
 			Error(err)
@@ -66,6 +71,7 @@ func GitClone(c GitConfig) error {
 		return err
 	}
 
+	Info("Repository [%s] has been cloned into [%s].", c.Url, c.LocalPath)
 	return nil
 }
 
@@ -81,7 +87,7 @@ func GitFetchAll(c GitConfig) error {
 	auth, err := getAuth(c)
 	if err != nil {
 		Error(err)
-		return nil
+		return err
 	}
 
 	// 获取所有远程分支的最新代码
@@ -98,6 +104,7 @@ func GitFetchAll(c GitConfig) error {
 			return nil
 		}
 		Error(err)
+		return err
 	}
 	Info("Repository [%s] has been updated.", c.LocalPath)
 	return nil
