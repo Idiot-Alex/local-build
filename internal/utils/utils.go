@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"local-build/internal/lblog"
 	"math/rand"
@@ -50,4 +51,10 @@ func GetHomePath() string {
 	}
 	lblog.Info("home path: %s", realPath)
 	return realPath
+}
+
+// to json string
+func ToJsonString(data interface{}) string {
+	jsonData, _ := json.MarshalIndent(data, "", "  ")
+	return string(jsonData)
 }

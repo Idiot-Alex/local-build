@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestPackage(t *testing.T) {
-	data := fileparse.ParsePackage("resources/test_package.json")
+func TestPackageJson(t *testing.T) {
+	data, _ := fileparse.ParsePackageJson("resources/test_package.json")
 	t.Logf("data: %#v\n", data)
 }

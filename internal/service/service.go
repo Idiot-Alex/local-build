@@ -203,30 +203,25 @@ func ParseProject(p model.Project) string {
 		}
 
 		lblog.Info("Directory %s exists.", dir)
-		// foreach dir tree to parse files
-		walkFunc := func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err // 如果出错，直接返回错误
-			}
-			if !info.IsDir() {
-				lblog.Info("current file: [%s], name: [%s]", path, info.Name())
-				switch info.Name() {
-				case env.PACKAGE_JSON:
-					fileparse.ParsePackage(path)
-				case env.POM_XML:
-					fileparse.ParsePom(path)
-				}
-			}
-			return nil
-		}
-
-		// 遍历目录（包括子目录），调用回调函数处理每个文件或目录
-		if err := filepath.Walk(p.Path, walkFunc); err != nil {
-			lblog.Error("Walk() failed: %v\n", err)
-		}
 	case env.DIR:
+		// check if path exist
+		dir := filepath.Join(p.Path)
+		_, err := os.Stat(dir)
+		if err != nil {
+			lblog.Error("the file path [%s] error: %s ", dir, err)
+			panic(err)
+		}
 	case env.SVN:
 	}
+
+	// parse directory
+	parsed, err := fileparse.ParseDirectory(p.Path)
+	if err != nil {
+		lblog.Error("parse directory [%s] error: %s", p.Path, err)
+		panic(err)
+	}
+	lblog.Info("parsed info: %s", utils.ToJsonString(parsed))
+
 	return ""
 }
 

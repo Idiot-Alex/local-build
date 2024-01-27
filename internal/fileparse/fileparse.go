@@ -5,12 +5,21 @@ import (
 	"encoding/xml"
 	"local-build/internal/lblog"
 	"local-build/internal/pkg/env"
+	"local-build/internal/utils"
 	"os"
 	"path/filepath"
 )
 
-// parse dir
-func ParseDirectory(dir string) {
+type ParsedInfo struct {
+	PomXmlList      []PomXml      `json:"pomXmlList"`
+	PackageJsonList []PackageJson `json:"packageJsonList"`
+}
+
+// parse directory
+func ParseDirectory(dir string) (*ParsedInfo, error) {
+	var pomXmlList []PomXml
+	var packageJsonList []PackageJson
+
 	// foreach dir tree to parse files
 	walkFunc := func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -20,9 +29,19 @@ func ParseDirectory(dir string) {
 			lblog.Info("current file: [%s], name: [%s]", path, info.Name())
 			switch info.Name() {
 			case env.PACKAGE_JSON:
-				ParsePackage(path)
+				data, err := ParsePackageJson(path)
+				if err != nil {
+					lblog.Error("parse file [%s] error: %s", path, err)
+					return err
+				}
+				packageJsonList = append(packageJsonList, *data)
 			case env.POM_XML:
-				ParsePom(path)
+				data, err := ParsePomXml(path)
+				if err != nil {
+					lblog.Error("parse file [%s] error: %s", path, err)
+					return err
+				}
+				pomXmlList = append(pomXmlList, *data)
 			}
 		}
 		return nil
@@ -32,6 +51,11 @@ func ParseDirectory(dir string) {
 	if err := filepath.Walk(dir, walkFunc); err != nil {
 		lblog.Error("Walk() failed: %v\n", err)
 	}
+
+	return &ParsedInfo{
+		PomXmlList:      pomXmlList,
+		PackageJsonList: packageJsonList,
+	}, nil
 }
 
 type PackageJson struct {
@@ -43,24 +67,22 @@ type PackageJson struct {
 
 // parse package.json
 // return package info
-func ParsePackage(file string) string {
+func ParsePackageJson(file string) (*PackageJson, error) {
 	// 读取pom.xml文件的内容
 	data, err := os.ReadFile(file)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	filePath, _ := filepath.Abs(file)
-	packageJson := PackageJson{FilePath: filePath}
+	packageJson := &PackageJson{FilePath: filePath}
 	err = json.Unmarshal(data, &packageJson)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	jsonData, _ := json.MarshalIndent(packageJson, "", "  ")
-	lblog.Info("pom: %s", string(jsonData))
-
-	return string(jsonData)
+	lblog.Info("package.json: %s", utils.ToJsonString(packageJson))
+	return packageJson, nil
 }
 
 type PomXml struct {
@@ -76,22 +98,20 @@ type PomXml struct {
 
 // parse pom.xml
 // return PomXml info
-func ParsePom(file string) string {
+func ParsePomXml(file string) (*PomXml, error) {
 	// 读取pom.xml文件的内容
 	xmlData, err := os.ReadFile(file)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	filePath, _ := filepath.Abs(file)
-	project := PomXml{FilePath: filePath}
-	err = xml.Unmarshal(xmlData, &project)
+	pom := &PomXml{FilePath: filePath}
+	err = xml.Unmarshal(xmlData, &pom)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	jsonData, _ := json.MarshalIndent(project, "", "  ")
-	lblog.Info("pom: %s", string(jsonData))
-
-	return string(jsonData)
+	lblog.Info("pom.xml: %s", utils.ToJsonString(pom))
+	return pom, nil
 }
