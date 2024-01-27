@@ -22,4 +22,7 @@ const (
 	SSH_PRIVATE_KEY string = "sshPrivateKey"
 	// access token
 	ACCESS_TOKEN string = "accessToken"
+
+	PACKAGE_JSON string = "package.json"
+	POM_XML      string = "pom.xml"
 )

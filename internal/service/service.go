@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"local-build/internal/fileparse"
 	"local-build/internal/lblog"
 	"local-build/internal/pkg/env"
 	"local-build/internal/store/model"
@@ -208,9 +209,13 @@ func ParseProject(p model.Project) string {
 				return err // 如果出错，直接返回错误
 			}
 			if !info.IsDir() {
-				lblog.Info("dir: [%s]", path) // 如果是目录，打印目录名
-			} else {
-				lblog.Info("file: [%s]", path) // 如果是文件，打印文件名
+				lblog.Info("current file: [%s], name: [%s]", path, info.Name())
+				switch info.Name() {
+				case env.PACKAGE_JSON:
+					fileparse.ParsePackage(path)
+				case env.POM_XML:
+					fileparse.ParsePom(path)
+				}
 			}
 			return nil
 		}

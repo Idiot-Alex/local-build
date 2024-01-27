@@ -17,6 +17,7 @@
     "deferredcontent",
     "dialogservice",
     "dynamicdialog",
+    "fileparse",
     "fileupload",
     "firstname",
     "gonic",
