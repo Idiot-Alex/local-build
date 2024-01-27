@@ -2,7 +2,7 @@ package utils
 
 import (
 	"fmt"
-	"log"
+	"local-build/internal/lblog"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -43,30 +43,11 @@ func GetHomePath() string {
 		panic(err)
 	}
 	exPath := filepath.Dir(ex)
-	Info("exPath: %s", exPath)
+	lblog.Info("exPath: %s", exPath)
 	realPath, err := filepath.EvalSymlinks(exPath)
 	if err != nil {
 		panic(err)
 	}
-	Info("home path: %s", realPath)
+	lblog.Info("home path: %s", realPath)
 	return realPath
-}
-
-// print error
-func Error(err error) {
-	if err == nil {
-		return
-	}
-
-	log.Printf("\x1b[31;1m%s\x1b[0m\n", fmt.Sprintf("error: %s", err))
-}
-
-// Info should be used to describe the example commands that are about to run.
-func Info(format string, args ...interface{}) {
-	log.Printf("\x1b[34;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
-}
-
-// Warning should be used to display a warning
-func Warning(format string, args ...interface{}) {
-	log.Printf("\x1b[36;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
 }

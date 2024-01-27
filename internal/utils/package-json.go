@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"local-build/internal/lblog"
 	"os"
 )
 
@@ -27,7 +28,7 @@ func ParsePackage(file string) string {
 	}
 
 	jsonData, _ := json.MarshalIndent(packageJson, "", "  ")
-	Info("pom: %s", string(jsonData))
+	lblog.Info("pom: %s", string(jsonData))
 
 	return string(jsonData)
 }

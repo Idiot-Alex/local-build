@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"encoding/xml"
+	"local-build/internal/lblog"
 	"os"
 )
 
@@ -32,7 +33,7 @@ func ParsePom(file string) string {
 	}
 
 	jsonData, _ := json.MarshalIndent(project, "", "  ")
-	Info("pom: %s", string(jsonData))
+	lblog.Info("pom: %s", string(jsonData))
 
 	return string(jsonData)
 }

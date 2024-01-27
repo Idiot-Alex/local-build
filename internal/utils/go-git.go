@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"local-build/internal/lblog"
 	"local-build/internal/pkg/env"
 
 	"github.com/go-git/go-git/v5"
@@ -23,7 +24,7 @@ type GitConfig struct {
 }
 
 func getAuth(c GitConfig) (transport.AuthMethod, error) {
-	Info("use [%s] to access repo [%s]", c.AccessType, c.Url)
+	lblog.Info("use [%s] to access repo [%s]", c.AccessType, c.Url)
 	switch c.AccessType {
 	case env.CREDENTIALS:
 		return &http.BasicAuth{
@@ -33,11 +34,11 @@ func getAuth(c GitConfig) (transport.AuthMethod, error) {
 	case env.SSH_PRIVATE_KEY:
 		if c.UserName == "" {
 			c.UserName = "git"
-			Info("use default user: [git] to SSH private key access repo")
+			lblog.Info("use default user: [git] to SSH private key access repo")
 		}
 		auth, err := ssh.NewPublicKeysFromFile(c.UserName, c.SshPrivateKey, c.KeyPassphrase)
 		if err != nil {
-			Error(err)
+			lblog.Error(err)
 			return nil, err
 		}
 		return auth, nil
@@ -52,12 +53,12 @@ func getAuth(c GitConfig) (transport.AuthMethod, error) {
 // use go-git clone repo
 func GitClone(c GitConfig) error {
 	// Clone the given repository to the given directory
-	Info("git clone %s %s --recursive", c.Url, c.LocalPath)
+	lblog.Info("git clone %s %s --recursive", c.Url, c.LocalPath)
 
 	auth, err := getAuth(c)
 	if err != nil {
-		Error(err)
-		return nil
+		lblog.Error(err)
+		return err
 	}
 
 	_, err = git.PlainClone(c.LocalPath, false, &git.CloneOptions{
@@ -67,11 +68,11 @@ func GitClone(c GitConfig) error {
 	})
 
 	if err != nil {
-		Error(err)
+		lblog.Error(err)
 		return err
 	}
 
-	Info("Repository [%s] has been cloned into [%s].", c.Url, c.LocalPath)
+	lblog.Info("Repository [%s] has been cloned into [%s].", c.Url, c.LocalPath)
 	return nil
 }
 
@@ -80,13 +81,13 @@ func GitFetchAll(c GitConfig) error {
 	// 打开本地 Git 仓库
 	repo, err := git.PlainOpen(c.LocalPath)
 	if err != nil {
-		Error(err)
+		lblog.Error(err)
 		return err
 	}
 
 	auth, err := getAuth(c)
 	if err != nil {
-		Error(err)
+		lblog.Error(err)
 		return err
 	}
 
@@ -100,13 +101,13 @@ func GitFetchAll(c GitConfig) error {
 	})
 	if err != nil {
 		if err == git.NoErrAlreadyUpToDate {
-			Info("Repository [%s] is already up-to-date.", c.LocalPath)
+			lblog.Info("Repository [%s] is already up-to-date.", c.LocalPath)
 			return nil
 		}
-		Error(err)
+		lblog.Error(err)
 		return err
 	}
-	Info("Repository [%s] has been updated.", c.LocalPath)
+	lblog.Info("Repository [%s] has been updated.", c.LocalPath)
 	return nil
 }
 
@@ -115,7 +116,7 @@ func GitRemoteBranchList(c GitConfig) ([]string, error) {
 	// 打开本地 Git 仓库
 	repo, err := git.PlainOpen(c.LocalPath)
 	if err != nil {
-		Error(err)
+		lblog.Error(err)
 		return nil, err
 	}
 
@@ -123,7 +124,7 @@ func GitRemoteBranchList(c GitConfig) ([]string, error) {
 
 	refIter, err := repo.References()
 	if err != nil {
-		Error(err)
+		lblog.Error(err)
 		return nil, err
 	}
 
@@ -135,14 +136,14 @@ func GitRemoteBranchList(c GitConfig) ([]string, error) {
 
 		// 判断是否为远程分支
 		if ref.Name().IsRemote() {
-			Info("find a remote branch name: %s", ref.Name().Short())
+			lblog.Info("find a remote branch name: %s", ref.Name().Short())
 			branches = append(branches, ref.Name().Short())
 		}
 
 		return nil
 	})
 	if err != nil {
-		Error(err)
+		lblog.Error(err)
 		return nil, err
 	}
 

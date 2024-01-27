@@ -2,8 +2,8 @@ package sqlite
 
 import (
 	"local-build/internal/config"
+	"local-build/internal/lblog"
 	"local-build/internal/store/model"
-	"local-build/internal/utils"
 	"net/url"
 	"time"
 
@@ -19,14 +19,14 @@ func GetDB() gorm.DB {
 	dbFilePath := cfg.Db.FilePath
 	parsedUrl, err := url.Parse(dbFilePath)
 	if err != nil {
-		utils.Error(err)
+		lblog.Error(err)
 		panic(err)
 	}
 	query := parsedUrl.Query()
 	query.Set("_json", "1")
 	parsedUrl.RawQuery = query.Encode()
 	dbFilePath = parsedUrl.String()
-	utils.Info("dbFilePath: %s", dbFilePath)
+	lblog.Info("dbFilePath: %s", dbFilePath)
 
 	db, err := gorm.Open(sqlite.Open(dbFilePath), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
@@ -34,12 +34,12 @@ func GetDB() gorm.DB {
 		},
 	})
 	if err != nil {
-		utils.Error(err)
+		lblog.Error(err)
 		panic("failed to connect database")
 	}
 	sqlDB, err := db.DB()
 	if err != nil {
-		utils.Error(err)
+		lblog.Error(err)
 		panic("failed to connect database")
 	}
 	// SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。

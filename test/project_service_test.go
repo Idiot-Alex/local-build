@@ -1,6 +1,7 @@
 package test
 
 import (
+	"local-build/internal/lblog"
 	"local-build/internal/pkg/env"
 	"local-build/internal/service"
 	"local-build/internal/store/model"
@@ -9,7 +10,11 @@ import (
 )
 
 func TestProjectParse(t *testing.T) {
-	project := model.Project{RepoType: env.GIT}
+	project := model.Project{
+		RepoConfig: model.RepoConfig{
+			AccessType: env.GIT,
+		},
+	}
 	service.ParseProject(project)
 
 }
@@ -52,6 +57,6 @@ func TestGitRemoteBranchList(t *testing.T) {
 	}
 
 	for _, b := range branches {
-		utils.Info("branch: %s", b)
+		lblog.Info("branch: %s", b)
 	}
 }

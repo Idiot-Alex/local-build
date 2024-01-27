@@ -2,11 +2,14 @@ package service
 
 import (
 	"fmt"
+	"local-build/internal/lblog"
 	"local-build/internal/pkg/env"
 	"local-build/internal/store/model"
 	"local-build/internal/store/sqlite"
 	"local-build/internal/utils"
 	"log"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -154,7 +157,7 @@ func SaveProject(project model.Project) bool {
 		}
 
 		if count != 0 {
-			log.Printf("project records found...name: %s, repoType: %s", project.Name, project.RepoType)
+			log.Printf("project records found...name: %s, path: %s", project.Name, project.Path)
 			return false
 		}
 		project.ID = utils.GenerateIdStr()
@@ -166,11 +169,37 @@ func SaveProject(project model.Project) bool {
 }
 
 // parse project
-func ParseProject(project model.Project) string {
+func ParseProject(p model.Project) string {
 	// assert project repoType
-	switch project.RepoType {
+	switch p.RepoConfig.AccessType {
 	case env.GIT:
-
+		// 判断 .git 是否存在
+		dir := filepath.Join(p.Path, ".git")
+		_, err := os.Stat(dir)
+		if err != nil {
+			if os.IsNotExist(err) {
+				fmt.Printf("Directory %s does not exist.\n", dir)
+			} else {
+				fmt.Printf("Error: %v.\n", err)
+			}
+		} else {
+			fmt.Printf("Directory %s exists.\n", dir)
+		}
+		conf := utils.GitConfig{
+			Url:           p.RepoConfig.Url,
+			LocalPath:     p.Path,
+			AccessType:    p.RepoConfig.AccessType,
+			UserName:      p.RepoConfig.UserName,
+			Password:      p.RepoConfig.Password,
+			SshPrivateKey: p.RepoConfig.SshPrivateKey,
+			KeyPassphrase: p.RepoConfig.KeyPassphrase,
+			AccessToken:   p.RepoConfig.AccessToken,
+		}
+		err = utils.GitClone(conf)
+		if err != nil {
+			lblog.Error(err)
+			panic(err)
+		}
 	case env.DIR:
 	case env.SVN:
 	}

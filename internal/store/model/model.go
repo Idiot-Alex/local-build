@@ -41,24 +41,26 @@ type Res struct {
 	Data interface{} `json:"data"`
 }
 
-type ProjectConfig struct {
-	Path string `json:"path"`
-	Repo struct {
-		Url      string `json:"url"`
-		UserName string `json:"userName"`
-		Password string `json:"password"`
-	} `json:"repo"`
+type RepoConfig struct {
+	Type          string `json:"type"`       // 仓库类型[GIT,DIR,SVN]
+	AccessType    string `json:"accessType"` // 访问类型[credentials,sshPrivateKey,accessToken]
+	Url           string `json:"url"`
+	UserName      string `json:"userName"`
+	Password      string `json:"password"`
+	SshPrivateKey string `json:"sshPrivateKey"`
+	KeyPassphrase string `json:"keyPassphrase"`
+	AccessToken   string `json:"accessToken"`
 }
 
 type Project struct {
-	ID         string  `gorm:"primarykey;comment:'ID'" json:"id"`
-	Name       string  `gorm:"unique;not null;comment:'项目名称'" json:"name"`
-	Desc       string  `gorm:"comment:'项目描述'" json:"desc"`
-	RepoType   string  `gorm:"comment:'仓库类型[GIT,DIR,SVN]'" json:"repoType"`
-	Config     string  `gorm:"type:json;comment:'项目配置'" json:"config"`
-	ParsedInfo string  `gorm:"type:json;comment:'项目解析后的信息'" json:"parsedInfo"`
-	CreatedAt  FmtTime `gorm:"comment:'创建时间'" json:"createdAt"`
-	UpdatedAt  FmtTime `gorm:"comment:'修改时间'" json:"updatedAt"`
+	ID         string     `gorm:"primarykey;comment:'ID'" json:"id"`
+	Name       string     `gorm:"unique;not null;comment:'项目名称'" json:"name"`
+	Desc       string     `gorm:"comment:'项目描述'" json:"desc"`
+	Path       string     `gorm:"comment:'项目路径'" json:"path"`
+	RepoConfig RepoConfig `gorm:"type:json;comment:'仓库配置'" json:"repoConfig"`
+	ParsedInfo string     `gorm:"type:json;comment:'项目解析后的信息'" json:"parsedInfo"`
+	CreatedAt  FmtTime    `gorm:"comment:'创建时间'" json:"createdAt"`
+	UpdatedAt  FmtTime    `gorm:"comment:'修改时间'" json:"updatedAt"`
 }
 
 type Tool struct {

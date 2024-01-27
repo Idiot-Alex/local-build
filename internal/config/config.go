@@ -1,6 +1,7 @@
 package config
 
 import (
+	"local-build/internal/lblog"
 	"local-build/internal/utils"
 	"os"
 	"path/filepath"
@@ -22,7 +23,7 @@ func Load(fileName string) Config {
 	}
 	homePath := utils.GetHomePath()
 	configPath := filepath.Join(homePath, fileName)
-	utils.Info("default configPath: %s", configPath)
+	lblog.Info("default configPath: %s", configPath)
 
 	_, err := os.Stat(configPath)
 	if os.IsNotExist(err) {
@@ -31,7 +32,7 @@ func Load(fileName string) Config {
 			panic(err)
 		}
 		configPath = filepath.Join(dir, fileName)
-		utils.Info("project configPath: %s", configPath)
+		lblog.Info("project configPath: %s", configPath)
 	}
 
 	return parseToml(configPath)
@@ -60,6 +61,6 @@ func parseToml(configPath string) Config {
 	}
 
 	// 输出读取到的配置信息
-	utils.Info("config: %s", config)
+	lblog.Info("config: %s", config)
 	return config
 }
