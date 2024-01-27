@@ -38,7 +38,7 @@ func getAuth(c GitConfig) (transport.AuthMethod, error) {
 		}
 		auth, err := ssh.NewPublicKeysFromFile(c.UserName, c.SshPrivateKey, c.KeyPassphrase)
 		if err != nil {
-			lblog.Error(err)
+			lblog.Error("ssh private key auth error: %s", err)
 			return nil, err
 		}
 		return auth, nil
@@ -57,7 +57,7 @@ func GitClone(c GitConfig) error {
 
 	auth, err := getAuth(c)
 	if err != nil {
-		lblog.Error(err)
+		lblog.Error("get git auth error: %s", err)
 		return err
 	}
 
@@ -68,7 +68,7 @@ func GitClone(c GitConfig) error {
 	})
 
 	if err != nil {
-		lblog.Error(err)
+		lblog.Error("git plain clone error: %s", err)
 		return err
 	}
 
@@ -81,13 +81,13 @@ func GitFetchAll(c GitConfig) error {
 	// 打开本地 Git 仓库
 	repo, err := git.PlainOpen(c.LocalPath)
 	if err != nil {
-		lblog.Error(err)
+		lblog.Error("git plan open error: %s", err)
 		return err
 	}
 
 	auth, err := getAuth(c)
 	if err != nil {
-		lblog.Error(err)
+		lblog.Error("get git auth error: %s", err)
 		return err
 	}
 
@@ -104,7 +104,7 @@ func GitFetchAll(c GitConfig) error {
 			lblog.Info("Repository [%s] is already up-to-date.", c.LocalPath)
 			return nil
 		}
-		lblog.Error(err)
+		lblog.Error("git fetch error: %s", err)
 		return err
 	}
 	lblog.Info("Repository [%s] has been updated.", c.LocalPath)
@@ -116,7 +116,7 @@ func GitRemoteBranchList(c GitConfig) ([]string, error) {
 	// 打开本地 Git 仓库
 	repo, err := git.PlainOpen(c.LocalPath)
 	if err != nil {
-		lblog.Error(err)
+		lblog.Error("git plan open error: %s", err)
 		return nil, err
 	}
 
@@ -124,7 +124,7 @@ func GitRemoteBranchList(c GitConfig) ([]string, error) {
 
 	refIter, err := repo.References()
 	if err != nil {
-		lblog.Error(err)
+		lblog.Error("get repo references error: %s", err)
 		return nil, err
 	}
 
@@ -143,7 +143,7 @@ func GitRemoteBranchList(c GitConfig) ([]string, error) {
 		return nil
 	})
 	if err != nil {
-		lblog.Error(err)
+		lblog.Error("foreach references error: %s", err)
 		return nil, err
 	}
 

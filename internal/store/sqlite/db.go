@@ -19,7 +19,7 @@ func GetDB() gorm.DB {
 	dbFilePath := cfg.Db.FilePath
 	parsedUrl, err := url.Parse(dbFilePath)
 	if err != nil {
-		lblog.Error(err)
+		lblog.Error("db url [%s] parsed error: %s", dbFilePath, err)
 		panic(err)
 	}
 	query := parsedUrl.Query()
@@ -34,12 +34,12 @@ func GetDB() gorm.DB {
 		},
 	})
 	if err != nil {
-		lblog.Error(err)
+		lblog.Error("db [%s] open error: %s", dbFilePath, err)
 		panic("failed to connect database")
 	}
 	sqlDB, err := db.DB()
 	if err != nil {
-		lblog.Error(err)
+		lblog.Error("get sqlite db error: %s", err)
 		panic("failed to connect database")
 	}
 	// SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。

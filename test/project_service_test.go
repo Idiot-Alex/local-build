@@ -11,6 +11,7 @@ import (
 
 func TestProjectParse(t *testing.T) {
 	project := model.Project{
+		Path: "/tmp/test/hello",
 		RepoConfig: model.RepoConfig{
 			AccessType: env.GIT,
 		},
@@ -23,11 +24,11 @@ func TestGitClone(t *testing.T) {
 	// https://gitee.com/hotstrip/hello-world-java.git
 	// git@gitee.com:hotstrip/hello-world-java.git
 	c := utils.GitConfig{
-		Url:           "git@gitee.com:hotstrip/hello-world-java.git",
+		Url:           "https://gitee.com/hotstrip/hello-world-java.git",
 		LocalPath:     "/tmp/test/hello2",
 		AccessType:    env.SSH_PRIVATE_KEY,
 		SshPrivateKey: "/Users/zhangxin/.ssh/id_rsa",
-		KeyPassphrase: "",
+		KeyPassphrase: "12313",
 	}
 	err := utils.GitClone(c)
 	if err != nil {
