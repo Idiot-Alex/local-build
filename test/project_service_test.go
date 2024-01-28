@@ -13,7 +13,8 @@ func TestProjectParse(t *testing.T) {
 	project := model.Project{
 		Path: "/tmp/test/hello",
 		RepoConfig: model.RepoConfig{
-			AccessType: env.GIT,
+			Type: env.GIT,
+			Url:  "https://gitee.com/hotstrip/hello-world-java.git",
 		},
 	}
 	service.ParseProject(project)

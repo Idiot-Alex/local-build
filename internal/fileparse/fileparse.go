@@ -26,7 +26,7 @@ func ParseDirectory(dir string) (*ParsedInfo, error) {
 			return err // 如果出错，直接返回错误
 		}
 		if !info.IsDir() {
-			lblog.Info("current file: [%s], name: [%s]", path, info.Name())
+			lblog.Info("current parse file: [%s], name: [%s]", path, info.Name())
 			switch info.Name() {
 			case env.PACKAGE_JSON:
 				data, err := ParsePackageJson(path)

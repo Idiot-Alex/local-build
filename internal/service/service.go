@@ -172,38 +172,25 @@ func SaveProject(project model.Project) bool {
 
 // parse project
 func ParseProject(p model.Project) *fileparse.ParsedInfo {
-	// assert project repoType
-	switch p.RepoConfig.AccessType {
+	// assert project repo type
+	switch p.RepoConfig.Type {
 	case env.GIT:
-		// check if .git exist
-		dir := filepath.Join(p.Path, ".git")
-		_, err := os.Stat(dir)
-		if err != nil {
-			if os.IsNotExist(err) {
-				lblog.Warning("Directory %s does not exist.", dir)
-				// exec git clone
-				conf := repo.GitConfig{
-					Url:           p.RepoConfig.Url,
-					LocalPath:     p.Path,
-					AccessType:    p.RepoConfig.AccessType,
-					UserName:      p.RepoConfig.UserName,
-					Password:      p.RepoConfig.Password,
-					SshPrivateKey: p.RepoConfig.SshPrivateKey,
-					KeyPassphrase: p.RepoConfig.KeyPassphrase,
-					AccessToken:   p.RepoConfig.AccessToken,
-				}
-				err = repo.GitClone(conf)
-				if err != nil {
-					lblog.Error("git clone [%s] error: %s", p.Path, err)
-					panic(err)
-				}
-			} else {
-				lblog.Error("the file path [%s] error: %s ", dir, err)
-				panic(err)
-			}
+		conf := repo.GitConfig{
+			Url:           p.RepoConfig.Url,
+			LocalPath:     p.Path,
+			AccessType:    p.RepoConfig.AccessType,
+			UserName:      p.RepoConfig.UserName,
+			Password:      p.RepoConfig.Password,
+			SshPrivateKey: p.RepoConfig.SshPrivateKey,
+			KeyPassphrase: p.RepoConfig.KeyPassphrase,
+			AccessToken:   p.RepoConfig.AccessToken,
 		}
 
-		lblog.Info("Directory %s exists.", dir)
+		err := repo.UpdateGitRepo(conf)
+		if err != nil {
+			lblog.Error("update git repo error: %s", err)
+			panic(err)
+		}
 	case env.DIR:
 		// check if path exist
 		dir := filepath.Join(p.Path)

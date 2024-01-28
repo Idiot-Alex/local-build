@@ -3,6 +3,8 @@ package repo
 import (
 	"local-build/internal/lblog"
 	"local-build/internal/pkg/env"
+	"os"
+	"path/filepath"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
@@ -23,6 +25,35 @@ type GitConfig struct {
 	AccessToken   string
 }
 
+// update git repo
+func UpdateGitRepo(c GitConfig) error {
+	// check if ${path}/.git exist
+	dir := filepath.Join(c.LocalPath, ".git")
+	_, err := os.Stat(dir)
+	if err != nil {
+		if os.IsNotExist(err) {
+			lblog.Warning("local git repo [%s] does not exist on [%s].", c.Url, c.LocalPath)
+			err := GitClone(c)
+			if err != nil {
+				lblog.Error("git clone [%s] [%s] error: %s", c.Url, c.LocalPath, err)
+				return err
+			}
+		} else {
+			lblog.Error("the repo local path [%s] error: %s ", c.LocalPath, err)
+			return err
+		}
+	}
+
+	// git fetch all
+	err = GitFetchAll(c)
+	if err != nil {
+		lblog.Error("git fetch all repo [%s] [%s] error: %s ", c.Url, c.LocalPath, err)
+		return err
+	}
+	return nil
+}
+
+// init auth
 func getAuth(c GitConfig) (transport.AuthMethod, error) {
 	lblog.Info("use [%s] to access repo [%s]", c.AccessType, c.Url)
 	switch c.AccessType {
@@ -53,7 +84,7 @@ func getAuth(c GitConfig) (transport.AuthMethod, error) {
 // use go-git clone repo
 func GitClone(c GitConfig) error {
 	// Clone the given repository to the given directory
-	lblog.Info("git clone %s %s --recursive", c.Url, c.LocalPath)
+	lblog.Info("git clone [%s] [%s] --recursive", c.Url, c.LocalPath)
 
 	auth, err := getAuth(c)
 	if err != nil {
