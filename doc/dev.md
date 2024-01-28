@@ -35,4 +35,4 @@
     - [ ] 3. 遍历整个目录树，解析指定文件（比如 package.json、pom.xml），汇总到 parsedInfo 属性，存储到数据库
 - GIT 仓库导入
 - [x] 支持三种方式认证：用户名密码、SSH 私钥、AccessToken
-- [ ] 访问 GIT 仓库两种协议：HTTP 和 SSH，HTTP 支持 Credentials 和 AccessToken，SSH 支持 SSH 私钥访问
+- [x] 访问 GIT 仓库两种协议：HTTP 和 SSH，HTTP 支持 Credentials 和 AccessToken，SSH 支持 SSH 私钥访问

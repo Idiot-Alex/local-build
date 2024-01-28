@@ -5,6 +5,7 @@ import (
 	"local-build/internal/fileparse"
 	"local-build/internal/lblog"
 	"local-build/internal/pkg/env"
+	"local-build/internal/repo"
 	"local-build/internal/store/model"
 	"local-build/internal/store/sqlite"
 	"local-build/internal/utils"
@@ -181,7 +182,7 @@ func ParseProject(p model.Project) *fileparse.ParsedInfo {
 			if os.IsNotExist(err) {
 				lblog.Warning("Directory %s does not exist.", dir)
 				// exec git clone
-				conf := utils.GitConfig{
+				conf := repo.GitConfig{
 					Url:           p.RepoConfig.Url,
 					LocalPath:     p.Path,
 					AccessType:    p.RepoConfig.AccessType,
@@ -191,7 +192,7 @@ func ParseProject(p model.Project) *fileparse.ParsedInfo {
 					KeyPassphrase: p.RepoConfig.KeyPassphrase,
 					AccessToken:   p.RepoConfig.AccessToken,
 				}
-				err = utils.GitClone(conf)
+				err = repo.GitClone(conf)
 				if err != nil {
 					lblog.Error("git clone [%s] error: %s", p.Path, err)
 					panic(err)

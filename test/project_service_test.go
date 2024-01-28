@@ -3,9 +3,9 @@ package test
 import (
 	"local-build/internal/lblog"
 	"local-build/internal/pkg/env"
+	"local-build/internal/repo"
 	"local-build/internal/service"
 	"local-build/internal/store/model"
-	"local-build/internal/utils"
 	"testing"
 )
 
@@ -22,36 +22,36 @@ func TestProjectParse(t *testing.T) {
 func TestGitClone(t *testing.T) {
 	// https://gitee.com/hotstrip/hello-world-java.git
 	// git@gitee.com:hotstrip/hello-world-java.git
-	c := utils.GitConfig{
+	c := repo.GitConfig{
 		Url:           "https://gitee.com/hotstrip/hello-world-java.git",
 		LocalPath:     "/tmp/test/hello2",
 		AccessType:    env.SSH_PRIVATE_KEY,
 		SshPrivateKey: "/Users/zhangxin/.ssh/id_rsa",
 		KeyPassphrase: "12313",
 	}
-	err := utils.GitClone(c)
+	err := repo.GitClone(c)
 	if err != nil {
 		panic(err)
 	}
 }
 
 func TestGitFetchAll(t *testing.T) {
-	c := utils.GitConfig{
+	c := repo.GitConfig{
 		Url:       "https://gitee.com/hotstrip/hello-world-java.git",
 		LocalPath: "/tmp/test/hello",
 	}
-	err := utils.GitFetchAll(c)
+	err := repo.GitFetchAll(c)
 	if err != nil {
 		panic(err)
 	}
 }
 
 func TestGitRemoteBranchList(t *testing.T) {
-	c := utils.GitConfig{
+	c := repo.GitConfig{
 		Url:       "https://gitee.com/hotstrip/hello-world-java.git",
 		LocalPath: "/tmp/test/hello",
 	}
-	branches, err := utils.GitRemoteBranchList(c)
+	branches, err := repo.GitRemoteBranchList(c)
 	if err != nil {
 		panic(err)
 	}
