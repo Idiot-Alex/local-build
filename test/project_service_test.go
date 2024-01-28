@@ -17,7 +17,6 @@ func TestProjectParse(t *testing.T) {
 		},
 	}
 	service.ParseProject(project)
-
 }
 
 func TestGitClone(t *testing.T) {

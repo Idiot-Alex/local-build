@@ -170,7 +170,7 @@ func SaveProject(project model.Project) bool {
 }
 
 // parse project
-func ParseProject(p model.Project) string {
+func ParseProject(p model.Project) *fileparse.ParsedInfo {
 	// assert project repoType
 	switch p.RepoConfig.AccessType {
 	case env.GIT:
@@ -222,7 +222,7 @@ func ParseProject(p model.Project) string {
 	}
 	lblog.Info("parsed info: %s", utils.ToJsonString(parsed))
 
-	return ""
+	return parsed
 }
 
 // build plan list
