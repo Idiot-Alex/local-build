@@ -9,7 +9,6 @@ import (
 	"local-build/internal/store/model"
 	"local-build/internal/store/sqlite"
 	"local-build/internal/utils"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -42,7 +41,7 @@ func InitTools() {
 		}
 
 		if count != 0 {
-			log.Printf("%s records found...name: %s, path: %s", v.Type, v.Name, v.Path)
+			lblog.Error("%s records found...name: %s, path: %s", v.Type, v.Name, v.Path)
 		} else {
 			v.ID = utils.GenerateIdStr()
 			db.Save(&v)
@@ -99,13 +98,13 @@ func SaveTool(tool model.Tool) bool {
 		}
 
 		if count != 0 {
-			log.Printf("%s records found...name: %s, path: %s", tool.Type, tool.Name, tool.Path)
+			lblog.Error("%s records found...name: %s, path: %s", tool.Type, tool.Name, tool.Path)
 			return false
 		}
 		tool.ID = utils.GenerateIdStr()
 	}
 
-	log.Printf("tool: %+v", tool)
+	lblog.Info("tool: %s", utils.ToJsonString(tool))
 	tx := db.Save(&tool)
 	return tx.RowsAffected > 0
 }
@@ -148,6 +147,10 @@ func DelProject(ids []string) bool {
 
 // export save project
 func SaveProject(project model.Project) bool {
+	// parse project
+	parsedInfo := ParseProject(project)
+	project.ParsedInfo = utils.ToJsonString(parsedInfo)
+
 	db := sqlite.GetDB()
 
 	// check name before insert
@@ -159,13 +162,13 @@ func SaveProject(project model.Project) bool {
 		}
 
 		if count != 0 {
-			log.Printf("project records found...name: %s, path: %s", project.Name, project.Path)
+			lblog.Error("project records found...name: %s, path: %s", project.Name, project.Path)
 			return false
 		}
 		project.ID = utils.GenerateIdStr()
 	}
 
-	log.Printf("project: %+v", project)
+	lblog.Info("project: %s", utils.ToJsonString(project))
 	tx := db.Save(&project)
 	return tx.RowsAffected > 0
 }
@@ -248,13 +251,13 @@ func SaveBuildPlan(buildPlan model.BuildPlan) bool {
 		}
 
 		if count != 0 {
-			log.Printf("build plan records found...name: %s", buildPlan.Name)
+			lblog.Error("build plan records found...name: %s", buildPlan.Name)
 			return false
 		}
 		buildPlan.ID = utils.GenerateIdStr()
 	}
 
-	log.Printf("build plan: %+v", buildPlan)
+	lblog.Info("build plan: %s", utils.ToJsonString(buildPlan))
 	tx := db.Save(&buildPlan)
 	return tx.RowsAffected > 0
 }

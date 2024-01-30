@@ -6,6 +6,7 @@ import (
 	"local-build/internal/repo"
 	"local-build/internal/service"
 	"local-build/internal/store/model"
+	"local-build/internal/utils"
 	"testing"
 )
 
@@ -17,7 +18,8 @@ func TestProjectParse(t *testing.T) {
 			Url:  "https://gitee.com/hotstrip/hello-world-java.git",
 		},
 	}
-	service.ParseProject(project)
+	parsedInfo := service.ParseProject(project)
+	lblog.Info("%s", utils.ToJsonString(parsedInfo))
 }
 
 func TestGitClone(t *testing.T) {

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"local-build/internal/pkg/env"
 	"local-build/internal/service"
 	"local-build/internal/store/model"
 	"log"
@@ -85,6 +86,24 @@ func SaveProject(c *gin.Context) {
 	var project model.Project
 	if err := c.ShouldBindJSON(&project); err != nil {
 		c.JSON(400, &model.Res{Msg: err.Error()})
+		return
+	}
+
+	// check params
+	if project.Path == "" {
+		c.JSON(400, &model.Res{Msg: "path is required"})
+		return
+	}
+	if project.RepoConfig.Type == "" {
+		c.JSON(400, &model.Res{Msg: "repoConfig.type is required"})
+		return
+	}
+	if project.RepoConfig.AccessType == "" {
+		c.JSON(400, &model.Res{Msg: "repoConfig.accessType is required"})
+		return
+	}
+	if project.RepoConfig.Type != env.DIR && project.RepoConfig.Url == "" {
+		c.JSON(400, &model.Res{Msg: "repoConfig.url is required"})
 		return
 	}
 

@@ -163,6 +163,38 @@ func TestDelProject(t *testing.T) {
 	}
 }
 
+func TestSaveProject(t *testing.T) {
+	router := initRouter()
+	// 创建一个 GET 请求并设置参数
+	p := model.Project{
+		Name: "test",
+		Path: "/tmp/test/hello",
+		RepoConfig: model.RepoConfig{
+			Type:       env.GIT,
+			AccessType: env.CREDENTIALS,
+			Url:        "https://gitee.com/hotstrip/hello-world-java.git",
+		},
+	}
+	body, err := json.Marshal(p)
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("body: %+v\n", bytes.NewBuffer(body))
+	req, _ := http.NewRequest(http.MethodPost, "/api/project/save", bytes.NewBuffer(body))
+
+	// 为每个测试用例创建一个新的 ResultRecorder
+	res := httptest.NewRecorder()
+
+	// 向 router 发送请求
+	router.ServeHTTP(res, req)
+
+	log.Printf("code: %v, res: %v\n", res.Code, res.Body.String())
+	// 检查响应是否符合预期
+	if res.Body.String() == "" {
+		t.Errorf("handler returned unexpected body: got %v", res.Body.String())
+	}
+}
+
 func initRouter() *gin.Engine {
 	// 创建一个 router
 	router := gin.Default()
