@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"local-build/internal/utils"
-
-	// "local-build/internal/utils"
 	"time"
 )
 
@@ -106,10 +104,6 @@ func (mt FmtTime) MarshalJSON() ([]byte, error) {
 	return []byte(fmt.Sprintf(`"%s"`, t.Format("2006-01-02 15:04:05"))), nil
 }
 
-// func (r RepoConfig) MarshalJSON() ([]byte, error) {
-// 	return []byte(utils.ToJsonString(r)), nil
-// }
-
 // overwrite UnMarshalJSON
 func (mt *FmtTime) UnmarshalJSON(data []byte) error {
 	var str string
@@ -125,15 +119,6 @@ func (mt *FmtTime) UnmarshalJSON(data []byte) error {
 	*mt = FmtTime(t)
 	return nil
 }
-
-// func (r *RepoConfig) UnmarshalJSON(data []byte) error {
-// 	var rc RepoConfig
-// 	if err := json.Unmarshal(data, &rc); err != nil {
-// 		return err
-// 	}
-// 	*r = rc
-// 	return nil
-// }
 
 func (ft FmtTime) Value() (driver.Value, error) {
 	if time.Time(ft).IsZero() {
