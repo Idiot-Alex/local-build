@@ -80,7 +80,8 @@ type Tool struct {
 
 type BuildPlan struct {
 	ID         string  `gorm:"primarykey;comment:'ID'" json:"id"`
-	Name       string  `gorm:"unique;not null;comment:'构建计划名称'" json:"name" binding:"required"`
+	ProjectId  string  `gorm:"not null;comment:'项目ID'" json:"projectId" binding:"required"`
+	Name       string  `gorm:"not null;comment:'构建计划名称'" json:"name" binding:"required"`
 	PId        string  `gorm:"comment:'父级ID'" json:"pId"`
 	LastCostMs int64   `gorm:"comment:'上次花费时间毫秒'" json:"lastCostMs"`
 	Config     string  `gorm:"type:json;comment:'配置信息'" json:"config"`
@@ -89,11 +90,13 @@ type BuildPlan struct {
 }
 
 type BuildTask struct {
-	ID        string  `gorm:"primarykey;comment:'ID'" json:"id"`
-	Num       int64   `gorm:"comment:'构建任务序号'" json:"num"`
-	State     string  `gorm:"comment:'状态[SUCCESS,FAIL,ABORT]'" json:"state"`
-	CreatedAt FmtTime `gorm:"comment:'创建时间'" json:"createdAt"`
-	UpdatedAt FmtTime `gorm:"comment:'修改时间'" json:"updatedAt"`
+	ID          string  `gorm:"primarykey;comment:'ID'" json:"id"`
+	BuildPlanId string  `gorm:"comment:'构建计划ID'" json:"buildPlanId"`
+	Num         int16   `gorm:"comment:'构建任务序号'" json:"num"`
+	Branch      string  `gorm:"comment:'分支名称'" json:"branch"`
+	State       string  `gorm:"comment:'状态[SUCCESS,FAIL,ABORT]'" json:"state"`
+	CreatedAt   FmtTime `gorm:"comment:'创建时间'" json:"createdAt"`
+	UpdatedAt   FmtTime `gorm:"comment:'修改时间'" json:"updatedAt"`
 }
 
 type FmtTime time.Time

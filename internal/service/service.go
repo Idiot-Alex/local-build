@@ -242,16 +242,16 @@ func BuildPlanList(query *model.BuildPlanQuery) *model.PaginationRes {
 func SaveBuildPlan(buildPlan model.BuildPlan) bool {
 	db := sqlite.GetDB()
 
-	// check name before insert
+	// check name and projectId before insert
 	if buildPlan.ID == "" {
 		var count int64
-		err := db.Model(&buildPlan).Where("name = ?", buildPlan.Name).Count(&count).Error
+		err := db.Model(&buildPlan).Where("name = ? and project_id = ?", buildPlan.Name, buildPlan.ProjectId).Count(&count).Error
 		if err != nil {
 			panic(err)
 		}
 
 		if count != 0 {
-			lblog.Error("build plan records found...name: %s", buildPlan.Name)
+			lblog.Error("build plan records found...name: %s, projectId: %s", buildPlan.Name, buildPlan.ProjectId)
 			return false
 		}
 		buildPlan.ID = utils.GenerateIdStr()
