@@ -98,7 +98,7 @@ func SaveProject(c *gin.Context) {
 		c.JSON(400, &model.Res{Msg: "repoConfig.type is required"})
 		return
 	}
-	if project.RepoConfig.AccessType == "" {
+	if project.RepoConfig.Type != env.DIR && project.RepoConfig.AccessType == "" {
 		c.JSON(400, &model.Res{Msg: "repoConfig.accessType is required"})
 		return
 	}

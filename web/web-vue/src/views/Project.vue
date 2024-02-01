@@ -20,10 +20,15 @@ const selectedData = ref(null)
 const dt = ref(null)
 const filters = ref({})
 const submitted = ref(false)
-const types = ref([
+const repoTypes = ref([
   { label: 'GIT', value: 'GIT' },
   { label: 'DIR', value: 'DIR' },
   { label: 'SVN', value: 'SVN' },
+])
+const accessTypes = ref([
+  { label: '用户名密码', value: 'credentials' },
+  { label: 'SSH 私钥', value: 'sshPrivateKey' },
+  { label: 'Access Token', value: 'accessToken' },
 ])
 
 onBeforeMount(() => {
@@ -49,7 +54,9 @@ const handlePage = (event) => {
 }
 
 const openNew = () => {
-  tempData.value = {}
+  tempData.value = {
+    repoConfig: {}
+  }
   submitted.value = false
   editDialog.value = true
 }
@@ -61,8 +68,8 @@ const hideDialog = () => {
 
 const saveData = () => {
   submitted.value = true
-  if (!tempData.value.name || !tempData.value.type) {
-    toast.add({ severity: 'warning', summary: 'Tips', detail: 'Please input data', life: 3000 })
+  if (!tempData.value.name || !tempData.value.path || !tempData.value.repoConfig.type) {
+    toast.add({ severity: 'warn', summary: 'Tips', detail: 'Please input data', life: 3000 })
     return
   }
   saveProject(tempData.value).then(res => {
@@ -192,10 +199,21 @@ const initFilters = () => {
             <small color-red class="p-invalid" v-if="submitted && !tempData.name">Name is required.</small>
           </div>
           <div class="field">
-            <label for="type" class="mb-3">Type</label>
-            <Dropdown id="type" v-model="tempData.repoType" :options="types" optionLabel="label" optionValue="value" placeholder="Select a Repo Type" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
+            <label for="repoConfig-type" class="mb-3">Type</label>
+            <Dropdown id="repoConfig-type" v-model="tempData.repoConfig.type" :options="repoTypes" optionLabel="label" optionValue="value" placeholder="Select a Repo Type" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
             </Dropdown>
-            <small color-red class="p-invalid" v-if="submitted && !tempData.repoType">Repo Type is required.</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.type">Repo Type is required.</small>
+          </div>
+          <div class="field" v-if="tempData.repoConfig.type && tempData.repoConfig.type != 'DIR'">
+            <label for="access-type" class="mb-3">Access Type</label>
+            <Dropdown id="access-type" v-model="tempData.repoConfig.accessType" :options="accessTypes" optionLabel="label" optionValue="value" placeholder="Select a Repo Type" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
+            </Dropdown>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.accessType">Access Type is required.</small>
+          </div>
+          <div class="field">
+            <label for="desc">Path</label>
+            <Textarea id="desc" v-model="tempData.path" required="true" rows="3" cols="20" placeholder="请填写仓库地址或者项目目录地址"/>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.path">Path is required.</small>
           </div>
           <div class="field">
             <label for="desc">Description</label>
