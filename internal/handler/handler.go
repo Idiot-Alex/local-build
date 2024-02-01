@@ -181,6 +181,34 @@ func DelBuildPlan(c *gin.Context) {
 	} else {
 		res = model.Res{Msg: "del build plan failed"}
 	}
-	log.Printf("del project: %+v\n", res)
+	log.Printf("del build plan: %+v\n", res)
+	c.JSON(200, res)
+}
+
+// build task list
+func BuildTaskList(c *gin.Context) {
+
+}
+
+// save build task
+func SaveBuildTask(c *gin.Context) {
+
+}
+
+// del build task
+func DelBuildTask(c *gin.Context) {
+	var req model.ReqIds
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, &model.Res{Msg: err.Error()})
+		return
+	}
+
+	var res model.Res
+	if service.DelBuildTask(req.Ids) {
+		res = model.Res{Msg: "del build task success"}
+	} else {
+		res = model.Res{Msg: "del build task failed"}
+	}
+	log.Printf("del build task: %+v\n", res)
 	c.JSON(200, res)
 }

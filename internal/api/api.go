@@ -36,6 +36,13 @@ func InitApis(r *gin.Engine) {
 		plan.POST("/save", handler.SaveBuildPlan)
 		plan.POST("/del", handler.DelBuildPlan)
 	}
+
+	task := r.Group("/api/build-task")
+	{
+		task.POST("/list", handler.BuildTaskList)
+		task.POST("/save", handler.SaveBuildTask)
+		task.POST("/del", handler.DelBuildTask)
+	}
 }
 
 // gin.Context，封装了request和response

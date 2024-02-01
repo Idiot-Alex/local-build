@@ -268,3 +268,14 @@ func DelBuildPlan(ids []string) bool {
 	tx := db.Where("id in ?", ids).Delete(&model.BuildPlan{})
 	return tx.RowsAffected > 0
 }
+
+// build task list
+
+// save build task
+
+// del build task
+func DelBuildTask(ids []string) bool {
+	db := sqlite.GetDB()
+	tx := db.Where("id in ?", ids).Delete(&model.BuildTask{})
+	return tx.RowsAffected > 0
+}
