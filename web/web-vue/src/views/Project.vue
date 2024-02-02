@@ -178,7 +178,7 @@ const initFilters = () => {
 
           <Column selectionMode="multiple" frozen headerStyle="width: 3rem"></Column>
           <Column field="name" header="name" :sortable="true" frozen></Column>
-          <Column field="type" header="type" :sortable="true"></Column>
+          <Column field="repoConfig.type" header="repo type" :sortable="true"></Column>
           <Column field="path" header="path" :sortable="true">
             <template #body="slotProps">
               <Chip :label="slotProps.data.path" icon="pi pi-copy" cursor-pointer />
@@ -199,7 +199,7 @@ const initFilters = () => {
             <small color-red class="p-invalid" v-if="submitted && !tempData.name">Name is required.</small>
           </div>
           <div class="field">
-            <label for="repoConfig-type" class="mb-3">Type</label>
+            <label for="repoConfig-type" class="mb-3">Repo Type</label>
             <Dropdown id="repoConfig-type" v-model="tempData.repoConfig.type" :options="repoTypes" optionLabel="label" optionValue="value" placeholder="Select a Repo Type" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
             </Dropdown>
             <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.type">Repo Type is required.</small>

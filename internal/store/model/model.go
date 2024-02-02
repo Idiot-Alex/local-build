@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
+	"local-build/internal/lblog"
 	"local-build/internal/utils"
 	"time"
 )
@@ -130,14 +131,6 @@ func (ft FmtTime) Value() (driver.Value, error) {
 	return time.Time(ft).Format("2006/01/02 15:04:05"), nil
 }
 
-func (r RepoConfig) Value() (driver.Value, error) {
-	var rc RepoConfig
-	if r == rc {
-		return nil, nil
-	}
-	return utils.ToJsonString(r), nil
-}
-
 func (ft *FmtTime) Scan(value interface{}) error {
 	t, ok := value.(time.Time)
 	if ok {
@@ -149,10 +142,22 @@ func (ft *FmtTime) Scan(value interface{}) error {
 	return nil
 }
 
+func (r RepoConfig) Value() (driver.Value, error) {
+	var rc RepoConfig
+	if r == rc {
+		return nil, nil
+	}
+	return utils.ToJsonString(r), nil
+}
+
 func (r *RepoConfig) Scan(value interface{}) error {
-	rc, ok := value.(RepoConfig)
+	lblog.Info("scan repoConfig: %s", value)
+	rc, ok := value.(string)
 	if ok {
-		*r = rc
+		err := utils.ToJson(rc, &r)
+		if err != nil {
+			return nil
+		}
 	}
 	return nil
 }

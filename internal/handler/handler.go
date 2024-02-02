@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"local-build/internal/lblog"
 	"local-build/internal/pkg/env"
 	"local-build/internal/service"
 	"local-build/internal/store/model"
+	"local-build/internal/utils"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -77,7 +79,7 @@ func ProjectList(c *gin.Context) {
 
 	projects := service.ProjectList(&projectQuery)
 	res := model.Res{Msg: "success", Data: projects}
-	log.Printf("project list: %+v\n", res)
+	lblog.Info("project list: %s", utils.ToJsonString(res))
 	c.JSON(200, res)
 }
 

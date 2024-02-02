@@ -58,3 +58,8 @@ func ToJsonString(data interface{}) string {
 	jsonData, _ := json.MarshalIndent(data, "", "  ")
 	return string(jsonData)
 }
+
+// json string to type
+func ToJson(jsonStr string, v interface{}) error {
+	return json.Unmarshal([]byte(jsonStr), v)
+}
