@@ -3,6 +3,7 @@ import 'virtual:uno.css'
 import '@/assets/styles.scss'
 import App from './App.vue'
 import router from './router'
+import i18n from './lang/index'
 
 import PrimeVue from 'primevue/config'
 import AutoComplete from 'primevue/autocomplete'
@@ -206,5 +207,7 @@ app.component('TriStateCheckbox', TriStateCheckbox)
 app.component('VirtualScroller', VirtualScroller)
 
 app.mount('#app')
+
+app.use(i18n)
 
 export { app }

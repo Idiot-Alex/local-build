@@ -3,7 +3,9 @@ import { FilterMatchMode } from 'primevue/api'
 import { ref, onMounted, onBeforeMount } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { projectList, saveProject, delProject } from '@/api/project.js'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const toast = useToast()
 
 const query = ref({
@@ -138,7 +140,7 @@ const initFilters = () => {
         <Toolbar class="mb-4">
           <template v-slot:start>
             <div class="my-2">
-              <Button label="新建" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+              <Button :label="t('new')" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
               <Button label="删除" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
             </div>
           </template>
