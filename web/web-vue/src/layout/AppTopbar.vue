@@ -32,7 +32,7 @@ const toggleDark = () => {
 }
 
 const logoUrl = computed(() => {
-    return `layout/images/${!isDarkTheme ? 'logo-white' : 'logo-dark'}.svg`
+    return `layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`
 })
 
 const onTopBarMenuButton = () => {
