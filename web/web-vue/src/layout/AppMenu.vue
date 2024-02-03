@@ -19,45 +19,6 @@ const model = ref([
         label: '环境',
         items: [
             { label: '构建工具', icon: 'pi pi-fw pi-wrench', to: '/tool' },
-            { label: '测试', icon: 'pi pi-fw pi-wrench', to: '/env/crud' },
-        ]
-    },
-    {
-        label: 'Pages',
-        icon: 'pi pi-fw pi-briefcase',
-        to: '/pages',
-        items: [
-            {
-                label: 'Landing',
-                icon: 'pi pi-fw pi-globe',
-                to: '/landing'
-            },
-            {
-                label: 'Auth',
-                icon: 'pi pi-fw pi-user',
-                items: [
-                    {
-                        label: 'Login',
-                        icon: 'pi pi-fw pi-sign-in',
-                        to: '/auth/login'
-                    },
-                    {
-                        label: 'Error',
-                        icon: 'pi pi-fw pi-times-circle',
-                        to: '/auth/error'
-                    }
-                ]
-            },
-            {
-                label: 'Crud',
-                icon: 'pi pi-fw pi-pencil',
-                to: '/pages/crud'
-            },
-            {
-                label: 'Timeline',
-                icon: 'pi pi-fw pi-calendar',
-                to: '/pages/timeline'
-            }
         ]
     },
 ]);
