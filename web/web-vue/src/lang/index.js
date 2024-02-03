@@ -7,6 +7,8 @@ const LANG_VALUE = {
   zhCN: 'zh-CN'
 }
 
+const locales = [LANG_VALUE.en, LANG_VALUE.zhCN]
+
 const LOCAL_BUILD_LANGUAGE = 'LOCAL_BUILD_LANGUAGE'
 
 const i18n = createI18n({
@@ -26,11 +28,23 @@ export function getLanguage() {
 
   // 如果没有选择语言
   const language = navigator.language.toLowerCase()
-  const locales = [LANG_VALUE.en, LANG_VALUE.zhCN]
+  
   for (const locale of locales) {
     if (language.indexOf(locale) > -1) {
       return locale
     }
   }
   return LANG_VALUE.zhCN
+}
+
+export function useLanguage() {
+
+  const changeLanguage = () => {
+    // todo
+  }
+
+  return {
+    getLanguage,
+
+  }
 }
