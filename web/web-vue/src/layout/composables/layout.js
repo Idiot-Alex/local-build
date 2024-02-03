@@ -49,5 +49,31 @@ export function useLayout() {
 
     const isDarkTheme = computed(() => layoutConfig.darkTheme);
 
-    return { layoutConfig: toRefs(layoutConfig), layoutState: toRefs(layoutState), changeThemeSettings, setScale, onMenuToggle, isSidebarActive, isDarkTheme, setActiveMenuItem };
+    // toggle theme
+    const toggleTheme = (theme, mode) => {
+        const elementId = 'theme-css';
+        const linkElement = document.getElementById(elementId);
+        const cloneLinkElement = linkElement.cloneNode(true);
+        const newThemeUrl = linkElement.getAttribute('href').replace(layoutConfig.theme, theme);
+        cloneLinkElement.setAttribute('id', elementId + '-clone');
+        cloneLinkElement.setAttribute('href', newThemeUrl);
+        cloneLinkElement.addEventListener('load', () => {
+            linkElement.remove();
+            cloneLinkElement.setAttribute('id', elementId);
+            changeThemeSettings(theme, mode === 'dark');
+        });
+        linkElement.parentNode.insertBefore(cloneLinkElement, linkElement.nextSibling);
+    }
+
+    return { 
+        layoutConfig: toRefs(layoutConfig), 
+        layoutState: toRefs(layoutState), 
+        changeThemeSettings, 
+        setScale, 
+        onMenuToggle,
+        isSidebarActive, 
+        isDarkTheme, 
+        setActiveMenuItem,
+        toggleTheme,
+    };
 }

@@ -3,7 +3,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
 
-const { layoutConfig, onMenuToggle } = useLayout();
+const { layoutConfig, onMenuToggle, isDarkTheme, toggleTheme } = useLayout();
 
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
@@ -17,8 +17,22 @@ onBeforeUnmount(() => {
     unbindOutsideClickListener();
 });
 
+const toggleDark = () => {
+    let theme = layoutConfig.theme.value
+    let mode = 'light'
+    // current is dark
+    if (layoutConfig.darkTheme.value) {
+        theme = theme.replace('dark', 'light')
+        mode = 'light'
+    } else {
+        theme = theme.replace('light', 'dark')
+        mode = 'dark'
+    }
+    toggleTheme(theme, mode)
+}
+
 const logoUrl = computed(() => {
-    return `layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`
+    return `layout/images/${!isDarkTheme ? 'logo-white' : 'logo-dark'}.svg`
 })
 
 const onTopBarMenuButton = () => {
@@ -76,9 +90,9 @@ const isOutsideClicked = (event) => {
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
-                <i class="pi pi-calendar"></i>
-                <span>Calendar</span>
+            <button @click="toggleDark()" class="p-link layout-topbar-button">
+                <i class="pi" :class="isDarkTheme ? 'pi-moon' : 'pi-sun'"></i>
+                <span>{{ isDarkTheme ? 'Moon' : 'Sun' }}</span>
             </button>
             <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
                 <i class="pi pi-user"></i>
