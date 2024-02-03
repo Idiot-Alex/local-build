@@ -138,12 +138,12 @@ const initFilters = () => {
         <Toolbar class="mb-4">
           <template v-slot:start>
             <div class="my-2">
-              <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-              <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
+              <Button label="新建" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+              <Button label="删除" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
             </div>
           </template>
           <template v-slot:end>
-            <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
+            <Button label="导出" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
           </template>
         </Toolbar>
         
@@ -168,7 +168,7 @@ const initFilters = () => {
         >
           <template #header>
               <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                  <h5 class="m-0">Projects Manage</h5>
+                  <h5 class="m-0">项目管理</h5>
                   <span class="block mt-2 md:mt-0 p-input-icon-left">
                       <i class="pi pi-search" />
                       <InputText v-model="filters['global'].value" placeholder="Search..." />
@@ -177,9 +177,9 @@ const initFilters = () => {
           </template>
 
           <Column selectionMode="multiple" frozen headerStyle="width: 3rem"></Column>
-          <Column field="name" header="name" :sortable="true" frozen></Column>
-          <Column field="repoConfig.type" header="repo type" :sortable="true"></Column>
-          <Column field="path" header="path" :sortable="true">
+          <Column field="name" header="名称" :sortable="true" frozen></Column>
+          <Column field="repoConfig.type" header="项目类型" :sortable="true"></Column>
+          <Column field="path" header="项目地址" :sortable="true">
             <template #body="slotProps">
               <Chip :label="slotProps.data.path" icon="pi pi-copy" cursor-pointer />
             </template>
@@ -194,34 +194,34 @@ const initFilters = () => {
 
         <Dialog v-model:visible="editDialog" w-450px header="Project Details" :modal="true" class="p-fluid">
           <div class="field">
-            <label for="name">Name</label>
+            <label for="name">名称</label>
             <InputText id="name" v-model.trim="tempData.name" required="true" autofocus :class="{ 'p-invalid': submitted && !tempData.name }" />
-            <small color-red class="p-invalid" v-if="submitted && !tempData.name">Name is required.</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.name">名称不能为空</small>
           </div>
           <div class="field">
-            <label for="repoConfig-type" class="mb-3">Repo Type</label>
-            <Dropdown id="repoConfig-type" v-model="tempData.repoConfig.type" :options="repoTypes" optionLabel="label" optionValue="value" placeholder="Select a Repo Type" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
+            <label for="repoConfig-type" class="mb-3">项目类型</label>
+            <Dropdown id="repoConfig-type" v-model="tempData.repoConfig.type" :options="repoTypes" optionLabel="label" optionValue="value" placeholder="请选择" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
             </Dropdown>
-            <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.type">Repo Type is required.</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.type">项目类型不能为空</small>
           </div>
           <div class="field" v-if="tempData.repoConfig.type && tempData.repoConfig.type != 'DIR'">
-            <label for="access-type" class="mb-3">Access Type</label>
-            <Dropdown id="access-type" v-model="tempData.repoConfig.accessType" :options="accessTypes" optionLabel="label" optionValue="value" placeholder="Select a Repo Type" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
+            <label for="access-type" class="mb-3">访问方式</label>
+            <Dropdown id="access-type" v-model="tempData.repoConfig.accessType" :options="accessTypes" optionLabel="label" optionValue="value" placeholder="请选择" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
             </Dropdown>
-            <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.accessType">Access Type is required.</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.accessType">访问方式不能为空</small>
           </div>
           <div class="field">
-            <label for="desc">Path</label>
+            <label for="desc">项目地址</label>
             <Textarea id="desc" v-model="tempData.path" required="true" rows="3" cols="20" placeholder="请填写仓库地址或者项目目录地址"/>
-            <small color-red class="p-invalid" v-if="submitted && !tempData.path">Path is required.</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.path">项目地址不能为空</small>
           </div>
           <div class="field">
-            <label for="desc">Description</label>
+            <label for="desc">描述</label>
             <Textarea id="desc" v-model="tempData.desc" required="true" rows="3" cols="20" />
           </div>
           <template #footer>
-            <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-            <Button label="Save" icon="pi pi-check" class="p-button-text" @click="saveData" />
+            <Button label="取消" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
+            <Button label="保存" icon="pi pi-check" class="p-button-text" @click="saveData" />
           </template>
         </Dialog>
 
@@ -229,25 +229,25 @@ const initFilters = () => {
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
             <span v-if="tempData">
-              Are you sure you want to delete 
+              是否确定删除 
               <b>{{ tempData.name }}</b>
               ?
             </span>
           </div>
           <template #footer>
-            <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteDialog = false" />
-            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteAction" />
+            <Button label="否" icon="pi pi-times" class="p-button-text" @click="deleteDialog = false" />
+            <Button label="是" icon="pi pi-check" class="p-button-text" @click="deleteAction" />
           </template>
         </Dialog>
 
         <Dialog v-model:visible="deleteDialogs" :style="{ width: '450px' }" header="Confirm" :modal="true">
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="tempData">Are you sure you want to delete the selected tools?</span>
+            <span v-if="tempData">是否确定删除选中的记录?</span>
           </div>
           <template #footer>
-            <Button label="No" icon="pi pi-times" class="p-button-text" @click="deleteDialogs = false" />
-            <Button label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteSelected" />
+            <Button label="否" icon="pi pi-times" class="p-button-text" @click="deleteDialogs = false" />
+            <Button label="是" icon="pi pi-check" class="p-button-text" @click="deleteSelected" />
           </template>
         </Dialog>
       </div>
