@@ -9,6 +9,25 @@ const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
 const router = useRouter();
 
+const language_menu = ref()
+const items = ref([
+    {
+        label: '中文',
+        icon: 'pi pi-file'
+    },
+    {
+        separator: true
+    },
+    {
+        label: '英文',
+        icon: 'pi pi-file-edit'
+    },
+])
+
+const toggleLanguage = (event) => {
+    language_menu.value.toggle(event)
+};
+
 onMounted(() => {
     bindOutsideClickListener();
 });
@@ -94,10 +113,11 @@ const isOutsideClicked = (event) => {
                 <i class="pi" :class="isDarkTheme ? 'pi-moon' : 'pi-sun'"></i>
                 <span>{{ isDarkTheme ? 'Moon' : 'Sun' }}</span>
             </button>
-            <button @click="onTopBarMenuButton()" class="p-link layout-topbar-button">
+            <button @click="toggleLanguage" class="p-link layout-topbar-button" aria-haspopup="true" aria-controls="language-menu">
                 <i class="pi pi-language"></i>
                 <span>Language</span>
             </button>
+            <TieredMenu ref="language_menu" id="language-menu" :model="items" popup />
             <button @click="onSettingsClick()" class="p-link layout-topbar-button">
                 <i class="pi pi-cog"></i>
                 <span>Settings</span>
