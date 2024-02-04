@@ -2,6 +2,8 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useLayout } from '@/layout/composables/layout';
 import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n'
+import { useLanguage } from '@/lang/index'
 
 const { layoutConfig, onMenuToggle, isDarkTheme, toggleTheme } = useLayout();
 
@@ -9,18 +11,29 @@ const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
 const router = useRouter();
 
+const { t, locale } = useI18n()
+const { changeLanguage } = useLanguage()
+
 const language_menu = ref()
 const items = ref([
     {
         label: '中文',
-        icon: 'pi pi-file'
+        icon: 'pi pi-file',
+        command: () => {
+            locale.value = 'zh-CN'
+            changeLanguage(locale.value)
+        }
     },
     {
         separator: true
     },
     {
         label: '英文',
-        icon: 'pi pi-file-edit'
+        icon: 'pi pi-file-edit',
+        command: () => {
+            locale.value = 'en'
+            changeLanguage(locale.value)
+        }
     },
 ])
 
@@ -117,7 +130,7 @@ const isOutsideClicked = (event) => {
                 <i class="pi pi-language"></i>
                 <span>Language</span>
             </button>
-            <TieredMenu ref="language_menu" id="language-menu" :model="items" popup />
+            <TieredMenu ref="language_menu" id="language-menu" :model="items" popup w-100px />
             <button @click="onSettingsClick()" class="p-link layout-topbar-button">
                 <i class="pi pi-cog"></i>
                 <span>Settings</span>

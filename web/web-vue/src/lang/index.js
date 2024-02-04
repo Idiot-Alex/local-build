@@ -39,12 +39,11 @@ export function getLanguage() {
 
 export function useLanguage() {
 
-  const changeLanguage = () => {
-    // todo
+  const changeLanguage = (lang) => {
+    localStorage.setItem(LOCAL_BUILD_LANGUAGE, lang)
   }
 
   return {
-    getLanguage,
-
+    changeLanguage,
   }
 }
