@@ -28,7 +28,7 @@ const items = ref([
         separator: true
     },
     {
-        label: '英文',
+        label: 'English',
         icon: 'pi pi-file-edit',
         command: () => {
             locale.value = 'en'

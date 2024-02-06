@@ -1,27 +1,27 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
+import AppMenuItem from './AppMenuItem.vue'
 
-import AppMenuItem from './AppMenuItem.vue';
 
 const model = ref([
     {
-        label: '主页',
-        items: [{ label: '仪表盘', icon: 'pi pi-fw pi-home', to: '/' }]
+        label: 'home',
+        items: [{ label: 'dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
     },
     {
-        label: '项目及构建',
+        label: 'project_build',
         items: [
-            { label: '项目管理', icon: 'pi pi-fw pi-bars', to: '/project' },
-            { label: '构建计划', icon: 'pi pi-fw pi-eye', to: '/build-plan' },
+            { label: 'project_manage', icon: 'pi pi-fw pi-bars', to: '/project' },
+            { label: 'build_plan', icon: 'pi pi-fw pi-eye', to: '/build-plan' },
         ]
     },
     {
-        label: '环境',
+        label: 'env',
         items: [
-            { label: '构建工具', icon: 'pi pi-fw pi-wrench', to: '/tool' },
+            { label: 'build_tool', icon: 'pi pi-fw pi-wrench', to: '/tool' },
         ]
     },
-]);
+])
 </script>
 
 <template>
