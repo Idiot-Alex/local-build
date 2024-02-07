@@ -10,14 +10,20 @@ export default {
   delete: '删除',
   export: '导出',
   operation: '操作',
+  select_placeholder: '请选择一项内容',
+  cancel: '取消',
+  save: '保存',
   project: {
     name: '项目名称',
     path: '项目地址',
     detail: '项目详情',
     required_name: '项目名称不能为空',
+    required_path: '项目地址不能为空',
+    path_placeholder: '请填写仓库地址或者项目目录地址',
+    desc: '项目描述',
   },
   repo: {
-    type: '仓库类型'
+    type: '仓库类型',
     required_type: '仓库类型不能为空',
     access_type: '仓库访问类型',
     required_access_type: '仓库访问类型不能为空',

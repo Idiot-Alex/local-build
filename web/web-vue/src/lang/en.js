@@ -10,11 +10,17 @@ export default {
   delete: 'Delete',
   export: 'Export',
   operation: 'Operation',
+  select_placeholder: 'please select an item',
+  cancel: 'Cancel',
+  save: 'Save',
   project: {
     name: 'Project Name',
     path: 'Project Path',
     detail: 'Project Detail',
     required_name: 'Project Name is required',
+    required_path: 'Project Path is required',
+    path_placeholder: 'please input Repo Url or Project Directory',
+    desc: 'Project Description',
   },
   repo: {
     type: 'Repo Type',

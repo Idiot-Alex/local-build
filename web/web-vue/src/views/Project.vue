@@ -202,28 +202,28 @@ const initFilters = () => {
           </div>
           <div class="field">
             <label for="repoConfig-type" class="mb-3">{{ t('repo.type') }}</label>
-            <Dropdown id="repoConfig-type" v-model="tempData.repoConfig.type" :options="repoTypes" optionLabel="label" optionValue="value" placeholder="请选择" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
+            <Dropdown id="repoConfig-type" v-model="tempData.repoConfig.type" :options="repoTypes" optionLabel="label" optionValue="value" :placeholder="t('select_placeholder')" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
             </Dropdown>
             <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.type">{{ t('repo.required_type') }}</small>
           </div>
           <div class="field" v-if="tempData.repoConfig.type && tempData.repoConfig.type != 'DIR'">
             <label for="access-type" class="mb-3">{{ t('repo.access_type') }}</label>
-            <Dropdown id="access-type" v-model="tempData.repoConfig.accessType" :options="accessTypes" optionLabel="label" optionValue="value" placeholder="请选择" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
+            <Dropdown id="access-type" v-model="tempData.repoConfig.accessType" :options="accessTypes" optionLabel="label" optionValue="value" :placeholder="t('select_placeholder')" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
             </Dropdown>
             <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.accessType">{{ t('repo.required_access_type') }}</small>
           </div>
           <div class="field">
-            <label for="desc">项目地址</label>
-            <Textarea id="desc" v-model="tempData.path" required="true" rows="3" cols="20" placeholder="请填写仓库地址或者项目目录地址"/>
-            <small color-red class="p-invalid" v-if="submitted && !tempData.path">项目地址不能为空</small>
+            <label for="desc">{{ t('project.path') }}</label>
+            <Textarea id="desc" v-model="tempData.path" required="true" rows="3" cols="20" :placeholder="t('project.path_placeholder')"/>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.path">{{ t('project.required_path') }}</small>
           </div>
           <div class="field">
-            <label for="desc">描述</label>
+            <label for="desc">{{ t('project.desc') }}</label>
             <Textarea id="desc" v-model="tempData.desc" required="true" rows="3" cols="20" />
           </div>
           <template #footer>
-            <Button label="取消" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-            <Button label="保存" icon="pi pi-check" class="p-button-text" @click="saveData" />
+            <Button :label="t('cancel')" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
+            <Button :label="t('save')" icon="pi pi-check" class="p-button-text" @click="saveData" />
           </template>
         </Dialog>
 
