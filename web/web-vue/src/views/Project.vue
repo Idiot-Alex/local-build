@@ -141,11 +141,11 @@ const initFilters = () => {
           <template v-slot:start>
             <div class="my-2">
               <Button :label="t('new')" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-              <Button label="删除" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
+              <Button :label="t('delete')" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
             </div>
           </template>
           <template v-slot:end>
-            <Button label="导出" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
+            <Button :label="t('export')" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
           </template>
         </Toolbar>
         
@@ -170,7 +170,7 @@ const initFilters = () => {
         >
           <template #header>
               <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                  <h5 class="m-0">项目管理</h5>
+                  <h5 class="m-0">{{ t('project_manage') }}</h5>
                   <span class="block mt-2 md:mt-0 p-input-icon-left">
                       <i class="pi pi-search" />
                       <InputText v-model="filters['global'].value" placeholder="Search..." />
@@ -179,14 +179,14 @@ const initFilters = () => {
           </template>
 
           <Column selectionMode="multiple" frozen headerStyle="width: 3rem"></Column>
-          <Column field="name" header="名称" :sortable="true" frozen></Column>
-          <Column field="repoConfig.type" header="项目类型" :sortable="true"></Column>
-          <Column field="path" header="项目地址" :sortable="true">
+          <Column field="name" :header="t('project.name')" :sortable="true" frozen></Column>
+          <Column field="repoConfig.type" :header="t('repo.type')" :sortable="true"></Column>
+          <Column field="path" :header="t('project.path')" :sortable="true">
             <template #body="slotProps">
               <Chip :label="slotProps.data.path" icon="pi pi-copy" cursor-pointer />
             </template>
           </Column>
-          <Column header="Operation" alignFrozen="right" frozen headerStyle="min-width:10rem;">
+          <Column :header="t('operation')" alignFrozen="right" frozen headerStyle="min-width:10rem;">
             <template #body="slotProps">
               <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="toEdit(slotProps.data)" />
               <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />
@@ -194,23 +194,23 @@ const initFilters = () => {
           </Column>
         </DataTable>
 
-        <Dialog v-model:visible="editDialog" w-450px header="Project Details" :modal="true" class="p-fluid">
+        <Dialog v-model:visible="editDialog" w-450px :header="t('project.detail')" :modal="true" class="p-fluid">
           <div class="field">
-            <label for="name">名称</label>
+            <label for="name">{{ t('project.name') }}</label>
             <InputText id="name" v-model.trim="tempData.name" required="true" autofocus :class="{ 'p-invalid': submitted && !tempData.name }" />
-            <small color-red class="p-invalid" v-if="submitted && !tempData.name">名称不能为空</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.name">{{ t('project.required_name') }}</small>
           </div>
           <div class="field">
-            <label for="repoConfig-type" class="mb-3">项目类型</label>
+            <label for="repoConfig-type" class="mb-3">{{ t('repo.type') }}</label>
             <Dropdown id="repoConfig-type" v-model="tempData.repoConfig.type" :options="repoTypes" optionLabel="label" optionValue="value" placeholder="请选择" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
             </Dropdown>
-            <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.type">项目类型不能为空</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.type">{{ t('repo.required_type') }}</small>
           </div>
           <div class="field" v-if="tempData.repoConfig.type && tempData.repoConfig.type != 'DIR'">
-            <label for="access-type" class="mb-3">访问方式</label>
+            <label for="access-type" class="mb-3">{{ t('repo.access_type') }}</label>
             <Dropdown id="access-type" v-model="tempData.repoConfig.accessType" :options="accessTypes" optionLabel="label" optionValue="value" placeholder="请选择" required="true" :class="{ 'p-invalid': submitted && !tempData.repoType }">
             </Dropdown>
-            <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.accessType">访问方式不能为空</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.repoConfig.accessType">{{ t('repo.required_access_type') }}</small>
           </div>
           <div class="field">
             <label for="desc">项目地址</label>
