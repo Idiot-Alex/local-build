@@ -13,6 +13,10 @@ export default {
   select_placeholder: 'please select an item',
   cancel: 'Cancel',
   save: 'Save',
+  delete_confirm_msg: 'Are you want to delete',
+  yes: 'Yes',
+  no: 'No',
+  delete_selected_msg: 'Are you want delete selected',
   project: {
     name: 'Project Name',
     path: 'Project Path',
@@ -27,5 +31,8 @@ export default {
     required_type: 'Repo Type is required',
     access_type: 'Repo Access Type',
     required_access_type: 'Repo Access Type is required',
+    user_password: 'User & Password',
+    ssh_key: 'SSH Key',
+    access_token: 'Access Token',
   }
 }

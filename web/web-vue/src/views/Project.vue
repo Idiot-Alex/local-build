@@ -1,6 +1,6 @@
 <script setup>
 import { FilterMatchMode } from 'primevue/api'
-import { ref, onMounted, onBeforeMount } from 'vue'
+import { ref, onMounted, onBeforeMount, computed } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { projectList, saveProject, delProject } from '@/api/project.js'
 import { useI18n } from 'vue-i18n'
@@ -27,11 +27,13 @@ const repoTypes = ref([
   { label: 'DIR', value: 'DIR' },
   { label: 'SVN', value: 'SVN' },
 ])
-const accessTypes = ref([
-  { label: '用户名密码', value: 'credentials' },
-  { label: 'SSH 私钥', value: 'sshPrivateKey' },
-  { label: 'Access Token', value: 'accessToken' },
-])
+const accessTypes = computed(() => {
+  return [
+    { label: t('repo.user_password'), value: 'credentials' },
+    { label: t('repo.ssh_key'), value: 'sshPrivateKey' },
+    { label: t('repo.access_token'), value: 'accessToken' },
+  ]
+})
 
 onBeforeMount(() => {
   initFilters()
@@ -231,25 +233,25 @@ const initFilters = () => {
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
             <span v-if="tempData">
-              是否确定删除 
+              {{ t('delete_msg') }} 
               <b>{{ tempData.name }}</b>
               ?
             </span>
           </div>
           <template #footer>
-            <Button label="否" icon="pi pi-times" class="p-button-text" @click="deleteDialog = false" />
-            <Button label="是" icon="pi pi-check" class="p-button-text" @click="deleteAction" />
+            <Button :label="t('no')" icon="pi pi-times" class="p-button-text" @click="deleteDialog = false" />
+            <Button :label="t('yes')" icon="pi pi-check" class="p-button-text" @click="deleteAction" />
           </template>
         </Dialog>
 
         <Dialog v-model:visible="deleteDialogs" :style="{ width: '450px' }" header="Confirm" :modal="true">
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="tempData">是否确定删除选中的记录?</span>
+            <span v-if="tempData">{{ t('delete_selected_msg') }}?</span>
           </div>
           <template #footer>
-            <Button label="否" icon="pi pi-times" class="p-button-text" @click="deleteDialogs = false" />
-            <Button label="是" icon="pi pi-check" class="p-button-text" @click="deleteSelected" />
+            <Button :label="t('no')" icon="pi pi-times" class="p-button-text" @click="deleteDialogs = false" />
+            <Button :label="t('yes')" icon="pi pi-check" class="p-button-text" @click="deleteSelected" />
           </template>
         </Dialog>
       </div>

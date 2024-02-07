@@ -13,6 +13,10 @@ export default {
   select_placeholder: '请选择一项内容',
   cancel: '取消',
   save: '保存',
+  delete_confirm_msg: '是否确定删除',
+  yes: '是',
+  no: '否',
+  delete_selected_msg: '是否确定删除选中的记录',
   project: {
     name: '项目名称',
     path: '项目地址',
@@ -27,5 +31,8 @@ export default {
     required_type: '仓库类型不能为空',
     access_type: '仓库访问类型',
     required_access_type: '仓库访问类型不能为空',
+    user_password: '用户 & 密码',
+    ssh_key: 'SSH 私钥',
+    access_token: 'Access Token',
   }
 }
