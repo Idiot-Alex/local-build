@@ -131,12 +131,12 @@ const initFilters = () => {
         <Toolbar class="mb-4">
           <template v-slot:start>
             <div class="my-2">
-              <Button label="新建" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-              <Button label="删除" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
+              <Button :label="t('new')" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+              <Button :label="t('delete')" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
             </div>
           </template>
           <template v-slot:end>
-            <Button label="导出" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
+            <Button :label="t('export')" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
           </template>
         </Toolbar>
 
