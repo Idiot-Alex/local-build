@@ -3,7 +3,9 @@ import { FilterMatchMode } from 'primevue/api'
 import { ref, onMounted, onBeforeMount } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { toolList, saveTool, delTool } from '@/api/tool.js'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const toast = useToast()
 
 const query = ref({
@@ -173,7 +175,7 @@ const initFilters = () => {
           <Column field="name" :header="t('tool.name')" :sortable="true" frozen></Column>
           <Column field="type" :header="t('tool.type')" :sortable="true"></Column>
           <Column field="version" :header="t('tool.version')" :sortable="true"></Column>
-          <Column field="vendor" :header="t('tool.vender')" :sortable="true"></Column>
+          <Column field="vendor" :header="t('tool.vendor')" :sortable="true"></Column>
           <Column field="path" :header="t('tool.path')" :sortable="true">
             <template #body="slotProps">
               <Chip :label="slotProps.data.path" icon="pi pi-copy" cursor-pointer />
