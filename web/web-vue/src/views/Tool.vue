@@ -161,7 +161,7 @@ const initFilters = () => {
         >
           <template #header>
               <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                  <h5 class="m-0">构建工具管理</h5>
+                  <h5 class="m-0">{{ t('tool_manage') }}</h5>
                   <span class="block mt-2 md:mt-0 p-input-icon-left">
                       <i class="pi pi-search" />
                       <InputText v-model="filters['global'].value" placeholder="Search..." />
@@ -170,16 +170,16 @@ const initFilters = () => {
           </template>
 
           <Column selectionMode="multiple" frozen headerStyle="width: 3rem"></Column>
-          <Column field="name" header="名称" :sortable="true" frozen></Column>
-          <Column field="type" header="类型" :sortable="true"></Column>
-          <Column field="version" header="版本" :sortable="true"></Column>
-          <Column field="vendor" header="厂商" :sortable="true"></Column>
-          <Column field="path" header="目录" :sortable="true">
+          <Column field="name" :header="t('tool.name')" :sortable="true" frozen></Column>
+          <Column field="type" :header="t('tool.type')" :sortable="true"></Column>
+          <Column field="version" :header="t('tool.version')" :sortable="true"></Column>
+          <Column field="vendor" :header="t('tool.vender')" :sortable="true"></Column>
+          <Column field="path" :header="t('tool.path')" :sortable="true">
             <template #body="slotProps">
               <Chip :label="slotProps.data.path" icon="pi pi-copy" cursor-pointer />
             </template>
           </Column>
-          <Column header="操作" alignFrozen="right" frozen headerStyle="min-width:10rem;">
+          <Column :header="t('operation')" alignFrozen="right" frozen headerStyle="min-width:10rem;">
             <template #body="slotProps">
               <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="toEdit(slotProps.data)" />
               <Button icon="pi pi-trash" class="p-button-rounded p-button-warning mt-2" @click="confirmDelete(slotProps.data)" />

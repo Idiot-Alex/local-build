@@ -3,6 +3,7 @@ export default {
   dashboard: 'Dashboard',
   project_build: 'Project & Build',
   project_manage: 'Project Manage',
+  tool_manage: 'Tool Manage',
   build_plan: 'Build Plan',
   build_tool: 'Build Tool',
   env: 'Env',
@@ -34,5 +35,12 @@ export default {
     user_password: 'User & Password',
     ssh_key: 'SSH Key',
     access_token: 'Access Token',
+  },
+  tool: {
+    name: 'Tool Name',
+    type: 'Tool Type',
+    version: 'Version',
+    vendor: 'Vendor',
+    path: 'Tool Path',
   }
 }

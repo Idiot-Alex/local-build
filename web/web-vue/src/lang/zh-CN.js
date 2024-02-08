@@ -3,6 +3,7 @@ export default {
   dashboard: '仪表盘',
   project_build: '项目及构建',
   project_manage: '项目管理',
+  tool_manage: '工具管理',
   build_plan: '构建计划',
   build_tool: '构建工具',
   env: '环境',
@@ -34,5 +35,12 @@ export default {
     user_password: '用户 & 密码',
     ssh_key: 'SSH 私钥',
     access_token: 'Access Token',
+  },
+  tool: {
+    name: '工具名称',
+    type: '工具类型',
+    version: '版本',
+    vendor: '厂商',
+    path: '工具目录',
   }
 }
