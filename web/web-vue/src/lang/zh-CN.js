@@ -42,5 +42,9 @@ export default {
     version: '版本',
     vendor: '厂商',
     path: '工具目录',
+    detail: '工具详情',
+    required_name: '工具名称不能为空',
+    required_type: '工具类型不能为空',
+    desc: '工具描述',
   }
 }

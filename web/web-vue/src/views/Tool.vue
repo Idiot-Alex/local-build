@@ -189,29 +189,29 @@ const initFilters = () => {
           </Column>
         </DataTable>
 
-        <Dialog v-model:visible="editDialog" w-450px header="编辑构建工具" :modal="true" class="p-fluid">
+        <Dialog v-model:visible="editDialog" w-450px :header="t('tool.detail')" :modal="true" class="p-fluid">
           <div class="field">
-            <label for="name">名称</label>
+            <label for="name">{{ t('tool.name') }}</label>
             <InputText id="name" v-model.trim="tempData.name" required="true" autofocus :class="{ 'p-invalid': submitted && !tempData.name }" />
-            <small color-red class="p-invalid" v-if="submitted && !tempData.name">名称不能为空</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.name">{{ t('tool.required_name') }}</small>
           </div>
           <div class="field">
-            <label for="path">目录</label>
+            <label for="path">{{ t('tool.path') }}</label>
             <Textarea id="path" v-model="tempData.path" rows="2" cols="20" />
           </div>
           <div class="field">
-            <label for="type" class="mb-3">类型</label>
-            <Dropdown id="type" v-model="tempData.type" :options="types" optionLabel="label" optionValue="value" placeholder="选择一个类型" required="true" :class="{ 'p-invalid': submitted && !tempData.type }">
+            <label for="type" class="mb-3">{{ t('tool.type') }}</label>
+            <Dropdown id="type" v-model="tempData.type" :options="types" optionLabel="label" optionValue="value" :placeholder="t('select_placeholder')" required="true" :class="{ 'p-invalid': submitted && !tempData.type }">
             </Dropdown>
-            <small color-red class="p-invalid" v-if="submitted && !tempData.type">类型不能为空</small>
+            <small color-red class="p-invalid" v-if="submitted && !tempData.type">{{ t('tool.required_type') }}</small>
           </div>
           <div class="field">
-            <label for="desc">描述</label>
+            <label for="desc">{{ t('tool.desc') }}</label>
             <Textarea id="desc" v-model="tempData.desc" required="true" rows="3" cols="20" />
           </div>
           <template #footer>
-            <Button label="取消" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-            <Button label="保存" icon="pi pi-check" class="p-button-text" @click="saveData" />
+            <Button :label="t('cancel')" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
+            <Button :label="t('save')" icon="pi pi-check" class="p-button-text" @click="saveData" />
           </template>
         </Dialog>
 
@@ -219,25 +219,25 @@ const initFilters = () => {
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
             <span v-if="tempData">
-              是否确定删除 
+              {{ t('delete_confirm_msg') }} 
               <b>{{ tempData.name }}</b>
               ?
             </span>
           </div>
           <template #footer>
-            <Button label="否" icon="pi pi-times" class="p-button-text" @click="deleteDialog = false" />
-            <Button label="是" icon="pi pi-check" class="p-button-text" @click="deleteAction" />
+            <Button :label="t('no')" icon="pi pi-times" class="p-button-text" @click="deleteDialog = false" />
+            <Button :label="t('yes')" icon="pi pi-check" class="p-button-text" @click="deleteAction" />
           </template>
         </Dialog>
 
         <Dialog v-model:visible="deleteDialogs" :style="{ width: '450px' }" header="Confirm" :modal="true">
           <div class="flex align-items-center justify-content-center">
             <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-            <span v-if="tempData">是否确定删除选中的记录?</span>
+            <span v-if="tempData">{{ t('delete_selected_msg') }}?</span>
           </div>
           <template #footer>
-            <Button label="否" icon="pi pi-times" class="p-button-text" @click="deleteDialogs = false" />
-            <Button label="是" icon="pi pi-check" class="p-button-text" @click="deleteSelected" />
+            <Button :label="t('no')" icon="pi pi-times" class="p-button-text" @click="deleteDialogs = false" />
+            <Button :label="t('yes')" icon="pi pi-check" class="p-button-text" @click="deleteSelected" />
           </template>
         </Dialog>
       </div>

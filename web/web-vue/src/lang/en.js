@@ -42,5 +42,9 @@ export default {
     version: 'Version',
     vendor: 'Vendor',
     path: 'Tool Path',
+    detail: 'Tool Detail',
+    required_name: 'Tool Name is required',
+    required_type: 'Tool Type is required',
+    desc: 'Tool Description',
   }
 }
