@@ -6,6 +6,7 @@ export default {
   tool_manage: 'Tool Manage',
   build_plan: 'Build Plan',
   build_tool: 'Build Tool',
+  build_plan_manage: 'Build Plan Manage',
   env: 'Env',
   new: 'New',
   delete: 'Delete',

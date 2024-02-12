@@ -6,6 +6,7 @@ export default {
   tool_manage: '工具管理',
   build_plan: '构建计划',
   build_tool: '构建工具',
+  build_plan_manage: '构建计划管理',
   env: '环境',
   new: '新建',
   delete: '删除',

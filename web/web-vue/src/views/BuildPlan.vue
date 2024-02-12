@@ -3,7 +3,9 @@ import { FilterMatchMode } from 'primevue/api'
 import { ref, onMounted, onBeforeMount } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { buildPlanList, saveBuildPlan, delBuildPlan } from '@/api/build-plan.js'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const toast = useToast()
 
 const query = ref({
@@ -131,12 +133,12 @@ const initFilters = () => {
         <Toolbar class="mb-4">
           <template v-slot:start>
             <div class="my-2">
-              <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
-              <Button label="Delete" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
+              <Button :label="t('new')" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+              <Button :label="t('delete')" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
             </div>
           </template>
           <template v-slot:end>
-            <Button label="Export" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
+            <Button :label="t('export')" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
           </template>
         </Toolbar>
         
@@ -161,7 +163,7 @@ const initFilters = () => {
         >
           <template #header>
               <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                  <h5 class="m-0">Build Plan Manage</h5>
+                  <h5 class="m-0">{{ t('build_plan_manage') }}</h5>
                   <span class="block mt-2 md:mt-0 p-input-icon-left">
                       <i class="pi pi-search" />
                       <InputText v-model="filters['global'].value" placeholder="Search..." />
