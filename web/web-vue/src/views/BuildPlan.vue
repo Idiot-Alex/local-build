@@ -172,7 +172,7 @@ const initFilters = () => {
           </template>
 
           <Column selectionMode="multiple" frozen headerStyle="width: 3rem"></Column>
-          <Column field="name" header="name" :sortable="true" frozen></Column>
+          <Column field="name" :header="t('build_plan.name')" :sortable="true" frozen></Column>
           <Column field="type" header="type" :sortable="true"></Column>
           <Column field="path" header="path" :sortable="true">
             <template #body="slotProps">
