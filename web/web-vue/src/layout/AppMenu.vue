@@ -12,7 +12,7 @@ const model = ref([
         label: 'project_build',
         items: [
             { label: 'project_manage', icon: 'pi pi-fw pi-bars', to: '/project' },
-            { label: 'build_plan', icon: 'pi pi-fw pi-eye', to: '/build-plan' },
+            { label: 'build_plan_manage', icon: 'pi pi-fw pi-eye', to: '/build-plan' },
         ]
     },
     {
