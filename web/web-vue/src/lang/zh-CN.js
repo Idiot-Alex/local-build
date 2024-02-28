@@ -47,6 +47,7 @@ export default {
     required_name: '工具名称不能为空',
     required_type: '工具类型不能为空',
     desc: '工具描述',
+    init: '初始化',
   },
   build_plan: {
     name: '构建计划名称',

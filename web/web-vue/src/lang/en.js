@@ -47,6 +47,7 @@ export default {
     required_name: 'Tool Name is required',
     required_type: 'Tool Type is required',
     desc: 'Tool Description',
+    init: 'Init',
   },
   build_plan: {
     name: 'Build Plan Name',

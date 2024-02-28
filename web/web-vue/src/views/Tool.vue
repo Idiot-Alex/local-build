@@ -3,6 +3,7 @@ import { FilterMatchMode } from 'primevue/api'
 import { ref, onMounted, onBeforeMount } from 'vue'
 import { useToast } from 'primevue/usetoast'
 import { toolList, saveTool, delTool } from '@/api/tool.js'
+import { initEnv } from '@/api/env.js'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -98,6 +99,13 @@ const deleteAction = () => {
   })
 }
 
+const initEvnTool = () => {
+  initEnv().then(res => {
+    toast.add({ severity: 'success', summary: 'Info', detail: res.msg, life: 3000 })
+    loadList()
+  })
+}
+
 const exportCSV = () => {
   dt.value.exportCSV()
 }
@@ -133,11 +141,12 @@ const initFilters = () => {
         <Toolbar class="mb-4">
           <template v-slot:start>
             <div class="my-2">
-              <Button :label="t('new')" icon="pi pi-plus" class="p-button-success mr-2" @click="openNew" />
+              <Button :label="t('new')" icon="pi pi-plus" mr-2 class="p-button-success" @click="openNew" />
               <Button :label="t('delete')" icon="pi pi-trash" class="p-button-danger" @click="confirmDeleteSelected" :disabled="!selectedData || !selectedData.length" />
             </div>
           </template>
           <template v-slot:end>
+            <Button :label="t('tool.init')" icon="pi pi-spinner" mr-2 class="p-button-info" @click="initEvnTool()" />
             <Button :label="t('export')" icon="pi pi-upload" class="p-button-help" @click="exportCSV($event)" />
           </template>
         </Toolbar>
